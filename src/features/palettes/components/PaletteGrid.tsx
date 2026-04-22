@@ -86,7 +86,7 @@ function PaletteListRow({ palette, group, tags, onDelete, onEdit }: PaletteListR
         </div>
       )}
 
-      <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+      <div className="flex items-center gap-1 transition-opacity sm:opacity-0 sm:group-hover:opacity-100">
         <button
           onClick={() => onEdit(palette)}
           className="rounded-lg p-1.5 text-gray-500 hover:bg-gray-200"
@@ -140,7 +140,7 @@ export function PaletteGrid({
   }
 
   return (
-    <div className="grid grid-cols-2 gap-4 p-6 md:grid-cols-3 xl:grid-cols-4">
+    <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 sm:p-6 md:grid-cols-3 xl:grid-cols-4">
       {palettes.map((palette) => (
         <PaletteCard
           key={palette.id}

@@ -11,10 +11,19 @@ interface AppShellProps {
 
 export function AppShell({ children }: AppShellProps): JSX.Element {
   const toggleSidebar = useAppStore((store) => store.toggleSidebar)
+  const sidebarOpen = useAppStore((store) => store.sidebarOpen)
   const hydrated = useAppStore((store) => store.hydrated)
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50">
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-black/40 md:hidden"
+          onClick={toggleSidebar}
+          aria-hidden="true"
+        />
+      )}
+
       <Sidebar />
 
       <div className="flex flex-1 flex-col overflow-hidden">
