@@ -1,8 +1,10 @@
 'use client'
 
-import { useState, useEffect, useMemo, type JSX, type FormEvent, type ChangeEvent } from 'react'
+import { useState, useEffect, useMemo, type JSX, type SyntheticEvent, type ChangeEvent } from 'react'
 import { nanoid } from 'nanoid'
 import { Modal } from '@/shared/ui/Modal'
+import { GroupSelector } from '@/shared/components/GroupSelector'
+import { TagPicker } from '@/shared/components/TagPicker'
 import { useAppStore } from '@/store'
 import { ColorEditor, type ColorItem } from '@/features/palettes/components/ColorEditor'
 import { extractDominantColors, isValidHex } from '@/lib/colorUtils'
@@ -67,11 +69,11 @@ export function CreatePaletteFromImageModal({ open, image, onClose }: CreatePale
     )
   }
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (!image) return
 
-    const palette = {
+    addPalette({
       name: name.trim() || `${image.name} palette`,
       colors: colorItems
         .filter((item) => isValidHex(item.hex))
@@ -80,12 +82,9 @@ export function CreatePaletteFromImageModal({ open, image, onClose }: CreatePale
       tagIds: selectedTagIds,
       comments: [],
       sourceImageId: image.id,
-    }
+    })
 
-    addPalette(palette)
-
-    const createdPaletteIdPlaceholder = image.extractedPaletteId
-    if (!createdPaletteIdPlaceholder) {
+    if (!image.extractedPaletteId) {
       updateImage(image.id, { extractedPaletteId: 'pending' })
     }
 
@@ -138,49 +137,19 @@ export function CreatePaletteFromImageModal({ open, image, onClose }: CreatePale
           <ColorEditor items={colorItems} onChange={setColorItems} />
         </div>
 
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="palette-group-from-image" className="text-sm font-medium text-gray-700">
-            Group
-          </label>
-          <select
-            id="palette-group-from-image"
-            value={selectedGroupId ?? ''}
-            onChange={(event: ChangeEvent<HTMLSelectElement>) => setSelectedGroupId(event.target.value || null)}
-            className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-          >
-            <option value="">No group</option>
-            {paletteGroups.map((group) => (
-              <option key={group.id} value={group.id}>
-                {group.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        <GroupSelector
+          groups={paletteGroups}
+          selectedGroupId={selectedGroupId}
+          onSelect={setSelectedGroupId}
+          groupType="palette"
+          inputId="palette-group-from-image"
+        />
 
-        {allTags.length > 0 && (
-          <div className="flex flex-col gap-1.5">
-            <span className="text-sm font-medium text-gray-700">Tags</span>
-            <div className="flex flex-wrap gap-1.5">
-              {allTags.map((tag) => {
-                const isSelected = selectedTagIds.includes(tag.id)
-                return (
-                  <button
-                    key={tag.id}
-                    type="button"
-                    onClick={() => handleTagToggle(tag.id)}
-                    className={`rounded-full border px-2.5 py-1 text-xs font-medium transition-colors ${
-                      isSelected
-                        ? 'border-transparent bg-indigo-100 text-indigo-700'
-                        : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
-                    }`}
-                  >
-                    {tag.name}
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-        )}
+        <TagPicker
+          tags={allTags}
+          selectedTagIds={selectedTagIds}
+          onToggle={handleTagToggle}
+        />
 
         <div className="flex justify-end gap-2 pt-2">
           <button

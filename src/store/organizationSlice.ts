@@ -9,10 +9,10 @@ export interface OrganizationSlice {
   tags: Tag[]
 
   hydrateOrganization: (groups: Group[], tags: Tag[]) => void
-  addGroup: (fields: Omit<Group, 'id'>) => void
+  addGroup: (fields: Omit<Group, 'id'>) => Group
   updateGroup: (id: string, updates: Partial<Omit<Group, 'id'>>) => void
   deleteGroup: (id: string) => void
-  addTag: (fields: Omit<Tag, 'id'>) => void
+  addTag: (fields: Omit<Tag, 'id'>) => Tag
   updateTag: (id: string, updates: Partial<Omit<Tag, 'id'>>) => void
   deleteTag: (id: string) => void
 }
@@ -29,6 +29,7 @@ export const createOrganizationSlice: StateCreator<AppStore, [], [], Organizatio
     const group: Group = { ...fields, id: nanoid() }
     set((state) => ({ groups: [...state.groups, group] }))
     groupDB.put(group)
+    return group
   },
 
   updateGroup: (id, updates) => {
@@ -51,6 +52,7 @@ export const createOrganizationSlice: StateCreator<AppStore, [], [], Organizatio
     const tag: Tag = { ...fields, id: nanoid() }
     set((state) => ({ tags: [...state.tags, tag] }))
     tagDB.put(tag)
+    return tag
   },
 
   updateTag: (id, updates) => {

@@ -1,92 +1,19 @@
 'use client'
 
-import { useState, useMemo, useEffect, type JSX, type FormEvent, type ChangeEvent } from 'react'
+import { useState, useMemo, useEffect, type JSX, type SyntheticEvent, type ChangeEvent } from 'react'
 import { Modal } from '@/shared/ui/Modal'
 import { CommentsSection } from '@/shared/components/CommentsSection'
+import { GroupSelector } from '@/shared/components/GroupSelector'
+import { TagPicker } from '@/shared/components/TagPicker'
 import { useAppStore } from '@/store'
 import { ColorEditor, type ColorItem, createColorItem } from './ColorEditor'
 import { isValidHex } from '@/lib/colorUtils'
-import type { ColorPalette, Group, Tag } from '@/types'
+import type { ColorPalette } from '@/types'
 
 interface EditPaletteModalProps {
   open: boolean
   palette: ColorPalette | null
   onClose: () => void
-}
-
-function GroupSelector({
-  groups,
-  selectedGroupId,
-  onSelect,
-}: {
-  groups: Group[]
-  selectedGroupId: string | null
-  onSelect: (groupId: string | null) => void
-}): JSX.Element {
-  return (
-    <div className="flex flex-col gap-1.5">
-      <label htmlFor="edit-palette-group" className="text-sm font-medium text-gray-700">
-        Group
-      </label>
-      <select
-        id="edit-palette-group"
-        value={selectedGroupId ?? ''}
-        onChange={(event: ChangeEvent<HTMLSelectElement>) => onSelect(event.target.value || null)}
-        className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-      >
-        <option value="">No group</option>
-        {groups.map((group) => (
-          <option key={group.id} value={group.id}>
-            {group.name}
-          </option>
-        ))}
-      </select>
-    </div>
-  )
-}
-
-function TagPicker({
-  tags,
-  selectedTagIds,
-  onToggle,
-}: {
-  tags: Tag[]
-  selectedTagIds: string[]
-  onToggle: (tagId: string) => void
-}): JSX.Element {
-  if (tags.length === 0) {
-    return (
-      <div className="flex flex-col gap-1.5">
-        <span className="text-sm font-medium text-gray-700">Tags</span>
-        <p className="text-xs text-gray-400">No tags available yet.</p>
-      </div>
-    )
-  }
-
-  return (
-    <div className="flex flex-col gap-1.5">
-      <span className="text-sm font-medium text-gray-700">Tags</span>
-      <div className="flex flex-wrap gap-1.5">
-        {tags.map((tag) => {
-          const isSelected = selectedTagIds.includes(tag.id)
-          return (
-            <button
-              key={tag.id}
-              type="button"
-              onClick={() => onToggle(tag.id)}
-              className={`rounded-full border px-2.5 py-1 text-xs font-medium transition-colors ${
-                isSelected
-                  ? 'border-transparent bg-indigo-100 text-indigo-700'
-                  : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
-              }`}
-            >
-              {tag.name}
-            </button>
-          )
-        })}
-      </div>
-    </div>
-  )
 }
 
 export function EditPaletteModal({ open, palette, onClose }: EditPaletteModalProps): JSX.Element {
@@ -134,7 +61,7 @@ export function EditPaletteModal({ open, palette, onClose }: EditPaletteModalPro
     )
   }
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (!palette) return
 
@@ -179,6 +106,8 @@ export function EditPaletteModal({ open, palette, onClose }: EditPaletteModalPro
           groups={paletteGroups}
           selectedGroupId={selectedGroupId}
           onSelect={setSelectedGroupId}
+          groupType="palette"
+          inputId="edit-palette-group"
         />
 
         <TagPicker
