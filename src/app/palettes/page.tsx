@@ -1,0 +1,67 @@
+'use client'
+
+import type { JSX } from 'react'
+import { usePalettesPage } from '@/features/palettes/hooks/usePalettesPage'
+import { PalettesToolbar } from '@/features/palettes/components/PalettesToolbar'
+import { PaletteGrid } from '@/features/palettes/components/PaletteGrid'
+import { AddPaletteModal } from '@/features/palettes/components/AddPaletteModal'
+import { EditPaletteModal } from '@/features/palettes/components/EditPaletteModal'
+import { useAppStore } from '@/store'
+import type { ColorPalette } from '@/types'
+
+export default function PalettesPage(): JSX.Element {
+  const {
+    palettes,
+    totalCount,
+    groups,
+    tags,
+    filter,
+    viewMode,
+    setFilter,
+    resetFilter,
+    setViewMode,
+    deletePalette,
+    openModal,
+  } = usePalettesPage()
+
+  const modal = useAppStore((store) => store.modal)
+  const closeModal = useAppStore((store) => store.closeModal)
+
+  return (
+    <div className="flex h-full flex-col">
+      <PalettesToolbar
+        totalCount={totalCount}
+        filteredCount={palettes.length}
+        filter={filter}
+        viewMode={viewMode}
+        groups={groups}
+        tags={tags}
+        onFilterChange={setFilter}
+        onResetFilter={resetFilter}
+        onViewModeChange={setViewMode}
+        onAddPalette={() => openModal({ type: 'addPalette' })}
+      />
+      <div className="flex-1 overflow-auto">
+        <PaletteGrid
+          palettes={palettes}
+          groups={groups}
+          tags={tags}
+          viewMode={viewMode}
+          onDeletePalette={deletePalette}
+          onEditPalette={(palette) => openModal({ type: 'editPalette', payload: palette })}
+        />
+      </div>
+
+      <AddPaletteModal
+        open={modal?.type === 'addPalette'}
+        onClose={closeModal}
+      />
+
+      <EditPaletteModal
+        open={modal?.type === 'editPalette'}
+        palette={modal?.type === 'editPalette' ? (modal.payload as ColorPalette) : null}
+        onClose={closeModal}
+      />
+    </div>
+  )
+}
