@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useEffect, type JSX, type SyntheticEvent, type ChangeEvent } from 'react'
+import { useState, useEffect, type JSX, type SyntheticEvent, type ChangeEvent } from 'react'
 import { Modal } from '@/shared/ui/Modal'
 import { CommentsSection } from '@/shared/components/CommentsSection'
 import { GroupSelector } from '@/shared/components/GroupSelector'
@@ -24,10 +24,6 @@ export function EditImageModal({ open, image, onClose }: EditImageModalProps): J
 
   const liveImage = useAppStore((store) => store.images.find((img) => img.id === image?.id))
 
-  const imageGroups = useMemo(
-    () => allGroups.filter((group) => group.type === 'image' || group.type === 'shared'),
-    [allGroups]
-  )
 
   const [url, setUrl] = useState('')
   const [name, setName] = useState('')
@@ -133,10 +129,10 @@ export function EditImageModal({ open, image, onClose }: EditImageModalProps): J
         )}
 
         <GroupSelector
-          groups={imageGroups}
+          groups={allGroups}
           selectedGroupId={selectedGroupId}
           onSelect={setSelectedGroupId}
-          groupType="image"
+
           inputId="edit-image-group"
         />
 

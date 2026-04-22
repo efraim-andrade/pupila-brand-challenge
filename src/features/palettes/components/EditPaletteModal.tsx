@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useEffect, type JSX, type SyntheticEvent, type ChangeEvent } from 'react'
+import { useState, useEffect, type JSX, type SyntheticEvent, type ChangeEvent } from 'react'
 import { Modal } from '@/shared/ui/Modal'
 import { CommentsSection } from '@/shared/components/CommentsSection'
 import { GroupSelector } from '@/shared/components/GroupSelector'
@@ -28,10 +28,6 @@ export function EditPaletteModal({ open, palette, onClose }: EditPaletteModalPro
     store.palettes.find((p) => p.id === palette?.id)
   )
 
-  const paletteGroups = useMemo(
-    () => allGroups.filter((group) => group.type === 'palette' || group.type === 'shared'),
-    [allGroups]
-  )
 
   const [name, setName] = useState('')
   const [colorItems, setColorItems] = useState<ColorItem[]>([])
@@ -103,10 +99,10 @@ export function EditPaletteModal({ open, palette, onClose }: EditPaletteModalPro
         </div>
 
         <GroupSelector
-          groups={paletteGroups}
+          groups={allGroups}
           selectedGroupId={selectedGroupId}
           onSelect={setSelectedGroupId}
-          groupType="palette"
+
           inputId="edit-palette-group"
         />
 

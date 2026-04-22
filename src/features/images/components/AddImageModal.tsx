@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, type JSX, type SyntheticEvent, type ChangeEvent } from 'react'
+import { useState, type JSX, type SyntheticEvent, type ChangeEvent } from 'react'
 import { Modal } from '@/shared/ui/Modal'
 import { GroupSelector } from '@/shared/components/GroupSelector'
 import { TagPicker } from '@/shared/components/TagPicker'
@@ -26,10 +26,6 @@ export function AddImageModal({ open, onClose }: AddImageModalProps): JSX.Elemen
   const allGroups = useAppStore((store) => store.groups)
   const allTags = useAppStore((store) => store.tags)
 
-  const imageGroups = useMemo(
-    () => allGroups.filter((group) => group.type === 'image' || group.type === 'shared'),
-    [allGroups]
-  )
 
   const [url, setUrl] = useState('')
   const [name, setName] = useState('')
@@ -141,10 +137,10 @@ export function AddImageModal({ open, onClose }: AddImageModalProps): JSX.Elemen
         )}
 
         <GroupSelector
-          groups={imageGroups}
+          groups={allGroups}
           selectedGroupId={selectedGroupId}
           onSelect={setSelectedGroupId}
-          groupType="image"
+
           inputId="image-group"
         />
 

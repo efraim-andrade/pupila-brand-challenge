@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, type JSX, type SyntheticEvent, type ChangeEvent } from 'react'
+import { useState, type JSX, type SyntheticEvent, type ChangeEvent } from 'react'
 import { Modal } from '@/shared/ui/Modal'
 import { GroupSelector } from '@/shared/components/GroupSelector'
 import { TagPicker } from '@/shared/components/TagPicker'
@@ -18,10 +18,6 @@ export function AddPaletteModal({ open, onClose }: AddPaletteModalProps): JSX.El
   const allGroups = useAppStore((store) => store.groups)
   const allTags = useAppStore((store) => store.tags)
 
-  const paletteGroups = useMemo(
-    () => allGroups.filter((group) => group.type === 'palette' || group.type === 'shared'),
-    [allGroups]
-  )
 
   const [name, setName] = useState('')
   const [colorItems, setColorItems] = useState<ColorItem[]>([])
@@ -89,10 +85,10 @@ export function AddPaletteModal({ open, onClose }: AddPaletteModalProps): JSX.El
         </div>
 
         <GroupSelector
-          groups={paletteGroups}
+          groups={allGroups}
           selectedGroupId={selectedGroupId}
           onSelect={setSelectedGroupId}
-          groupType="palette"
+
           inputId="palette-group"
         />
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useMemo, type JSX, type SyntheticEvent, type ChangeEvent } from 'react'
+import { useState, useEffect, type JSX, type SyntheticEvent, type ChangeEvent } from 'react'
 import { nanoid } from 'nanoid'
 import { Modal } from '@/shared/ui/Modal'
 import { GroupSelector } from '@/shared/components/GroupSelector'
@@ -35,10 +35,6 @@ export function CreatePaletteFromImageModal({ open, image, onClose }: CreatePale
   const allGroups = useAppStore((store) => store.groups)
   const allTags = useAppStore((store) => store.tags)
 
-  const paletteGroups = useMemo(
-    () => allGroups.filter((group) => group.type === 'palette' || group.type === 'shared'),
-    [allGroups]
-  )
 
   const [name, setName] = useState('')
   const [colorItems, setColorItems] = useState<ColorItem[]>([])
@@ -138,10 +134,9 @@ export function CreatePaletteFromImageModal({ open, image, onClose }: CreatePale
         </div>
 
         <GroupSelector
-          groups={paletteGroups}
+          groups={allGroups}
           selectedGroupId={selectedGroupId}
           onSelect={setSelectedGroupId}
-          groupType="palette"
           inputId="palette-group-from-image"
         />
 

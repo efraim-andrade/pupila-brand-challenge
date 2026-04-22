@@ -19,7 +19,6 @@ interface GroupSelectorProps {
   groups: Group[]
   selectedGroupId: string | null
   onSelect: (groupId: string | null) => void
-  groupType: 'image' | 'palette'
   inputId?: string
 }
 
@@ -27,7 +26,6 @@ export function GroupSelector({
   groups,
   selectedGroupId,
   onSelect,
-  groupType,
   inputId = 'group-select',
 }: GroupSelectorProps): JSX.Element {
   const addGroup = useAppStore((store) => store.addGroup)
@@ -42,7 +40,7 @@ export function GroupSelector({
       setCreating(false)
       return
     }
-    const created = addGroup({ name: trimmed, type: groupType, color: newColor })
+    const created = addGroup({ name: trimmed, type: 'shared', color: newColor })
     onSelect(created.id)
     setCreating(false)
     setNewName('')
