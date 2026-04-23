@@ -1,6 +1,7 @@
 'use client'
 
 import type { JSX } from 'react'
+import { Button } from '@/shared/ui/Button'
 import type { Group, Tag, FilterState, ViewMode } from '@/types'
 
 interface ImagesToolbarProps {
@@ -54,12 +55,14 @@ export function ImagesToolbar({
           <span className="hidden text-xs text-gray-400 sm:inline">{countLabel}</span>
 
           {hasActiveFilter && (
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
+              className="hidden text-xs sm:block"
               onClick={onResetFilter}
-              className="hidden rounded-lg px-2.5 py-1.5 text-xs font-medium text-gray-500 hover:bg-gray-100 sm:block"
             >
               Clear
-            </button>
+            </Button>
           )}
 
           <div className="flex overflow-hidden rounded-lg border border-gray-200">
@@ -83,15 +86,12 @@ export function ImagesToolbar({
             </button>
           </div>
 
-          <button
-            onClick={onAddImage}
-            className="flex items-center gap-1.5 rounded-lg bg-indigo-600 px-2.5 py-1.5 text-sm font-medium text-white hover:bg-indigo-700 sm:px-3"
-          >
+          <Button onClick={onAddImage} size="sm" className="sm:px-3">
             <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
             <span className="hidden sm:inline">Add image</span>
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -135,12 +135,9 @@ export function ImagesToolbar({
         <div className="ml-auto flex shrink-0 items-center gap-1.5 sm:hidden">
           <span className="text-xs text-gray-400">{countLabel}</span>
           {hasActiveFilter && (
-            <button
-              onClick={onResetFilter}
-              className="rounded-lg px-2 py-1 text-xs font-medium text-gray-500 hover:bg-gray-100"
-            >
+            <Button variant="ghost" size="xs" className="rounded-lg" onClick={onResetFilter}>
               Clear
-            </button>
+            </Button>
           )}
         </div>
       </div>
