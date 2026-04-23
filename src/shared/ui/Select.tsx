@@ -27,7 +27,7 @@ export function Select({
   id,
   ...props
 }: SelectProps): JSX.Element {
-  const selectId = id
+  const selectId = id || `select-${Math.random().toString(36).slice(2)}`
 
   const selectElement = (
     <select
