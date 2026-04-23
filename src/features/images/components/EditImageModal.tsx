@@ -3,8 +3,8 @@
 import { useState, useEffect, type JSX, type SyntheticEvent, type ChangeEvent } from 'react'
 import { Modal } from '@/shared/ui/Modal'
 import { Button } from '@/shared/ui/Button'
-import { CommentsSection } from '@/shared/components/CommentsSection'
 import { GroupSelector } from '@/shared/components/GroupSelector'
+import { CommentsSection } from '@/shared/components/CommentsSection'
 import { TagPicker } from '@/shared/components/TagPicker'
 import { useAppStore } from '@/store'
 import type { Image } from '@/types'
@@ -20,8 +20,8 @@ export function EditImageModal({ open, image, onClose }: EditImageModalProps): J
   const addImageComment = useAppStore((store) => store.addImageComment)
   const updateImageComment = useAppStore((store) => store.updateImageComment)
   const deleteImageComment = useAppStore((store) => store.deleteImageComment)
-  const allGroups = useAppStore((store) => store.groups)
   const allTags = useAppStore((store) => store.tags)
+  const allGroups = useAppStore((store) => store.groups)
 
   const liveImage = useAppStore((store) => store.images.find((img) => img.id === image?.id))
 
@@ -133,8 +133,7 @@ export function EditImageModal({ open, image, onClose }: EditImageModalProps): J
           groups={allGroups}
           selectedGroupId={selectedGroupId}
           onSelect={setSelectedGroupId}
-
-          inputId="edit-image-group"
+          inputId="image-group"
         />
 
         <TagPicker

@@ -103,14 +103,16 @@ export function PalettesToolbar({
 
       {/* Bottom row: group select + tags (scrollable on mobile) */}
       <div className="flex items-center gap-2 overflow-x-auto px-4 pb-3 sm:px-6 sm:pb-4">
-        <Select
-          options={groups.map((g): SelectOption => ({ label: g.name, value: g.id }))}
-          value={filter.groupId ?? ''}
-          onChange={(value) => onFilterChange({ groupId: value })}
-          placeholder="All groups"
-          showPlaceholder={false}
-          className="shrink-0 rounded-lg border border-gray-200 bg-gray-50 py-1.5 pl-3 pr-8 text-sm text-gray-700"
-        />
+        {groups.length > 0 && (
+          <Select
+            options={groups.map((g): SelectOption => ({ label: g.name, value: g.id }))}
+            value={filter.groupId ?? ''}
+            onChange={(value) => onFilterChange({ groupId: value })}
+            placeholder="All groups"
+            showPlaceholder={false}
+            className="shrink-0 rounded-lg border border-gray-200 bg-gray-50 py-1.5 pl-3 pr-8 text-sm text-gray-700"
+          />
+        )}
 
         <div className="flex shrink-0 gap-1.5">
           {tags.map((tag) => {

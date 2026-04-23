@@ -96,29 +96,13 @@ export function GroupSelector({
             autoFocus
             className="w-full rounded border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
           />
-          <div className="flex items-center gap-2">
-            <div className="flex gap-1">
-              {PRESET_COLORS.map((color) => (
-                <button
-                  key={color}
-                  type="button"
-                  onClick={() => setNewColor(color)}
-                  className={`h-4 w-4 rounded-full transition-transform ${
-                    newColor === color ? 'scale-125 ring-2 ring-gray-400 ring-offset-1' : ''
-                  }`}
-                  style={{ backgroundColor: color }}
-                  aria-label={`Select color ${color}`}
-                />
-              ))}
-            </div>
-            <div className="ml-auto flex gap-1">
-              <Button type="button" variant="ghost" size="xs" onClick={handleCancel}>
-                Cancel
-              </Button>
-              <Button type="button" size="xs" onClick={handleCreate} disabled={!newName.trim()}>
-                Create
-              </Button>
-            </div>
+          <div className="flex justify-end gap-1">
+            <Button type="button" variant="ghost" size="xs" onClick={handleCancel}>
+              Cancel
+            </Button>
+            <Button type="button" size="xs" onClick={handleCreate} disabled={!newName.trim()}>
+              Create
+            </Button>
           </div>
         </div>
       ) : (

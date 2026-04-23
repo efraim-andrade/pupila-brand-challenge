@@ -26,7 +26,7 @@ interface EditingState {
 
 interface CreatingState {
   name: string
-  color: string
+  color?: string
 }
 
 interface ConfigurationModalProps {
@@ -77,14 +77,18 @@ export function ConfigurationModal({ open, onClose }: ConfigurationModalProps): 
         ? groups.find((g) => g.id === id)
         : tags.find((t) => t.id === id)
     if (!item) return
-    setEditing({ id, name: item.name, color: item.color ?? PRESET_COLORS[0] })
+    if (activeTab === 'groups') {
+      setEditing({ id, name: item.name, color: '' })
+    } else {
+      setEditing({ id, name: item.name, color: item.color ?? PRESET_COLORS[0] })
+    }
   }
 
   const commitEdit = () => {
     if (!editing) return
     const trimmed = editing.name.trim()
     if (trimmed) {
-      if (activeTab === 'groups') updateGroup(editing.id, { name: trimmed, color: editing.color })
+      if (activeTab === 'groups') updateGroup(editing.id, { name: trimmed })
       else updateTag(editing.id, { name: trimmed, color: editing.color })
     }
     setEditing(null)
@@ -99,8 +103,8 @@ export function ConfigurationModal({ open, onClose }: ConfigurationModalProps): 
     if (!creating) return
     const trimmed = creating.name.trim()
     if (trimmed) {
-      if (activeTab === 'groups') addGroup({ name: trimmed, type: 'shared', color: creating.color })
-      else addTag({ name: trimmed, color: creating.color })
+      if (activeTab === 'groups') addGroup({ name: trimmed, type: 'shared' })
+      else addTag({ name: trimmed, color: creating.color ?? PRESET_COLORS[0] })
     }
     setCreating(null)
   }
@@ -165,20 +169,22 @@ export function ConfigurationModal({ open, onClose }: ConfigurationModalProps): 
                 if (isEditing) {
                   return (
                     <li key={item.id} className="flex items-center gap-2 rounded-lg border border-indigo-200 bg-indigo-50/50 p-2.5">
-                      <div className="flex gap-1">
-                        {PRESET_COLORS.map((color) => (
-                          <button
-                            key={color}
-                            type="button"
-                            onClick={() => setEditing((prev) => prev ? { ...prev, color } : null)}
-                            className={`h-4 w-4 shrink-0 rounded-full transition-transform ${
-                              editing.color === color ? 'scale-125 ring-2 ring-gray-400 ring-offset-1' : ''
-                            }`}
-                            style={{ backgroundColor: color }}
-                            aria-label={`Select color ${color}`}
-                          />
-                        ))}
-                      </div>
+                      {activeTab === 'tags' && (
+                        <div className="flex gap-1">
+                          {PRESET_COLORS.map((color) => (
+                            <button
+                              key={color}
+                              type="button"
+                              onClick={() => setEditing((prev) => prev ? { ...prev, color } : null)}
+                              className={`h-4 w-4 shrink-0 rounded-full transition-transform ${
+                                editing.color === color ? 'scale-125 ring-2 ring-gray-400 ring-offset-1' : ''
+                              }`}
+                              style={{ backgroundColor: color }}
+                              aria-label={`Select color ${color}`}
+                            />
+                          ))}
+                        </div>
+                      )}
                       <input
                         type="text"
                         value={editing.name}
@@ -242,10 +248,16 @@ export function ConfigurationModal({ open, onClose }: ConfigurationModalProps): 
 
                 return (
                   <li key={item.id} className="group flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-gray-50">
-                    <span
-                      className="h-3 w-3 shrink-0 rounded-full"
-                      style={{ backgroundColor: item.color ?? PRESET_COLORS[0] }}
-                    />
+                    {activeTab === 'tags' ? (
+                      <span
+                        className="h-3 w-3 shrink-0 rounded-full"
+                        style={{ backgroundColor: item.color ?? PRESET_COLORS[0] }}
+                      />
+                    ) : (
+                      <svg className="h-3 w-3 shrink-0 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
+                      </svg>
+                    )}
                     <span className="flex-1 text-sm text-gray-800">{item.name}</span>
                     {count > 0 && (
                       <span className="text-xs text-gray-400">{count} item{count !== 1 ? 's' : ''}</span>
@@ -280,7 +292,7 @@ export function ConfigurationModal({ open, onClose }: ConfigurationModalProps): 
 
           {creating ? (
             activeTab === 'groups' ? (
-              <div className="flex flex-col gap-2 rounded-lg border border-indigo-200 bg-indigo-50/50 p-2.5">
+              <div className="flex items-center gap-2 rounded-lg border border-indigo-200 bg-indigo-50/50 p-2.5">
                 <input
                   type="text"
                   value={creating.name}
@@ -290,28 +302,10 @@ export function ConfigurationModal({ open, onClose }: ConfigurationModalProps): 
                   onKeyDown={handleCreateKeyDown}
                   placeholder={newItemPlaceholder}
                   autoFocus
-                  className="w-full rounded border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                  className="min-w-0 flex-1 rounded border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 />
-                <div className="flex items-center gap-2">
-                  <div className="flex gap-1">
-                    {PRESET_COLORS.map((color) => (
-                      <button
-                        key={color}
-                        type="button"
-                        onClick={() => setCreating((prev) => prev ? { ...prev, color } : null)}
-                        className={`h-4 w-4 rounded-full transition-transform ${
-                          creating.color === color ? 'scale-125 ring-2 ring-gray-400 ring-offset-1' : ''
-                        }`}
-                        style={{ backgroundColor: color }}
-                        aria-label={`Select color ${color}`}
-                      />
-                    ))}
-                  </div>
-                  <div className="ml-auto flex gap-1">
-                    <Button type="button" variant="ghost" size="xs" onClick={() => setCreating(null)}>Cancel</Button>
-                    <Button type="button" size="xs" onClick={commitCreate} disabled={!creating.name.trim()}>Create</Button>
-                  </div>
-                </div>
+                <Button type="button" variant="ghost" size="xs" className="shrink-0" onClick={() => setCreating(null)}>Cancel</Button>
+                <Button type="button" size="xs" className="shrink-0" onClick={commitCreate} disabled={!creating.name.trim()}>Create</Button>
               </div>
             ) : (
               <div className="flex items-center gap-2 rounded-lg border border-indigo-200 bg-indigo-50/50 p-2.5">
@@ -347,7 +341,7 @@ export function ConfigurationModal({ open, onClose }: ConfigurationModalProps): 
           ) : (
             <button
               type="button"
-              onClick={() => setCreating({ name: '', color: PRESET_COLORS[0] })}
+              onClick={() => setCreating({ name: '', color: undefined })}
               className="flex items-center gap-1.5 self-start rounded-lg border border-dashed border-gray-300 px-3 py-2 text-sm text-gray-500 transition-colors hover:border-indigo-400 hover:text-indigo-600"
             >
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

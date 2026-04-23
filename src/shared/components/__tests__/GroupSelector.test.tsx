@@ -178,16 +178,4 @@ describe('GroupSelector', () => {
       expect(screen.queryByPlaceholderText('Group name')).not.toBeInTheDocument()
     })
   })
-
-  describe('color swatches', () => {
-    it('gives the scale-125 class to the selected color swatch when a swatch is clicked', async () => {
-      render(<GroupSelector {...defaultProps} />)
-
-      await userEvent.click(screen.getByRole('button', { name: '+ New group' }))
-      const blueSwatchButton = screen.getByRole('button', { name: 'Select color #3b82f6' })
-      await userEvent.click(blueSwatchButton)
-
-      expect(blueSwatchButton).toHaveClass('scale-125')
-    })
-  })
 })
