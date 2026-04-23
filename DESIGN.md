@@ -5,60 +5,66 @@
 ### Diagrama de Componentes
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                        Next.js App                          │
-│                                                             │
-│  ┌──────────┐   ┌─────────────────────────────────────┐    │
-│  │          │   │              Pages                   │    │
-│  │ Sidebar  │   │  /images  │  /palettes  │ /dashboard │    │
-│  │  + Nav   │   └─────────────────────────────────────┘    │
-│  │          │              │                               │
-│  └──────────┘   ┌──────────▼──────────────────────────┐    │
-│                 │         Feature Modules               │    │
-│                 │  ImageModule  │  PaletteModule        │    │
-│                 │  Dashboard    │  ColorEditor          │    │
-│                 └──────────────────────┬────────────────┘    │
-│                                        │                     │
-│                 ┌──────────────────────▼────────────────┐    │
-│                 │          Shared Components             │    │
-│                 │  GroupManager  TagManager  SearchBar   │    │
-│                 │  FilterPanel   AIPanel     ExportPanel │    │
-│                 └──────────────────────┬────────────────┘    │
-│                                        │                     │
-│  ┌─────────────────────────────────────▼────────────────┐   │
-│  │                   Zustand Store                       │   │
-│  │  imagesSlice │ palettesSlice │ uiSlice │ aiSlice      │   │
-│  └─────────────────────────────────────┬────────────────┘   │
-│                                        │                     │
-│  ┌─────────────────────────────────────▼────────────────┐   │
-│  │               Persistence Layer                       │   │
-│  │         IndexedDB (via idb)  +  localStorage          │   │
-│  └───────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────┘
-         │                              │
-   ┌─────▼──────┐               ┌───────▼──────┐
-   │  AI APIs   │               │  Mock API    │
-   │ (OpenAI /  │               │  (JSON data) │
-   │  Anthropic)│               └──────────────┘
-   └────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                         Next.js App                             │
+│                                                                 │
+│   ┌──────────────┐   ┌────────────────────────────────────┐     │
+│   │              │   │              Pages                 │     │
+│   │   Sidebar    │   │   /images    │    /palettes        │     │
+│   │    + Nav     │   └────────────────────────────────────┘     │
+│   │              │              │                               │
+│   └──────────────┘    ┌─────────▼────────────────────────┐      │
+│                       │      Feature Modules             │      │
+│                       │  ImageModule  │  PaletteModule   │      │
+│                       └─────────────┬────────────────────┘      │
+│                                     │                           │
+│                       ┌─────────────▼────────────────────┐      │
+│                       │     Shared Components            │      │
+│                       │  GroupSelector  TagPicker        │      │
+│                       │  CommentsSection  Modal          │      │
+│                       └─────────────┬────────────────────┘      │
+│                                     │                           │
+│   ┌─────────────────────────────────▼────────────────────┐      │
+│   │                 Zustand Store                        │      │
+│   │  imagesSlice │ palettesSlice │ uiSlice │ organization│      │
+│   └─────────────────────────────────┬────────────────────┘      │
+│                                     │                           │
+│   ┌─────────────────────────────────▼────────────────────┐      │
+│   │              Persistence Layer                       │      │
+│   │        IndexedDB (via idb)  +  localStorage          │      │
+│   └──────────────────────────────────────────────────────┘      │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ### Fluxo de Dados
 
 ```
-Ação do usuário
-     │
-     ▼
-UI Component  ──► Action (Zustand) ──► Reducer/Mutator
-                                              │
-                                    ┌─────────▼─────────┐
-                                    │  Persistence Hook  │
-                                    │  (auto-sync IDB)   │
-                                    └─────────┬──────────┘
-                                              │
-                                    IndexedDB / localStorage
-                                              │
-                           (rehydration na inicialização)
+┌────────────────────┐
+│  Ação do usuário   │
+└─────────┬──────────┘
+          │
+          ▼
+┌─────────────────────────────┐
+│  UI Component               │
+└─────────┬───────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────┐
+│  Action (Zustand)                   │
+│  ──────────────────► Reducer/Mutator│
+└────────────────────┬────────────────┘
+                     │
+                     ▼
+┌─────────────────────────────────────┐
+│  Persistence Hook                   │
+│  (auto-sync IDB)                    │
+└────────────────────┬────────────────┘
+                     │
+                     ▼
+         IndexedDB / localStorage
+                     │
+                     ▼
+    (rehydration na inicialização)
 ```
 
 ### Modelo de Estado Global
@@ -81,12 +87,8 @@ interface AppState {
   tags: Tag[]
   ui: {
     sidebarOpen: boolean
-    activeModule: 'images' | 'palettes' | 'dashboard'
+    activeModule: 'images' | 'palettes'
     modal: ModalState | null
-  }
-  ai: {
-    loading: boolean
-    lastSuggestions: ColorPalette[]
   }
 }
 
@@ -105,74 +107,142 @@ interface FilterState {
 
 ```
 src/
-├── app/                        # Next.js App Router
+├── app/                     # Next.js App Router
 │   ├── layout.tsx
-│   ├── page.tsx                # redirect → /images
+│   ├── page.tsx            # redirect → /images
 │   ├── images/page.tsx
-│   ├── palettes/page.tsx
-│   └── dashboard/page.tsx
+│   └── palettes/page.tsx
 │
 ├── features/
 │   ├── images/
 │   │   ├── components/
 │   │   │   ├── ImageGrid.tsx
 │   │   │   ├── ImageCard.tsx
-│   │   │   ├── ImageDetail.tsx
-│   │   │   └── AddImageModal.tsx
-│   │   ├── hooks/useImages.ts
-│   │   └── index.ts
+│   │   │   ├── AddImageModal.tsx
+│   │   │   ├── EditImageModal.tsx
+│   │   │   ├── ImageLightbox.tsx
+│   │   │   ├── ImagesToolbar.tsx
+│   │   │   └── CreatePaletteFromImageModal.tsx
+│   │   └── hooks/
+│   │       └── useImagesPage.ts
 │   │
 │   ├── palettes/
 │   │   ├── components/
 │   │   │   ├── PaletteGrid.tsx
 │   │   │   ├── PaletteCard.tsx
-│   │   │   ├── PaletteDetail.tsx
-│   │   │   ├── ColorEditor.tsx
-│   │   │   └── AddPaletteModal.tsx
-│   │   ├── hooks/usePalettes.ts
-│   │   └── index.ts
+│   │   │   ├── AddPaletteModal.tsx
+│   │   │   ├── EditPaletteModal.tsx
+│   │   │   ├── PaletteViewModal.tsx
+│   │   │   ├── PalettesToolbar.tsx
+│   │   │   └── ColorEditor.tsx
+│   │   ├── hooks/
+│   │   │   └── usePalettesPage.ts
+│   │   └── lib/
+│   │       ├── colorEditorUtils.ts
+│   │       └── filterPalettes.ts
 │   │
-│   ├── organization/
-│   │   ├── components/
-│   │   │   ├── GroupManager.tsx
-│   │   │   └── TagManager.tsx
-│   │   └── hooks/useOrganization.ts
-│   │
-│   ├── dashboard/
-│   │   ├── components/
-│   │   │   ├── StatsCard.tsx
-│   │   │   ├── GroupChart.tsx
-│   │   │   └── TopTagsChart.tsx
-│   │   └── hooks/useDashboardStats.ts
-│   │
-│   └── ai/
-│       ├── components/AIPanel.tsx
-│       ├── hooks/useAI.ts
-│       └── api/aiClient.ts
+│   └── dashboard/
+│       └── components/
+│           └── ConfigurationModal.tsx
 │
 ├── shared/
 │   ├── components/
 │   │   ├── layout/
-│   │   │   ├── AppShell.tsx    # sidebar + header + main
+│   │   │   ├── AppShell.tsx
 │   │   │   └── Sidebar.tsx
-│   │   ├── SearchBar.tsx
-│   │   ├── FilterPanel.tsx
-│   │   ├── ViewToggle.tsx
-│   │   ├── ExportImportPanel.tsx
-│   │   └── CommentEditor.tsx
-│   └── ui/                     # primitives (Button, Modal, Badge…)
+│   │   ├── GroupSelector.tsx
+│   │   ├── TagPicker.tsx
+│   │   ├── CommentsSection.tsx
+│   │   └── StoreHydrator.tsx
+│   └── ui/
+│       ├── Button.tsx
+│       ├── Modal.tsx
+│       ├── Card.tsx
+│       ├── Badge.tsx
+│       └── Select.tsx
 │
 ├── store/
-│   ├── index.ts                # Zustand store root
+│   ├── index.ts
 │   ├── imagesSlice.ts
 │   ├── palettesSlice.ts
 │   ├── organizationSlice.ts
-│   └── uiSlice.ts
+│   ├── uiSlice.ts
+│   └── useGroups.ts
 │
 ├── lib/
-│   ├── db.ts                   # IndexedDB via idb
+│   ├── db.ts
 │   ├── exportImport.ts
-│   ├── colorUtils.ts           # hex ↔ rgb ↔ hsl, contrast, etc.
+│   ├── colorUtils.ts
+│   └── mockData.ts
+│
+└── types/
+    └── index.ts
+```
+src/
+├── app/                        # Next.js App Router
+│   ├── layout.tsx
+│   ├── page.tsx                # redirect → /images
+│   ├── images/page.tsx
+│   └── palettes/page.tsx
+│
+├── features/
+│   ├── images/
+│   │   ├── components/
+│   │   │   ├── ImageGrid.tsx
+│   │   │   ├── ImageCard.tsx
+│   │   │   ├── AddImageModal.tsx
+│   │   │   ├── EditImageModal.tsx
+│   │   │   ├── ImageLightbox.tsx
+│   │   │   ├── ImagesToolbar.tsx
+│   │   │   └── CreatePaletteFromImageModal.tsx
+│   │   └── hooks/useImagesPage.ts
+│   │
+│   ├── palettes/
+│   │   ├── components/
+│   │   │   ├── PaletteGrid.tsx
+│   │   │   ├── PaletteCard.tsx
+│   │   │   ├── AddPaletteModal.tsx
+│   │   │   ├── EditPaletteModal.tsx
+│   │   │   ├── PaletteViewModal.tsx
+│   │   │   ├── PalettesToolbar.tsx
+│   │   │   └── ColorEditor.tsx
+│   │   ├── hooks/usePalettesPage.ts
+│   │   └── lib/
+│   │       └── colorEditorUtils.ts
+│   │       └── filterPalettes.ts
+│   │
+│   └── dashboard/
+│       └── components/
+│           └── ConfigurationModal.tsx
+│
+├── shared/
+│   ├── components/
+│   │   ├── layout/
+│   │   │   ├── AppShell.tsx
+│   │   │   └── Sidebar.tsx
+│   │   ├── GroupSelector.tsx
+│   │   ├── TagPicker.tsx
+│   │   ├── CommentsSection.tsx
+│   │   └── StoreHydrator.tsx
+│   └── ui/
+│       ├── Button.tsx
+│       ├── Modal.tsx
+│       ├── Card.tsx
+│       ├── Badge.tsx
+│       └── Select.tsx
+│
+├── store/
+│   ├── index.ts
+│   ├── imagesSlice.ts
+│   ├── palettesSlice.ts
+│   ├── organizationSlice.ts
+│   ├── uiSlice.ts
+│   └── useGroups.ts
+│
+├── lib/
+│   ├── db.ts
+│   ├── exportImport.ts
+│   ├── colorUtils.ts
 │   └── mockData.ts
 │
 └── types/
@@ -186,14 +256,16 @@ src/
 | `AppShell` | Layout global, sidebar, roteamento entre módulos |
 | `ImageGrid` / `PaletteGrid` | Renderiza lista/grade, aplica filtros do store |
 | `ImageCard` / `PaletteCard` | Item visual com ações rápidas (editar, deletar, tag) |
-| `ImageDetail` / `PaletteDetail` | Visão expandida com comentários, tags, grupo |
+| `AddImageModal` / `AddPaletteModal` | Formulário para criar novo item |
+| `EditImageModal` / `EditPaletteModal` | Formulário para editar item existente |
+| `PaletteViewModal` | Visão expandida de paleta com cores |
+| `ImageLightbox` | Visualização em tela cheia de imagem |
 | `ColorEditor` | Ajuste de cor via HEX / RGB / HSL / picker nativo |
-| `GroupManager` | CRUD de grupos, atribuição de itens |
-| `TagManager` | CRUD de tags, cores de tag |
-| `FilterPanel` | Controla `FilterState` no store (grupo, tags, busca) |
-| `ExportImportPanel` | Serializa/deserializa JSON para arquivo local |
-| `AIPanel` | Dispara chamadas de IA, exibe sugestões |
-| `Dashboard` | Agrega estatísticas via `useDashboardStats` |
+| `GroupSelector` | Seleção de grupo para itens |
+| `TagPicker` | Seleção múltipla de tags |
+| `CommentsSection` | Comentários em itens |
+| `ImagesToolbar` / `PalettesToolbar` | Toolbar com actions e filtros |
+| `ConfigurationModal` | Configurações do app |
 
 ---
 
@@ -255,39 +327,54 @@ interface Comment {
 ### Persistência
 
 ```
-Dois níveis de persistência:
+┌────────────────────────────────────┐
+│  Dois níveis de persistência:      │
+└────────────────────────────────────┘
 
 1. IndexedDB (via idb)
-   Stores: "images" | "palettes" | "groups" | "tags"
-   ├── Chave primária: id (string)
-   ├── Índices secundários: groupId, tagIds (multiEntry)
-   └── Sincronizado automaticamente via middleware Zustand
+   ┌─────────────────────────────────┐
+   │  Stores: "images" | "palettes" ││
+   │          | "groups" | "tags"  │ │
+   └─────────────────────────────────┘
+   └── Chave primária: id (string)
+       Índices secundários: groupId, tagIds (multiEntry)
+       Sincronizado automaticamente via middleware Zustand
 
 2. localStorage
-   └── Somente preferências de UI:
+   ┌─────────────────────────────────┐
+   │  Somente preferências de UI:    │
+   └─────────────────────────────────┘
        viewMode, sidebarOpen, activeModule, filtros ativos
 
-Hidratação na inicialização:
-  app/layout.tsx → <StoreHydrator /> (Client Component)
-  └── lê IndexedDB → popula store → renderiza
+┌────────────────────────────────────┐
+│  Hidratação na inicialização:      │
+└────────────────────────────────────┘
+         app/layout.tsx → <StoreHydrator /> (Client Component)
+                        └── lê IndexedDB → popula store → renderiza
 ```
 
 ### Busca e Filtragem
 
 ```
-Filtragem ocorre no lado cliente (dados já em memória):
+┌────────────────────────────────────┐
+│  Filtragem no lado cliente           │
+│  (dados já em memória)            │
+└────────────────────────────────────┘
+         │
+         ▼
+      useMemo(() => {
+        return items
+          .filter(byGroup)
+          .filter(byTags)        // AND semântico entre tags
+          .filter(bySearchText) // name | comments[].text | tags
+      }, [items, filters])
 
-useMemo(() => {
-  return items
-    .filter(byGroup)
-    .filter(byTags)          // AND semântico entre tags
-    .filter(bySearchText)    // name | comments[].text | tags
-}, [items, filters])
-
-Busca textual:
-  - normalização: lowercase + remove acentos
-  - campos: name, comments[].text, tag names resolvidas
-  - debounce 200ms no input
+┌────────────────────────────────────┐
+│  Busca textual:                     │
+└────────────────────────────────────┘
+       normalização: lowercase + remove acentos
+       campos: name, comments[].text, tag names resolvidas
+       debounce 200ms no input
 ```
 
 ---
@@ -304,7 +391,6 @@ Busca textual:
 | **idb** | IndexedDB wrapper | API Promise-based, tipada, sem overhead de ORM |
 | **Tailwind CSS** | Estilização | Utilitários inline evitam saltos de contexto, consistência visual fácil |
 | **Vitest + Testing Library** | Testes | Integração nativa com Vite/Next.js, API compatível com Jest |
-| **Recharts** | Dashboard | Biblioteca React-native, leve, suficiente para gráficos de estatísticas |
 
 ### Padrões de Design
 
@@ -332,21 +418,29 @@ Busca textual:
 ### Estratégia de Testes
 
 ```
-Cobertura prioritária:
+┌────────────────────────────────────┐
+│  Cobertura prioritária:               │
+└────────────────────────────────────┘
+   1. colorUtils.ts        → pure functions: hex ↔ rgb ↔ hsl, contraste
+   2. store slices       → ações e seletores com estado mockado
+   3. exportImport.ts   → serialização/desserialização JSON round-trip
+   4. FilterPanel       → lógica de filtragem combinada
+   5. useImages / usePalettes → hooks com store real (não mockado)
 
-1. colorUtils.ts         — pure functions: conversão hex/rgb/hsl, contraste
-2. store slices          — ações e seletores com estado mockado
-3. exportImport.ts       — serialização/desserialização JSON round-trip
-4. FilterPanel           — lógica de filtragem combinada
-5. useImages / usePalettes — hooks com store real (não mockado)
+┌────────────────────────────────────┐
+│  Integração:                        │
+└────────────────────────────────────┘
+     Fluxo completo:
+     adicionar imagem → extrair paleta → salvar → exportar
 
-Integração:
-  - Fluxo completo: adicionar imagem → extrair paleta → salvar → exportar
-  - Persistência: escrever no IDB, recarregar store, checar dados
+     Persistência:
+     escrever no IDB → recarregar store → checar dados
 
-O que não testar unitariamente:
-  - Renderização visual (coberto por Storybook / testes e2e futuros)
-  - Chamadas de IA (mockar o cliente HTTP)
+┌────────────────────────────────────┐
+│  O que NÃO testar unitariamente:   │
+└────────────────────────────────────┘
+     Renderização visual  → coberto por Storybook / testes e2e futuros
+     Chamadas de IA     → mockar o cliente HTTP
 ```
 
 ---
@@ -354,32 +448,49 @@ O que não testar unitariamente:
 ## 5. Diagrama de Fluxo — Caso de Uso Principal
 
 ```
-Usuário abre /images
-        │
-        ▼
-StoreHydrator lê IndexedDB
-        │
-        ▼
-ImageGrid renderiza itens filtrados
-        │
-   ┌────┴─────┐
-   │          │
-Clica em    Clica em
-"+ Adicionar" card existente
-   │          │
-   ▼          ▼
-AddImageModal  ImageDetail
-  (URL input)   ├── editar comentário
-       │        ├── gerenciar tags
-       ▼        ├── mover para grupo
-   store.addImage  └── "Sugerir paleta via IA"
-       │                    │
-       ▼                    ▼
-  IndexedDB           AI API call
-  persiste         ────────────────►
-                   ◄─── ColorPalette[]
-                              │
-                         store.addPalette
-                              │
-                         IndexedDB persiste
+┌─────────────────────┐
+│  Usuário abre        │
+│  /images           │
+└─────────┬──────────┘
+          │
+          ▼
+┌─────────────────────┐
+│  StoreHydrator      │
+│  lê IndexedDB      │
+└─────────┬──────────┘
+          │
+          ▼
+┌─────────────────────┐
+│  ImageGrid         │
+│  renderiza itens  │
+│  filtrados        │
+└─────────┬──────────┘
+          │
+    ┌──────┴──────┐
+    │             │
+    ▼             ▼
+┌────────┐  ┌────────────────┐
+│ + Nova │  │ Card existente │
+│ imagem │  └───────┬────────┘
+└───┬────┘          │
+    │               ▼
+    ▼       ┌──────────────────┐
+┌────────┐ │  ImageLightbox    │
+│ Add    │ │  ou EditImageModal│
+│ Image  │ │  • editar        │
+│ Modal  │ │  • comentários   │
+└───┬────┘ │  • gerenciar tags│
+    │     │  • mover grupo   │
+    │     │  • criar paleta  │
+    │     └───────┬──────────┘
+    │             │
+    ▼             ▼
+┌────────────────────────┐
+│  store.addImage      │
+└─────────┬───────────┘
+          │
+          ▼
+┌────────────────────────┐
+│  IndexedDB persiste    │
+└────────────────────────┘
 ```
