@@ -4,6 +4,7 @@ import { type ReactNode, type JSX } from 'react'
 import { Sidebar } from './Sidebar'
 import { useAppStore } from '@/store'
 import { Toaster } from 'sonner'
+import { ConfigurationModal } from '@/features/dashboard/components/ConfigurationModal'
 
 interface AppShellProps {
   children: ReactNode
@@ -13,6 +14,8 @@ export function AppShell({ children }: AppShellProps): JSX.Element {
   const toggleSidebar = useAppStore((store) => store.toggleSidebar)
   const sidebarOpen = useAppStore((store) => store.sidebarOpen)
   const hydrated = useAppStore((store) => store.hydrated)
+  const modal = useAppStore((store) => store.modal)
+  const closeModal = useAppStore((store) => store.closeModal)
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50">
@@ -52,6 +55,8 @@ export function AppShell({ children }: AppShellProps): JSX.Element {
       </div>
 
       <Toaster richColors position="bottom-right" />
+
+      <ConfigurationModal open={modal?.type === 'configuration'} onClose={closeModal} />
     </div>
   )
 }

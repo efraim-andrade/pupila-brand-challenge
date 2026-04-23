@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, type JSX, type ChangeEvent, type KeyboardEvent } from 'react'
+import { Button } from '@/shared/ui/Button'
 import type { Comment } from '@/types'
 
 interface CommentsSectionProps {
@@ -62,21 +63,24 @@ function CommentItem({
           className="w-full resize-none rounded border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-900 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
         />
         <div className="flex justify-end gap-1.5">
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="xs"
+            className="px-2.5"
             onClick={() => { setEditText(comment.text); setIsEditing(false) }}
-            className="rounded px-2.5 py-1 text-xs text-gray-500 hover:bg-gray-100"
           >
             Cancel
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
+            size="xs"
+            className="px-2.5"
             onClick={handleSaveEdit}
             disabled={!editText.trim()}
-            className="rounded bg-indigo-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
           >
             Save
-          </button>
+          </Button>
         </div>
       </div>
     )
@@ -160,14 +164,15 @@ export function CommentsSection({ comments, onAdd, onUpdate, onDelete }: Comment
           className="w-full resize-none rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
         />
         <div className="flex justify-end">
-          <button
+          <Button
             type="button"
+            size="xs"
+            className="rounded-lg px-3 py-1.5"
             onClick={submitNewComment}
             disabled={!newCommentText.trim()}
-            className="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
             Add comment
-          </button>
+          </Button>
         </div>
       </div>
     </div>

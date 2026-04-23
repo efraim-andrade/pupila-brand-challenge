@@ -2,6 +2,7 @@
 
 import { useState, type JSX, type ChangeEvent, type KeyboardEvent } from 'react'
 import { useAppStore } from '@/store'
+import { Button } from '@/shared/ui/Button'
 import type { Group } from '@/types'
 
 const PRESET_COLORS = [
@@ -111,21 +112,12 @@ export function GroupSelector({
               ))}
             </div>
             <div className="ml-auto flex gap-1">
-              <button
-                type="button"
-                onClick={handleCancel}
-                className="rounded px-2 py-1 text-xs text-gray-500 hover:bg-gray-100"
-              >
+              <Button type="button" variant="ghost" size="xs" onClick={handleCancel}>
                 Cancel
-              </button>
-              <button
-                type="button"
-                onClick={handleCreate}
-                disabled={!newName.trim()}
-                className="rounded bg-indigo-600 px-2 py-1 text-xs font-medium text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
-              >
+              </Button>
+              <Button type="button" size="xs" onClick={handleCreate} disabled={!newName.trim()}>
                 Create
-              </button>
+              </Button>
             </div>
           </div>
         </div>
