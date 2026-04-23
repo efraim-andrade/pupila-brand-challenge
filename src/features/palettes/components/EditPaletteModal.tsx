@@ -2,12 +2,13 @@
 
 import { useState, useEffect, type JSX, type SyntheticEvent, type ChangeEvent } from 'react'
 import { Modal } from '@/shared/ui/Modal'
+import { Button } from '@/shared/ui/Button'
 import { CommentsSection } from '@/shared/components/CommentsSection'
 import { GroupSelector } from '@/shared/components/GroupSelector'
 import { TagPicker } from '@/shared/components/TagPicker'
 import { useAppStore } from '@/store'
-import { ColorEditor, type ColorItem, createColorItem } from './ColorEditor'
-import { isValidHex } from '@/lib/colorUtils'
+import { ColorEditor, type ColorItem } from './ColorEditor'
+import { colorItemsToColors, paletteColorsToItems, toggleTagId } from '../lib/colorEditorUtils'
 import type { ColorPalette } from '@/types'
 
 interface EditPaletteModalProps {
@@ -37,24 +38,14 @@ export function EditPaletteModal({ open, palette, onClose }: EditPaletteModalPro
   useEffect(() => {
     if (open && palette) {
       setName(palette.name)
-      setColorItems(
-        palette.colors.map((color) => createColorItem(color.hex))
-          .map((item, index) => ({
-            ...item,
-            name: palette.colors[index]?.name ?? '',
-          }))
-      )
+      setColorItems(paletteColorsToItems(palette.colors))
       setSelectedGroupId(palette.groupId)
       setSelectedTagIds(palette.tagIds)
     }
   }, [open, palette])
 
   const handleTagToggle = (tagId: string) => {
-    setSelectedTagIds((previous) =>
-      previous.includes(tagId)
-        ? previous.filter((id) => id !== tagId)
-        : [...previous, tagId]
-    )
+    setSelectedTagIds((previous) => toggleTagId(previous, tagId))
   }
 
   const handleSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
@@ -63,9 +54,7 @@ export function EditPaletteModal({ open, palette, onClose }: EditPaletteModalPro
 
     updatePalette(palette.id, {
       name: name.trim() || 'Untitled',
-      colors: colorItems
-        .filter((item) => isValidHex(item.hex))
-        .map((item) => ({ hex: item.hex, ...(item.name ? { name: item.name } : {}) })),
+      colors: colorItemsToColors(colorItems),
       groupId: selectedGroupId,
       tagIds: selectedTagIds,
     })
@@ -122,19 +111,12 @@ export function EditPaletteModal({ open, palette, onClose }: EditPaletteModalPro
         </div>
 
         <div className="flex justify-end gap-2 pt-2">
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50"
-          >
+          <Button type="button" variant="secondary" onClick={onClose}>
             Cancel
-          </button>
-          <button
-            type="submit"
-            className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
-          >
+          </Button>
+          <Button type="submit">
             Save changes
-          </button>
+          </Button>
         </div>
       </form>
     </Modal>

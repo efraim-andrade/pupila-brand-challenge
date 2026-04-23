@@ -10,13 +10,17 @@ interface PaletteCardProps {
   tags: Tag[]
   onDelete: (id: string) => void
   onEdit: (palette: ColorPalette) => void
+  onView: (palette: ColorPalette) => void
 }
 
-export function PaletteCard({ palette, group, tags, onDelete, onEdit }: PaletteCardProps): JSX.Element {
+export function PaletteCard({ palette, group, tags, onDelete, onEdit, onView }: PaletteCardProps): JSX.Element {
   const paletteTags = tags.filter((tag) => palette.tagIds.includes(tag.id))
 
   return (
-    <div className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-md">
+    <div
+      className="group relative cursor-pointer overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-md"
+      onClick={() => onView(palette)}
+    >
       <div className="relative flex h-20 overflow-hidden">
         {palette.colors.length === 0 ? (
           <div className="flex h-full w-full items-center justify-center bg-gray-100">
@@ -34,7 +38,7 @@ export function PaletteCard({ palette, group, tags, onDelete, onEdit }: PaletteC
         )}
         <div className="absolute inset-0 flex items-start justify-end gap-1 bg-black/0 p-2 opacity-0 transition-all group-hover:bg-black/20 group-hover:opacity-100">
           <button
-            onClick={() => onEdit(palette)}
+            onClick={(e) => { e.stopPropagation(); onEdit(palette) }}
             className="rounded-lg bg-white/90 p-1.5 text-gray-700 shadow-sm hover:bg-white"
             aria-label="Edit palette"
           >
@@ -43,7 +47,7 @@ export function PaletteCard({ palette, group, tags, onDelete, onEdit }: PaletteC
             </svg>
           </button>
           <button
-            onClick={() => onDelete(palette.id)}
+            onClick={(e) => { e.stopPropagation(); onDelete(palette.id) }}
             className="rounded-lg bg-white/90 p-1.5 text-red-600 shadow-sm hover:bg-white"
             aria-label="Delete palette"
           >

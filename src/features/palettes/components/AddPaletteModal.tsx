@@ -2,11 +2,12 @@
 
 import { useState, type JSX, type SyntheticEvent, type ChangeEvent } from 'react'
 import { Modal } from '@/shared/ui/Modal'
+import { Button } from '@/shared/ui/Button'
 import { GroupSelector } from '@/shared/components/GroupSelector'
 import { TagPicker } from '@/shared/components/TagPicker'
 import { useAppStore } from '@/store'
 import { ColorEditor, type ColorItem } from './ColorEditor'
-import { isValidHex } from '@/lib/colorUtils'
+import { colorItemsToColors, toggleTagId } from '../lib/colorEditorUtils'
 
 interface AddPaletteModalProps {
   open: boolean
@@ -25,11 +26,7 @@ export function AddPaletteModal({ open, onClose }: AddPaletteModalProps): JSX.El
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([])
 
   const handleTagToggle = (tagId: string) => {
-    setSelectedTagIds((previous) =>
-      previous.includes(tagId)
-        ? previous.filter((id) => id !== tagId)
-        : [...previous, tagId]
-    )
+    setSelectedTagIds((previous) => toggleTagId(previous, tagId))
   }
 
   const handleSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
@@ -37,9 +34,7 @@ export function AddPaletteModal({ open, onClose }: AddPaletteModalProps): JSX.El
 
     addPalette({
       name: name.trim() || 'Untitled',
-      colors: colorItems
-        .filter((item) => isValidHex(item.hex))
-        .map((item) => ({ hex: item.hex, ...(item.name ? { name: item.name } : {}) })),
+      colors: colorItemsToColors(colorItems),
       groupId: selectedGroupId,
       tagIds: selectedTagIds,
       comments: [],
@@ -99,19 +94,12 @@ export function AddPaletteModal({ open, onClose }: AddPaletteModalProps): JSX.El
         />
 
         <div className="flex justify-end gap-2 pt-2">
-          <button
-            type="button"
-            onClick={handleClose}
-            className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50"
-          >
+          <Button type="button" variant="secondary" onClick={handleClose}>
             Cancel
-          </button>
-          <button
-            type="submit"
-            className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
-          >
+          </Button>
+          <Button type="submit">
             Create palette
-          </button>
+          </Button>
         </div>
       </form>
     </Modal>

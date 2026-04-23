@@ -12,6 +12,7 @@ interface PaletteGridProps {
   viewMode: ViewMode
   onDeletePalette: (id: string) => void
   onEditPalette: (palette: ColorPalette) => void
+  onViewPalette: (palette: ColorPalette) => void
 }
 
 function EmptyState(): JSX.Element {
@@ -34,13 +35,14 @@ interface PaletteListRowProps {
   tags: Tag[]
   onDelete: (id: string) => void
   onEdit: (palette: ColorPalette) => void
+  onView: (palette: ColorPalette) => void
 }
 
-function PaletteListRow({ palette, group, tags, onDelete, onEdit }: PaletteListRowProps): JSX.Element {
+function PaletteListRow({ palette, group, tags, onDelete, onEdit, onView }: PaletteListRowProps): JSX.Element {
   const paletteTags = tags.filter((tag) => palette.tagIds.includes(tag.id))
 
   return (
-    <div className="group flex items-center gap-4 px-6 py-3 hover:bg-gray-50">
+    <div className="group flex cursor-pointer items-center gap-4 px-6 py-3 hover:bg-gray-50" onClick={() => onView(palette)}>
       <div className="flex h-10 w-24 flex-shrink-0 overflow-hidden rounded-lg border border-gray-100">
         {palette.colors.length === 0 ? (
           <div className="h-full w-full bg-gray-100" />
@@ -88,7 +90,7 @@ function PaletteListRow({ palette, group, tags, onDelete, onEdit }: PaletteListR
 
       <div className="flex items-center gap-1 transition-opacity sm:opacity-0 sm:group-hover:opacity-100">
         <button
-          onClick={() => onEdit(palette)}
+          onClick={(e) => { e.stopPropagation(); onEdit(palette) }}
           className="rounded-lg p-1.5 text-gray-500 hover:bg-gray-200"
           aria-label="Edit palette"
         >
@@ -97,7 +99,7 @@ function PaletteListRow({ palette, group, tags, onDelete, onEdit }: PaletteListR
           </svg>
         </button>
         <button
-          onClick={() => onDelete(palette.id)}
+          onClick={(e) => { e.stopPropagation(); onDelete(palette.id) }}
           className="rounded-lg p-1.5 text-red-500 hover:bg-red-50"
           aria-label="Delete palette"
         >
@@ -117,6 +119,7 @@ export function PaletteGrid({
   viewMode,
   onDeletePalette,
   onEditPalette,
+  onViewPalette,
 }: PaletteGridProps): JSX.Element {
   if (palettes.length === 0) return <EmptyState />
 
@@ -133,6 +136,7 @@ export function PaletteGrid({
             tags={tags}
             onDelete={onDeletePalette}
             onEdit={onEditPalette}
+            onView={onViewPalette}
           />
         ))}
       </div>
@@ -149,6 +153,7 @@ export function PaletteGrid({
           tags={tags}
           onDelete={onDeletePalette}
           onEdit={onEditPalette}
+          onView={onViewPalette}
         />
       ))}
     </div>
