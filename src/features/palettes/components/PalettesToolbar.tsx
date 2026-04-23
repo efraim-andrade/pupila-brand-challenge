@@ -2,6 +2,7 @@
 
 import type { JSX } from 'react'
 import { Button } from '@/shared/ui/Button'
+import { Select, type SelectOption } from '@/shared/ui/Select'
 import type { Group, Tag, FilterState, ViewMode } from '@/types'
 
 interface PalettesToolbarProps {
@@ -102,16 +103,14 @@ export function PalettesToolbar({
 
       {/* Bottom row: group select + tags (scrollable on mobile) */}
       <div className="flex items-center gap-2 overflow-x-auto px-4 pb-3 sm:px-6 sm:pb-4">
-        <select
+        <Select
+          options={groups.map((g): SelectOption => ({ label: g.name, value: g.id }))}
           value={filter.groupId ?? ''}
-          onChange={(event) => onFilterChange({ groupId: event.target.value || null })}
-          className="shrink-0 rounded-lg border border-gray-200 bg-gray-50 py-1.5 pl-3 pr-8 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-        >
-          <option value="">All groups</option>
-          {groups.map((group) => (
-            <option key={group.id} value={group.id}>{group.name}</option>
-          ))}
-        </select>
+          onChange={(value) => onFilterChange({ groupId: value })}
+          placeholder="All groups"
+          showPlaceholder={false}
+          className="shrink-0 rounded-lg border border-gray-200 bg-gray-50 py-1.5 pl-3 pr-8 text-sm text-gray-700"
+        />
 
         <div className="flex shrink-0 gap-1.5">
           {tags.map((tag) => {
