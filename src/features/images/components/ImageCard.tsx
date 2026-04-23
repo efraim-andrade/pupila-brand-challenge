@@ -31,11 +31,10 @@ export function ImageCard({ image, group, tags, onDelete, onEdit, onExpand, onCr
         <img
           src={image.url}
           alt={image.name}
+          width={400}
+          height={225}
           loading="lazy"
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-          onError={(event) => {
-            event.currentTarget.src = `https://placehold.co/400x300/e2e8f0/94a3b8?text=${encodeURIComponent(image.name)}`
-          }}
         />
         <div className="absolute inset-0 flex items-start justify-end gap-1 bg-black/0 p-2 opacity-0 transition-all group-hover:bg-black/30 group-hover:opacity-100">
           <button
