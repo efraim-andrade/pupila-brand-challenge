@@ -60,9 +60,9 @@ export type ModalType =
   | 'editImage'
   | 'addPalette'
   | 'editPalette'
+  | 'viewPalette'
   | 'createPaletteFromImage'
-  | 'manageGroups'
-  | 'manageTags'
+  | 'configuration'
   | 'colorEditor'
   | 'exportImport'
 
@@ -71,7 +71,6 @@ export interface ModalState {
   payload?: unknown
 }
 
-export type ActiveModule = 'images' | 'palettes' | 'dashboard'
 
 export interface ExportData {
   version: 1

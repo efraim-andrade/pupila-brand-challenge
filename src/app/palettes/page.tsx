@@ -6,6 +6,7 @@ import { PalettesToolbar } from '@/features/palettes/components/PalettesToolbar'
 import { PaletteGrid } from '@/features/palettes/components/PaletteGrid'
 import { AddPaletteModal } from '@/features/palettes/components/AddPaletteModal'
 import { EditPaletteModal } from '@/features/palettes/components/EditPaletteModal'
+import { PaletteViewModal } from '@/features/palettes/components/PaletteViewModal'
 import { useAppStore } from '@/store'
 import type { ColorPalette } from '@/types'
 
@@ -49,6 +50,7 @@ export default function PalettesPage(): JSX.Element {
           viewMode={viewMode}
           onDeletePalette={deletePalette}
           onEditPalette={(palette) => openModal({ type: 'editPalette', payload: palette })}
+          onViewPalette={(palette) => openModal({ type: 'viewPalette', payload: palette })}
         />
       </div>
 
@@ -60,6 +62,12 @@ export default function PalettesPage(): JSX.Element {
       <EditPaletteModal
         open={modal?.type === 'editPalette'}
         palette={modal?.type === 'editPalette' ? (modal.payload as ColorPalette) : null}
+        onClose={closeModal}
+      />
+
+      <PaletteViewModal
+        open={modal?.type === 'viewPalette'}
+        palette={modal?.type === 'viewPalette' ? (modal.payload as ColorPalette) : null}
         onClose={closeModal}
       />
     </div>
