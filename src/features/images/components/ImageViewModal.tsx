@@ -7,7 +7,7 @@ import { Badge } from '@/shared/ui/Badge';
 import { Button } from '@/shared/ui/Button';
 import type { Group, Image, Tag } from '@/types';
 
-interface ImageLightboxProps {
+interface ImageViewModalProps {
   image: Image;
   group: Group | undefined;
   tags: Tag[];
@@ -20,7 +20,7 @@ interface ImageLightboxProps {
   onDeleteComment: (commentId: string) => void;
 }
 
-export function ImageLightbox({
+export function ImageViewModal({
   image,
   group,
   tags,
@@ -31,7 +31,7 @@ export function ImageLightbox({
   onAddComment,
   onUpdateComment,
   onDeleteComment,
-}: ImageLightboxProps): JSX.Element {
+}: ImageViewModalProps): JSX.Element {
   const imageTags = useMemo(
     () => tags.filter((tag) => image.tagIds.includes(tag.id)),
     [tags, image.tagIds]
@@ -49,7 +49,7 @@ export function ImageLightbox({
         <button
           onClick={onClose}
           className="absolute right-3 top-3 z-10 rounded-full bg-black/50 p-1.5 text-white hover:bg-black/70"
-          aria-label="Close lightbox"
+          aria-label="Close modal"
         >
           <X className="h-4 w-4" />
         </button>

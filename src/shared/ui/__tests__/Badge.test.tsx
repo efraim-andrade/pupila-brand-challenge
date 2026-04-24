@@ -2,44 +2,53 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Badge } from '../Badge';
 
+const PRIMARY_COLOR_HEX = '#ff0000';
+const BADGE_TEXT = 'Skill Tag';
+const CUSTOM_CLASS_NAME = 'custom-class';
+const REMOVE_BUTTON_NAME = 'Remove';
+
 beforeEach(() => jest.clearAllMocks());
 
 describe('Badge', () => {
   describe('content rendering', () => {
     it('renders children text', () => {
-      render(<Badge>design</Badge>);
+      render(<Badge>{BADGE_TEXT}</Badge>);
 
-      expect(screen.getByText('design')).toBeInTheDocument();
+      expect(screen.getByText(BADGE_TEXT)).toBeInTheDocument();
     });
   });
 
   describe('color prop', () => {
     it('applies backgroundColor derived from the color hex when color is provided', () => {
-      render(<Badge color="#ff0000">label</Badge>);
+      render(<Badge color={PRIMARY_COLOR_HEX}>{BADGE_TEXT}</Badge>);
 
-      const badge = screen.getByText('label');
-      expect(badge).toHaveStyle({ backgroundColor: '#ff000022' });
+      const badgeElement = screen.getByText(BADGE_TEXT);
+      expect(badgeElement).toHaveStyle({
+        backgroundColor: `${PRIMARY_COLOR_HEX}22`,
+      });
     });
 
     it('applies borderColor derived from the color hex when color is provided', () => {
-      render(<Badge color="#ff0000">label</Badge>);
+      render(<Badge color={PRIMARY_COLOR_HEX}>{BADGE_TEXT}</Badge>);
 
-      const badge = screen.getByText('label');
-      expect(badge).toHaveStyle({ borderColor: '#ff000044' });
+      const badgeElement = screen.getByText(BADGE_TEXT);
+      expect(badgeElement).toHaveStyle({
+        borderColor: `${PRIMARY_COLOR_HEX}44`,
+      });
     });
 
     it('sets the color CSS property to the exact hex value when color is provided', () => {
-      render(<Badge color="#ff0000">label</Badge>);
+      render(<Badge color={PRIMARY_COLOR_HEX}>{BADGE_TEXT}</Badge>);
 
-      const badge = screen.getByText('label');
-      expect(badge).toHaveStyle({ color: '#ff0000' });
+      const badgeElement = screen.getByText(BADGE_TEXT);
+      expect(badgeElement).toHaveStyle({ color: PRIMARY_COLOR_HEX });
     });
 
     it('applies default gray Tailwind classes when color is not provided', () => {
-      render(<Badge>label</Badge>);
+      render(<Badge>{BADGE_TEXT}</Badge>);
 
-      const badge = screen.getByText('label');
-      expect(badge).toHaveClass(
+      const badgeElement = screen.getByText(BADGE_TEXT);
+      expect(badgeElement).toHaveClass(
         'border-gray-200',
         'bg-gray-100',
         'text-gray-600'
@@ -49,36 +58,39 @@ describe('Badge', () => {
 
   describe('remove button', () => {
     it('renders a Remove button when onRemove is provided', () => {
-      render(<Badge onRemove={jest.fn()}>label</Badge>);
+      const handleRemoveBadge = jest.fn();
+      render(<Badge onRemove={handleRemoveBadge}>{BADGE_TEXT}</Badge>);
 
       expect(
-        screen.getByRole('button', { name: 'Remove' })
+        screen.getByRole('button', { name: REMOVE_BUTTON_NAME })
       ).toBeInTheDocument();
     });
 
     it('does not render a Remove button when onRemove is not provided', () => {
-      render(<Badge>label</Badge>);
+      render(<Badge>{BADGE_TEXT}</Badge>);
 
       expect(
-        screen.queryByRole('button', { name: 'Remove' })
+        screen.queryByRole('button', { name: REMOVE_BUTTON_NAME })
       ).not.toBeInTheDocument();
     });
 
     it('calls onRemove when the Remove button is clicked', async () => {
-      const onRemove = jest.fn();
-      render(<Badge onRemove={onRemove}>label</Badge>);
+      const handleRemoveBadge = jest.fn();
+      render(<Badge onRemove={handleRemoveBadge}>{BADGE_TEXT}</Badge>);
 
-      await userEvent.click(screen.getByRole('button', { name: 'Remove' }));
+      await userEvent.click(
+        screen.getByRole('button', { name: REMOVE_BUTTON_NAME })
+      );
 
-      expect(onRemove).toHaveBeenCalledTimes(1);
+      expect(handleRemoveBadge).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('className prop', () => {
     it('forwards the className prop to the root span', () => {
-      render(<Badge className="custom-class">label</Badge>);
+      render(<Badge className={CUSTOM_CLASS_NAME}>{BADGE_TEXT}</Badge>);
 
-      expect(screen.getByText('label')).toHaveClass('custom-class');
+      expect(screen.getByText(BADGE_TEXT)).toHaveClass(CUSTOM_CLASS_NAME);
     });
   });
 });

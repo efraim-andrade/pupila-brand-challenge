@@ -13,7 +13,7 @@ import { ConfirmDialog } from '@/shared/ui/ConfirmDialog';
 import { useAppStore } from '@/store';
 import type { Group, Image as ImageType, Tag, ViewMode } from '@/types';
 import { ImageCard } from './ImageCard';
-import { ImageLightbox } from './ImageLightbox';
+import { ImageViewModal } from './ImageViewModal';
 
 interface ImageGridProps {
   images: ImageType[];
@@ -206,7 +206,7 @@ export function ImageGrid({
       )}
 
       {expandedImage && (
-        <ImageLightbox
+        <ImageViewModal
           image={expandedImage}
           group={
             expandedImage.groupId

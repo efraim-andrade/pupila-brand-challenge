@@ -136,7 +136,7 @@ src/
 │   │   │   ├── ImageCard.tsx
 │   │   │   ├── AddImageModal.tsx
 │   │   │   ├── EditImageModal.tsx
-│   │   │   ├── ImageLightbox.tsx
+│   │   │   ├── ImageViewModal.tsx
 │   │   │   ├── ImagesToolbar.tsx       # wrapper de Toolbar para images
 │   │   │   ├── AiSuggestionBar.tsx     # barra de sugestões de grupo/tags via IA
 │   │   │   └── CreatePaletteFromImageModal.tsx
@@ -214,7 +214,7 @@ src/
 | `AddImageModal` / `AddPaletteModal` | Formulário para criar novo item |
 | `EditImageModal` / `EditPaletteModal` | Formulário para editar item existente |
 | `PaletteViewModal` | Visão expandida de paleta com cores |
-| `ImageLightbox` | Visualização em tela cheia de imagem |
+| `ImageViewModal` | Visualização em tela cheia de imagem |
 | `ColorEditor` | Ajuste de cor via HEX / RGB / HSL / picker nativo |
 | `AiSuggestionBar` | Exibe sugestões de grupo e tags geradas pela IA; permite aplicar com um clique |
 | `Toolbar` | Toolbar genérica compartilhada: busca, filtro por grupo/tag, viewMode, botão de ação |
@@ -464,7 +464,7 @@ type ModalType =
 └───┬────┘          │
     │               ▼
     ▼       ┌──────────────────┐
-┌────────┐  │  ImageLightbox   │
+┌────────┐  │  ImageViewModal  │
 │ Add    │  │  ou EditImageModal│
 │ Image  │  │  • editar        │
 │ Modal  │  │  • comentários   │
