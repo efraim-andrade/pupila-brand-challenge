@@ -67,12 +67,20 @@ export default function ImagesPage(): JSX.Element {
       <AddImageModal open={modal?.type === 'addImage'} onClose={closeModal} />
 
       <EditImageModal
+        key={
+          modal?.type === 'editImage' ? (modal.payload as Image).id : undefined
+        }
         open={modal?.type === 'editImage'}
         image={modal?.type === 'editImage' ? (modal.payload as Image) : null}
         onClose={closeModal}
       />
 
       <CreatePaletteFromImageModal
+        key={
+          modal?.type === 'createPaletteFromImage'
+            ? (modal.payload as Image).id
+            : undefined
+        }
         open={modal?.type === 'createPaletteFromImage'}
         image={
           modal?.type === 'createPaletteFromImage'

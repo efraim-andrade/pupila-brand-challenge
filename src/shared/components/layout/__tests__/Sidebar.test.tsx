@@ -4,7 +4,7 @@
  * - Nav link label visibility driven by sidebarOpen state
  * - Active link styling based on current pathname
  * - Configuration button wiring to openModal
- * - Automatic sidebar collapse on mount for small screens
+ * - Automatic sidebar collapse on nav click for small screens
  */
 
 import { render, screen } from '@testing-library/react';
@@ -148,8 +148,8 @@ describe('Sidebar', () => {
     });
   });
 
-  describe('automatic sidebar collapse on route change', () => {
-    it('calls closeSidebar on mount when the viewport width is below the mobile breakpoint', () => {
+  describe('automatic sidebar collapse on nav click', () => {
+    it('calls closeSidebar when a nav link is clicked on a small screen', async () => {
       Object.defineProperty(window, 'innerWidth', {
         writable: true,
         configurable: true,
@@ -160,10 +160,12 @@ describe('Sidebar', () => {
 
       render(<Sidebar />);
 
+      await userEvent.click(screen.getByRole('link', { name: /images/i }));
+
       expect(closeSidebar).toHaveBeenCalledTimes(1);
     });
 
-    it('does not call closeSidebar on mount when the viewport is wide enough', () => {
+    it('does not call closeSidebar when a nav link is clicked on a large screen', async () => {
       Object.defineProperty(window, 'innerWidth', {
         writable: true,
         configurable: true,
@@ -174,10 +176,12 @@ describe('Sidebar', () => {
 
       render(<Sidebar />);
 
+      await userEvent.click(screen.getByRole('link', { name: /images/i }));
+
       expect(closeSidebar).not.toHaveBeenCalled();
     });
 
-    it('calls closeSidebar again when the pathname changes on a small screen', () => {
+    it('calls closeSidebar when another nav link is clicked on a small screen', async () => {
       Object.defineProperty(window, 'innerWidth', {
         writable: true,
         configurable: true,
@@ -185,13 +189,10 @@ describe('Sidebar', () => {
       });
       const closeSidebar = jest.fn();
       setupStore({ closeSidebar });
-      mockedUsePathname.mockReturnValue('/images');
 
-      const { rerender } = render(<Sidebar />);
-      closeSidebar.mockClear();
+      render(<Sidebar />);
 
-      mockedUsePathname.mockReturnValue('/palettes');
-      rerender(<Sidebar />);
+      await userEvent.click(screen.getByRole('link', { name: /palettes/i }));
 
       expect(closeSidebar).toHaveBeenCalledTimes(1);
     });

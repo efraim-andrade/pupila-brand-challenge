@@ -41,6 +41,7 @@ export function useTagSuggestions(imageUrl: string): UseTagSuggestionsResult {
     }
 
     setIsLoading(true);
+    const abortController = new AbortController();
 
     debounceRef.current = setTimeout(async () => {
       try {
@@ -48,6 +49,7 @@ export function useTagSuggestions(imageUrl: string): UseTagSuggestionsResult {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ imageUrl }),
+          signal: abortController.signal,
         });
 
         if (response.status === 503) {
@@ -63,6 +65,7 @@ export function useTagSuggestions(imageUrl: string): UseTagSuggestionsResult {
         const data = await response.json();
         setSuggestions(data);
       } catch (err) {
+        if (err instanceof DOMException && err.name === 'AbortError') return;
         setError(
           err instanceof Error ? err.message : 'Could not fetch suggestions'
         );
@@ -73,6 +76,7 @@ export function useTagSuggestions(imageUrl: string): UseTagSuggestionsResult {
 
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
+      abortController.abort();
     };
   }, [imageUrl]);
 

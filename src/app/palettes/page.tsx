@@ -106,6 +106,11 @@ export default function PalettesPage(): JSX.Element {
       />
 
       <EditPaletteModal
+        key={
+          modal?.type === 'editPalette'
+            ? (modal.payload as ColorPalette).id
+            : undefined
+        }
         open={modal?.type === 'editPalette'}
         palette={
           modal?.type === 'editPalette' ? (modal.payload as ColorPalette) : null

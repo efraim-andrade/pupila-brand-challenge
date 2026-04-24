@@ -55,26 +55,24 @@ export function CreatePaletteFromImageModal({
 
   const router = useRouter();
 
-  const [name, setName] = useState('');
+  const [name, setName] = useState(image?.name ?? '');
   const [colorItems, setColorItems] = useState<ColorItem[]>([]);
-  const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null);
-  const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
-  const [isExtracting, setIsExtracting] = useState(false);
+  const [selectedGroupId, setSelectedGroupId] = useState<string | null>(
+    image?.groupId ?? null
+  );
+  const [selectedTagIds, setSelectedTagIds] = useState<string[]>(
+    image?.tagIds ?? []
+  );
+  const [isExtracting, setIsExtracting] = useState(!!image);
 
   useEffect(() => {
-    if (!open || !image) return;
-
-    setName(image.name);
-    setColorItems([]);
-    setSelectedGroupId(image.groupId);
-    setSelectedTagIds(image.tagIds);
+    if (!image) return;
     setIsExtracting(true);
-
     extractDominantColors(image.url).then((hexColors) => {
       setColorItems(hexColors.map((hex) => ({ id: nanoid(), hex, name: '' })));
       setIsExtracting(false);
     });
-  }, [open, image]);
+  }, [image]);
 
   const handleTagToggle = (tagId: string) => {
     setSelectedTagIds((previous) =>

@@ -4,7 +4,6 @@ import {
   type ChangeEvent,
   type JSX,
   type SyntheticEvent,
-  useEffect,
   useState,
 } from 'react';
 import { CommentsSection } from '@/shared/components/comments';
@@ -47,19 +46,16 @@ export function EditPaletteModal({
     store.palettes.find((palette) => palette.id === palette?.id)
   );
 
-  const [name, setName] = useState('');
-  const [colorItems, setColorItems] = useState<ColorItem[]>([]);
-  const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null);
-  const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
-
-  useEffect(() => {
-    if (open && palette) {
-      setName(palette.name);
-      setColorItems(paletteColorsToItems(palette.colors));
-      setSelectedGroupId(palette.groupId);
-      setSelectedTagIds(palette.tagIds);
-    }
-  }, [open, palette]);
+  const [name, setName] = useState(palette?.name ?? '');
+  const [colorItems, setColorItems] = useState<ColorItem[]>(
+    palette ? paletteColorsToItems(palette.colors) : []
+  );
+  const [selectedGroupId, setSelectedGroupId] = useState<string | null>(
+    palette?.groupId ?? null
+  );
+  const [selectedTagIds, setSelectedTagIds] = useState<string[]>(
+    palette?.tagIds ?? []
+  );
 
   const handleTagToggle = (tagId: string) => {
     setSelectedTagIds((previous) => toggleTagId(previous, tagId));

@@ -1,7 +1,7 @@
 'use client';
 
 import { Folder, Palette, Pencil, Trash2, X } from 'lucide-react';
-import { type JSX, useEffect, useMemo } from 'react';
+import { type JSX, useMemo } from 'react';
 import { CommentsSection } from '@/shared/components/comments';
 import { Badge } from '@/shared/ui/Badge';
 import { Button } from '@/shared/ui/Button';
@@ -36,14 +36,6 @@ export function ImageLightbox({
     () => tags.filter((tag) => image.tagIds.includes(tag.id)),
     [tags, image.tagIds]
   );
-
-  useEffect(() => {
-    const handleKeyDown = (event: globalThis.KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
-    };
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
 
   return (
     <div

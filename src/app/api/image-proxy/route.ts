@@ -20,9 +20,14 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     });
   }
 
-  const response = await fetch(parsedUrl.toString(), {
-    headers: { 'User-Agent': 'Mozilla/5.0 (compatible; image-proxy/1.0)' },
-  });
+  let response: Response;
+  try {
+    response = await fetch(parsedUrl.toString(), {
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; image-proxy/1.0)' },
+    });
+  } catch {
+    return new NextResponse('Failed to fetch image', { status: 502 });
+  }
 
   if (!response.ok) {
     return new NextResponse('Failed to fetch image', {

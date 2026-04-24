@@ -4,7 +4,6 @@ import {
   type ChangeEvent,
   type JSX,
   type SyntheticEvent,
-  useEffect,
   useState,
 } from 'react';
 import { CommentsSection } from '@/shared/components/comments';
@@ -37,21 +36,15 @@ export function EditImageModal({
     store.images.find((img) => img.id === image?.id)
   );
 
-  const [url, setUrl] = useState('');
-  const [name, setName] = useState('');
+  const [url, setUrl] = useState(image?.url ?? '');
+  const [name, setName] = useState(image?.name ?? '');
   const [urlError, setUrlError] = useState('');
-  const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null);
-  const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
-
-  useEffect(() => {
-    if (open && image) {
-      setUrl(image.url);
-      setName(image.name);
-      setUrlError('');
-      setSelectedGroupId(image.groupId);
-      setSelectedTagIds(image.tagIds);
-    }
-  }, [open, image]);
+  const [selectedGroupId, setSelectedGroupId] = useState<string | null>(
+    image?.groupId ?? null
+  );
+  const [selectedTagIds, setSelectedTagIds] = useState<string[]>(
+    image?.tagIds ?? []
+  );
 
   const handleUrlChange = (event: ChangeEvent<HTMLInputElement>) => {
     setUrl(event.target.value);

@@ -3,7 +3,7 @@
 import { BarChart3, Image, Palette, Settings } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { type JSX, useEffect } from 'react';
+import type { JSX } from 'react';
 import { useAppStore } from '@/store';
 
 const navItems = [
@@ -32,11 +32,11 @@ export function Sidebar(): JSX.Element {
   const closeSidebar = useAppStore((store) => store.closeSidebar);
   const openModal = useAppStore((store) => store.openModal);
 
-  useEffect(() => {
+  const handleNavClick = () => {
     if (typeof window !== 'undefined' && window.innerWidth < 768) {
       closeSidebar();
     }
-  }, [pathname, closeSidebar]);
+  };
 
   return (
     <aside
@@ -65,6 +65,7 @@ export function Sidebar(): JSX.Element {
             <Link
               key={href}
               href={href}
+              onClick={handleNavClick}
               className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                 active
                   ? 'bg-indigo-50 text-indigo-700'

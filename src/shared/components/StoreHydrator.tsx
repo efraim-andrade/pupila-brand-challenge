@@ -57,17 +57,7 @@ export function StoreHydrator(): null {
     }
 
     hydrate();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    hydrateOrganization,
-    setHydrated,
-    hydrateImages,
-    addImage,
-    hydratePalettes,
-    addTag,
-    addPalette,
-    addGroup,
-  ]);
+  }, []);
 
   return null;
 }
