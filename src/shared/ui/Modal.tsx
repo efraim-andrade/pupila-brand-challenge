@@ -25,53 +25,10 @@ export function Modal({ open, onClose, title, children, size = 'md' }: ModalProp
 
   useEffect(() => {
     if (!open) return
-
-    previousActiveElement.current = document.activeElement as HTMLElement
-
-    const handleEscapeKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
-    document.addEventListener('keydown', handleEscapeKey)
-
-    requestAnimationFrame(() => {
-      closeButtonRef.current?.focus()
-    })
-
-    return () => {
-      document.removeEventListener('keydown', handleEscapeKey)
-      previousActiveElement.current?.focus()
-    }
+    const handleEscape = (event: KeyboardEvent) => { if (event.key === 'Escape') onClose() }
+    document.addEventListener('keydown', handleEscape)
+    return () => document.removeEventListener('keydown', handleEscape)
   }, [open, onClose])
-
-  useEffect(() => {
-    if (!open) return
-
-    const modal = modalRef.current
-    if (!modal) return
-
-    const focusableElements = modal.querySelectorAll<HTMLElement>(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    )
-    const firstElement = focusableElements[0]
-    const lastElement = focusableElements[focusableElements.length - 1]
-
-    const handleTabKey = (e: KeyboardEvent) => {
-      if (e.key !== 'Tab') return
-
-      if (e.shiftKey) {
-        if (document.activeElement === firstElement) {
-          e.preventDefault()
-          lastElement?.focus()
-        }
-      } else {
-        if (document.activeElement === lastElement) {
-          e.preventDefault()
-          firstElement?.focus()
-        }
-      }
-    }
-
-    modal.addEventListener('keydown', handleTabKey)
-    return () => modal.removeEventListener('keydown', handleTabKey)
-  }, [open])
 
   if (!open) return null
 
