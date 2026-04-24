@@ -75,7 +75,6 @@ function CommentItem({
             setEditText(event.target.value)
           }
           onKeyDown={handleKeyDown}
-          autoFocus
           rows={2}
           className="w-full resize-none rounded border border-gray-200 bg-white px-2 py-1 text-xs text-gray-900 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
         />
@@ -202,7 +201,7 @@ export function ImageLightbox({
       onClick={onClose}
     >
       <div
-        className="relative flex w-full max-h-[90vh] max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl sm:flex-row"
+        className="relative flex w-full max-h-[90vh] max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl sm:flex-row sm:items-stretch"
         onClick={(event) => event.stopPropagation()}
       >
         <button
@@ -214,11 +213,11 @@ export function ImageLightbox({
         </button>
 
         {/* Image area */}
-        <div className="flex min-h-48 flex-1 items-center justify-center overflow-hidden bg-gray-900">
+        <div className="flex min-h-48 flex-1 items-center justify-center overflow-hidden bg-gray-900 ">
           <img
             src={image.url}
             alt={image.name}
-            className="max-h-[55vh] w-full object-contain sm:max-h-[90vh]"
+            className="max-h-[55vh] w-full object-contain sm:max-h-full"
             onError={(event) => {
               event.currentTarget.src = `https://placehold.co/800x600/e2e8f0/94a3b8?text=${encodeURIComponent(image.name)}`;
             }}
@@ -226,9 +225,9 @@ export function ImageLightbox({
         </div>
 
         {/* Details panel */}
-        <div className="flex w-full flex-col border-t border-gray-100 sm:w-72 sm:shrink-0 sm:border-l sm:border-t-0">
+        <div className="flex w-full flex-col border-t border-gray-100 sm:h-full sm:w-72 sm:shrink-0 sm:border-l sm:border-t-0">
           {/* Metadata */}
-          <div className="flex-1 overflow-y-auto p-4">
+          <div className="overflow-y-auto p-4">
             <p className="text-sm font-semibold text-gray-900">{image.name}</p>
             <div className="mt-2 flex flex-wrap gap-1.5">
               {group && (
@@ -246,7 +245,7 @@ export function ImageLightbox({
           </div>
 
           {/* Comments */}
-          <div className="border-t border-gray-100 p-4">
+          <div className="flex min-h-0 flex-1 flex-col border-t border-gray-100 p-4">
             <div className="flex flex-col gap-2">
               <span className="text-xs font-medium text-gray-700">
                 Comments{' '}
@@ -257,7 +256,7 @@ export function ImageLightbox({
                 )}
               </span>
               {image.comments.length > 0 ? (
-                <div className="flex max-h-32 flex-col gap-1.5 overflow-y-auto">
+                <div className="flex max-h-[27vh] flex-col gap-1.5 overflow-y-auto">
                   {image.comments.map((comment) => (
                     <CommentItem
                       key={comment.id}
