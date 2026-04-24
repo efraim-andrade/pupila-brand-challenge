@@ -93,7 +93,7 @@ export function PaletteViewModal({
       onClick={onClose}
     >
       <div
-        className="relative flex w-full max-h-[60vh] max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl sm:flex-row"
+        className="relative flex w-full max-h-[92vh] max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl sm:max-h-[60vh] sm:flex-row"
         onClick={(event) => event.stopPropagation()}
       >
         <button
@@ -105,7 +105,7 @@ export function PaletteViewModal({
         </button>
 
         {/* Color stripes */}
-        <div className="flex min-h-48 flex-1 overflow-hidden sm:min-h-0">
+        <div className="flex h-36 flex-shrink-0 overflow-hidden sm:h-auto sm:min-h-0 sm:flex-1">
           {palette.colors.length === 0 ? (
             <div className="flex h-full w-full items-center justify-center bg-gray-100">
               <p className="text-sm text-gray-400">No colors in this palette</p>
@@ -123,7 +123,7 @@ export function PaletteViewModal({
         </div>
 
         {/* Details panel */}
-        <div className="flex w-full flex-col border-t border-gray-100 sm:w-72 sm:shrink-0 sm:border-l sm:border-t-0">
+        <div className="flex min-h-0 flex-1 flex-col border-t border-gray-100 sm:w-72 sm:flex-none sm:border-l sm:border-t-0">
           {/* Header */}
           <div className="border-b border-gray-100 p-4">
             <p className="text-sm font-semibold text-gray-900">

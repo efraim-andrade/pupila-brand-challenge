@@ -48,7 +48,7 @@ export function ImageLightbox({
       onClick={onClose}
     >
       <div
-        className="relative flex w-full max-h-[60vh] max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl sm:flex-row sm:items-stretch"
+        className="relative flex w-full max-h-[92vh] max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl sm:max-h-[60vh] sm:flex-row sm:items-stretch"
         onClick={(event) => event.stopPropagation()}
       >
         <button
@@ -60,7 +60,7 @@ export function ImageLightbox({
         </button>
 
         {/* Image area */}
-        <div className="flex min-h-48 flex-1 items-center justify-center overflow-hidden bg-gray-900 ">
+        <div className="flex h-48 flex-shrink-0 items-center justify-center overflow-hidden bg-gray-900 sm:h-auto sm:min-h-0 sm:flex-1">
           <img
             src={image.url}
             alt={image.name}
@@ -72,7 +72,7 @@ export function ImageLightbox({
         </div>
 
         {/* Details panel */}
-        <div className="flex w-full flex-col border-t border-gray-100 sm:w-72 sm:shrink-0 sm:border-l sm:border-t-0">
+        <div className="flex min-h-0 flex-1 flex-col border-t border-gray-100 sm:w-72 sm:flex-none sm:border-l sm:border-t-0">
           {/* Header */}
           <div className="border-b border-gray-100 p-4">
             <p className="text-sm font-semibold text-gray-900">{image.name}</p>
