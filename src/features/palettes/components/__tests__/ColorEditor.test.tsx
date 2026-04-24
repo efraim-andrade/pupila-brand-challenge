@@ -160,7 +160,7 @@ describe('ColorEditor', () => {
       const items: ColorItem[] = [{ id: '1', hex: '#ff0000', name: '' }]
       render(<ColorEditor items={items} onChange={jest.fn()} />)
 
-      const colorInputs = screen.getAllByTitle('Pick color')
+      const colorInputs = screen.getAllByLabelText('Pick color')
       expect(colorInputs[0]).toHaveValue('#ff0000')
     })
 
@@ -169,7 +169,7 @@ describe('ColorEditor', () => {
       const items: ColorItem[] = [{ id: '1', hex: '#ff0000', name: '' }]
       render(<ColorEditor items={items} onChange={onChange} />)
 
-      const colorInputs = screen.getAllByTitle('Pick color')
+      const colorInputs = screen.getAllByLabelText('Pick color')
       fireEvent.change(colorInputs[0], { target: { value: '#00ff00' } })
 
       expect(onChange).toHaveBeenCalled()

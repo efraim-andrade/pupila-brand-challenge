@@ -77,18 +77,18 @@ function SortableColorRow({
       </button>
 
       <div
-        className="h-8 w-8 flex-shrink-0 rounded-md border border-gray-200"
+        className="relative h-8 w-8 flex-shrink-0 cursor-pointer overflow-hidden rounded-full border border-gray-200 shadow-sm"
         style={{ backgroundColor: hexIsValid ? item.hex : '#e5e7eb' }}
-      />
-
-      <input
-        type="color"
-        value={hexIsValid ? item.hex : '#000000'}
-        onChange={(event: ChangeEvent<HTMLInputElement>) => onHexChange(item.id, event.target.value)}
-        className="h-8 w-8 flex-shrink-0 cursor-pointer rounded border-0 p-0.5"
         title="Pick color"
-        aria-label="Pick color"
-      />
+      >
+        <input
+          type="color"
+          value={hexIsValid ? item.hex : '#000000'}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => onHexChange(item.id, event.target.value)}
+          className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+          aria-label="Pick color"
+        />
+      </div>
 
       <input
         type="text"
