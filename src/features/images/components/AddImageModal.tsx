@@ -59,7 +59,7 @@ export function AddImageModal({
   ) => {
     if (groupName) {
       const existing = allGroups.find(
-        (g) => g.name.toLowerCase() === groupName.toLowerCase()
+        (group) => group.name.toLowerCase() === groupName.toLowerCase()
       );
       const group = existing ?? addGroup({ name: groupName, type: 'shared' });
       setSelectedGroupId(group.id);
@@ -67,7 +67,7 @@ export function AddImageModal({
 
     const resolvedTagIds = tagNames.map((tagName) => {
       const existing = allTags.find(
-        (t) => t.name.toLowerCase() === tagName.toLowerCase()
+        (tag) => tag.name.toLowerCase() === tagName.toLowerCase()
       );
       return existing
         ? existing.id

@@ -44,7 +44,7 @@ export function EditPaletteModal({
   const allTags = useAppStore((store) => store.tags);
 
   const livePalette = useAppStore((store) =>
-    store.palettes.find((p) => p.id === palette?.id)
+    store.palettes.find((palette) => palette.id === palette?.id)
   );
 
   const [name, setName] = useState('');

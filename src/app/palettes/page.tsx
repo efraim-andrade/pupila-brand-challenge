@@ -43,7 +43,7 @@ export default function PalettesPage(): JSX.Element {
   const viewedPaletteId =
     modal?.type === 'viewPalette' ? (modal.payload as ColorPalette).id : null;
   const viewedPalette =
-    allPalettes.find((p) => p.id === viewedPaletteId) ?? null;
+    allPalettes.find((palette) => palette.id === viewedPaletteId) ?? null;
   const viewedPaletteGroup = allGroups.find(
     (group) => group.id === viewedPalette?.groupId
   );

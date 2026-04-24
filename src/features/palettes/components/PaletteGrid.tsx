@@ -108,8 +108,8 @@ function PaletteListRow({
 
       <div className="flex items-center gap-1 transition-opacity sm:opacity-0 sm:group-hover:opacity-100">
         <button
-          onClick={(e) => {
-            e.stopPropagation();
+          onClick={(event) => {
+            event.stopPropagation();
             onEdit(palette);
           }}
           className="rounded-lg p-1.5 text-gray-500 hover:bg-gray-200"
@@ -118,8 +118,8 @@ function PaletteListRow({
           <Pencil className="h-4 w-4" />
         </button>
         <button
-          onClick={(e) => {
-            e.stopPropagation();
+          onClick={(event) => {
+            event.stopPropagation();
             onDelete(palette.id);
           }}
           className="rounded-lg p-1.5 text-red-500 hover:bg-red-50"

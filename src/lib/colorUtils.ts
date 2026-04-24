@@ -1,89 +1,93 @@
 export interface RGB {
-  r: number;
-  g: number;
-  b: number;
+  red: number;
+  green: number;
+  blue: number;
 }
 
 export interface HSL {
-  h: number;
-  s: number;
-  l: number;
+  hue: number;
+  saturation: number;
+  lightness: number;
 }
 
 export function hexToRgb(hex: string): RGB {
   const clean = hex.replace('#', '');
   return {
-    r: parseInt(clean.slice(0, 2), 16),
-    g: parseInt(clean.slice(2, 4), 16),
-    b: parseInt(clean.slice(4, 6), 16),
+    red: parseInt(clean.slice(0, 2), 16),
+    green: parseInt(clean.slice(2, 4), 16),
+    blue: parseInt(clean.slice(4, 6), 16),
   };
 }
 
-export function rgbToHex({ r, g, b }: RGB): string {
+export function rgbToHex({ red, green, blue }: RGB): string {
   return (
     '#' +
-    [r, g, b].map((channel) => channel.toString(16).padStart(2, '0')).join('')
+    [red, green, blue]
+      .map((channel) => channel.toString(16).padStart(2, '0'))
+      .join('')
   );
 }
 
-export function rgbToHsl({ r, g, b }: RGB): HSL {
-  const rn = r / 255;
-  const gn = g / 255;
-  const bn = b / 255;
+export function rgbToHsl({ red, green, blue }: RGB): HSL {
+  const rn = red / 255;
+  const gn = green / 255;
+  const bn = blue / 255;
   const max = Math.max(rn, gn, bn);
   const min = Math.min(rn, gn, bn);
-  const l = (max + min) / 2;
+  const lightness = (max + min) / 2;
 
-  if (max === min) return { h: 0, s: 0, l: Math.round(l * 100) };
+  if (max === min)
+    return { hue: 0, saturation: 0, lightness: Math.round(lightness * 100) };
 
   const delta = max - min;
-  const s = l > 0.5 ? delta / (2 - max - min) : delta / (max + min);
-  let h = 0;
-  if (max === rn) h = ((gn - bn) / delta + (gn < bn ? 6 : 0)) / 6;
-  else if (max === gn) h = ((bn - rn) / delta + 2) / 6;
-  else h = ((rn - gn) / delta + 4) / 6;
+  const saturation =
+    lightness > 0.5 ? delta / (2 - max - min) : delta / (max + min);
+  let hue = 0;
+  if (max === rn) hue = ((gn - bn) / delta + (gn < bn ? 6 : 0)) / 6;
+  else if (max === gn) hue = ((bn - rn) / delta + 2) / 6;
+  else hue = ((rn - gn) / delta + 4) / 6;
 
   return {
-    h: Math.round(h * 360),
-    s: Math.round(s * 100),
-    l: Math.round(l * 100),
+    hue: Math.round(hue * 360),
+    saturation: Math.round(saturation * 100),
+    lightness: Math.round(lightness * 100),
   };
 }
 
-export function hslToRgb({ h, s, l }: HSL): RGB {
-  const sn = s / 100;
-  const ln = l / 100;
+export function hslToRgb({ hue, saturation, lightness }: HSL): RGB {
+  const sn = saturation / 100;
+  const ln = lightness / 100;
   const chroma = (1 - Math.abs(2 * ln - 1)) * sn;
-  const hueSectionValue = chroma * (1 - Math.abs(((h / 60) % 2) - 1));
+  const hueSectionValue = chroma * (1 - Math.abs(((hue / 60) % 2) - 1));
   const lightnessOffset = ln - chroma / 2;
-  let r = 0,
-    g = 0,
-    b = 0;
+  let red = 0,
+    green = 0,
+    blue = 0;
 
-  if (h < 60) {
-    r = chroma;
-    g = hueSectionValue;
-  } else if (h < 120) {
-    r = hueSectionValue;
-    g = chroma;
-  } else if (h < 180) {
-    g = chroma;
-    b = hueSectionValue;
-  } else if (h < 240) {
-    g = hueSectionValue;
-    b = chroma;
-  } else if (h < 300) {
-    r = hueSectionValue;
-    b = chroma;
+  if (hue < 60) {
+    red = chroma;
+    green = hueSectionValue;
+  } else if (hue < 120) {
+    red = hueSectionValue;
+    green = chroma;
+  } else if (hue < 180) {
+    green = chroma;
+    blue = hueSectionValue;
+  } else if (hue < 240) {
+    green = hueSectionValue;
+    blue = chroma;
+  } else if (hue < 300) {
+    red = hueSectionValue;
+    blue = chroma;
   } else {
-    r = chroma;
-    b = hueSectionValue;
+    red = chroma;
+    blue = hueSectionValue;
   }
 
   return {
-    r: Math.round((r + lightnessOffset) * 255),
-    g: Math.round((g + lightnessOffset) * 255),
-    b: Math.round((b + lightnessOffset) * 255),
+    red: Math.round((red + lightnessOffset) * 255),
+    green: Math.round((green + lightnessOffset) * 255),
+    blue: Math.round((blue + lightnessOffset) * 255),
   };
 }
 
@@ -96,8 +100,8 @@ export function hslToHex(hsl: HSL): string {
 }
 
 export function getContrastColor(hex: string): '#000000' | '#ffffff' {
-  const { r, g, b } = hexToRgb(hex);
-  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  const { red, green, blue } = hexToRgb(hex);
+  const luminance = (0.299 * red + 0.587 * green + 0.114 * blue) / 255;
   return luminance > 0.5 ? '#000000' : '#ffffff';
 }
 
@@ -143,30 +147,35 @@ export async function extractDominantColors(
       const sampleSize = 80;
       canvas.width = sampleSize;
       canvas.height = sampleSize;
-      const ctx = canvas.getContext('2d');
-      if (!ctx) {
+      const drawingContext = canvas.getContext('2d');
+      if (!drawingContext) {
         resolve([]);
         return;
       }
 
-      ctx.drawImage(img, 0, 0, sampleSize, sampleSize);
-      const { data } = ctx.getImageData(0, 0, sampleSize, sampleSize);
+      drawingContext.drawImage(img, 0, 0, sampleSize, sampleSize);
+      const { data } = drawingContext.getImageData(
+        0,
+        0,
+        sampleSize,
+        sampleSize
+      );
 
       const colorCounts = new Map<string, number>();
       for (let i = 0; i < data.length; i += 4) {
         if (data[i + 3] < 128) continue;
-        const r = Math.round(data[i] / 24) * 24;
-        const g = Math.round(data[i + 1] / 24) * 24;
-        const b = Math.round(data[i + 2] / 24) * 24;
-        const key = `${r},${g},${b}`;
+        const red = Math.round(data[i] / 24) * 24;
+        const green = Math.round(data[i + 1] / 24) * 24;
+        const blue = Math.round(data[i + 2] / 24) * 24;
+        const key = `${red},${green},${blue}`;
         colorCounts.set(key, (colorCounts.get(key) ?? 0) + 1);
       }
 
       const sorted = [...colorCounts.entries()]
-        .sort(([, a], [, b]) => b - a)
+        .sort(([, countA], [, countB]) => countB - countA)
         .map(([key]) => {
-          const [r, g, b] = key.split(',').map(Number);
-          return rgbToHex({ r, g, b });
+          const [red, green, blue] = key.split(',').map(Number);
+          return rgbToHex({ red, green, blue });
         });
 
       const result: string[] = [];
@@ -176,9 +185,9 @@ export async function extractDominantColors(
         const isSimilarToExisting = result.some((existing) => {
           const existingRgb = hexToRgb(existing);
           const distance = Math.sqrt(
-            (candidate.r - existingRgb.r) ** 2 +
-              (candidate.g - existingRgb.g) ** 2 +
-              (candidate.b - existingRgb.b) ** 2
+            (candidate.red - existingRgb.red) ** 2 +
+              (candidate.green - existingRgb.green) ** 2 +
+              (candidate.blue - existingRgb.blue) ** 2
           );
           return distance < 60;
         });

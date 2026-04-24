@@ -47,8 +47,8 @@ export function PaletteCard({
         )}
         <div className="absolute inset-0 flex items-start justify-end gap-1 bg-black/0 p-2 opacity-0 transition-all group-hover:bg-black/20 group-hover:opacity-100">
           <button
-            onClick={(e) => {
-              e.stopPropagation();
+            onClick={(event) => {
+              event.stopPropagation();
               exportPaletteToJSON(palette);
             }}
             className="rounded-lg bg-white/90 p-1.5 text-gray-700 shadow-sm hover:bg-white"
@@ -69,8 +69,8 @@ export function PaletteCard({
             </svg>
           </button>
           <button
-            onClick={(e) => {
-              e.stopPropagation();
+            onClick={(event) => {
+              event.stopPropagation();
               onEdit(palette);
             }}
             className="rounded-lg bg-white/90 p-1.5 text-gray-700 shadow-sm hover:bg-white"
@@ -91,8 +91,8 @@ export function PaletteCard({
             </svg>
           </button>
           <button
-            onClick={(e) => {
-              e.stopPropagation();
+            onClick={(event) => {
+              event.stopPropagation();
               onDelete(palette.id);
             }}
             className="rounded-lg bg-white/90 p-1.5 text-red-600 shadow-sm hover:bg-white"

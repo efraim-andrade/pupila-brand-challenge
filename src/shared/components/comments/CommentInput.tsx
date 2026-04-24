@@ -14,7 +14,10 @@ interface CommentInputProps {
   onAdd: (text: string) => void;
 }
 
-export function CommentInput({ compact, onAdd }: CommentInputProps): JSX.Element {
+export function CommentInput({
+  compact,
+  onAdd,
+}: CommentInputProps): JSX.Element {
   const [text, setText] = useState('');
 
   const handleSubmit = () => {
@@ -36,7 +39,9 @@ export function CommentInput({ compact, onAdd }: CommentInputProps): JSX.Element
       <div className="mt-2 flex gap-2">
         <textarea
           value={text}
-          onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setText(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+            setText(e.target.value)
+          }
           onKeyDown={handleKeyDown}
           placeholder="Add a comment…"
           rows={2}
@@ -58,7 +63,9 @@ export function CommentInput({ compact, onAdd }: CommentInputProps): JSX.Element
     <div className="flex flex-col gap-1.5">
       <textarea
         value={text}
-        onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setText(e.target.value)}
+        onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+          setText(e.target.value)
+        }
         onKeyDown={handleKeyDown}
         placeholder="Add a comment… (Enter to submit, Shift+Enter for new line)"
         rows={2}

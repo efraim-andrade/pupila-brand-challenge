@@ -13,29 +13,29 @@ import {
 
 describe('hexToRgb', () => {
   it('converts a standard hex color to rgb', () => {
-    expect(hexToRgb('#ff0000')).toEqual({ r: 255, g: 0, b: 0 });
+    expect(hexToRgb('#ff0000')).toEqual({ red: 255, green: 0, blue: 0 });
   });
 
   it('strips the leading # before parsing', () => {
-    expect(hexToRgb('#1a2b3c')).toEqual({ r: 26, g: 43, b: 60 });
+    expect(hexToRgb('#1a2b3c')).toEqual({ red: 26, green: 43, blue: 60 });
   });
 
   it('converts white correctly', () => {
-    expect(hexToRgb('#ffffff')).toEqual({ r: 255, g: 255, b: 255 });
+    expect(hexToRgb('#ffffff')).toEqual({ red: 255, green: 255, blue: 255 });
   });
 
   it('converts black correctly', () => {
-    expect(hexToRgb('#000000')).toEqual({ r: 0, g: 0, b: 0 });
+    expect(hexToRgb('#000000')).toEqual({ red: 0, green: 0, blue: 0 });
   });
 });
 
 describe('rgbToHex', () => {
   it('converts rgb to a lowercase hex string with leading #', () => {
-    expect(rgbToHex({ r: 255, g: 0, b: 0 })).toBe('#ff0000');
+    expect(rgbToHex({ red: 255, green: 0, blue: 0 })).toBe('#ff0000');
   });
 
   it('pads single-digit hex channels', () => {
-    expect(rgbToHex({ r: 0, g: 0, b: 15 })).toBe('#00000f');
+    expect(rgbToHex({ red: 0, green: 0, blue: 15 })).toBe('#00000f');
   });
 
   it('roundtrips with hexToRgb', () => {
@@ -45,64 +45,106 @@ describe('rgbToHex', () => {
 });
 
 describe('rgbToHsl', () => {
-  it('returns h=0 s=0 for achromatic colors', () => {
-    expect(rgbToHsl({ r: 128, g: 128, b: 128 })).toEqual({ h: 0, s: 0, l: 50 });
-  });
-
-  it('converts pure red', () => {
-    expect(rgbToHsl({ r: 255, g: 0, b: 0 })).toEqual({ h: 0, s: 100, l: 50 });
-  });
-
-  it('converts pure green', () => {
-    expect(rgbToHsl({ r: 0, g: 255, b: 0 })).toEqual({ h: 120, s: 100, l: 50 });
-  });
-
-  it('converts pure blue', () => {
-    expect(rgbToHsl({ r: 0, g: 0, b: 255 })).toEqual({ h: 240, s: 100, l: 50 });
-  });
-
-  it('converts white to l=100', () => {
-    expect(rgbToHsl({ r: 255, g: 255, b: 255 })).toEqual({
-      h: 0,
-      s: 0,
-      l: 100,
+  it('returns hue=0 saturation=0 for achromatic colors', () => {
+    expect(rgbToHsl({ red: 128, green: 128, blue: 128 })).toEqual({
+      hue: 0,
+      saturation: 0,
+      lightness: 50,
     });
   });
 
-  it('converts black to l=0', () => {
-    expect(rgbToHsl({ r: 0, g: 0, b: 0 })).toEqual({ h: 0, s: 0, l: 0 });
+  it('converts pure red', () => {
+    expect(rgbToHsl({ red: 255, green: 0, blue: 0 })).toEqual({
+      hue: 0,
+      saturation: 100,
+      lightness: 50,
+    });
+  });
+
+  it('converts pure green', () => {
+    expect(rgbToHsl({ red: 0, green: 255, blue: 0 })).toEqual({
+      hue: 120,
+      saturation: 100,
+      lightness: 50,
+    });
+  });
+
+  it('converts pure blue', () => {
+    expect(rgbToHsl({ red: 0, green: 0, blue: 255 })).toEqual({
+      hue: 240,
+      saturation: 100,
+      lightness: 50,
+    });
+  });
+
+  it('converts white to lightness=100', () => {
+    expect(rgbToHsl({ red: 255, green: 255, blue: 255 })).toEqual({
+      hue: 0,
+      saturation: 0,
+      lightness: 100,
+    });
+  });
+
+  it('converts black to lightness=0', () => {
+    expect(rgbToHsl({ red: 0, green: 0, blue: 0 })).toEqual({
+      hue: 0,
+      saturation: 0,
+      lightness: 0,
+    });
   });
 });
 
 describe('hslToRgb', () => {
   it('converts pure red hsl to rgb', () => {
-    expect(hslToRgb({ h: 0, s: 100, l: 50 })).toEqual({ r: 255, g: 0, b: 0 });
+    expect(hslToRgb({ hue: 0, saturation: 100, lightness: 50 })).toEqual({
+      red: 255,
+      green: 0,
+      blue: 0,
+    });
   });
 
   it('converts pure green hsl to rgb', () => {
-    expect(hslToRgb({ h: 120, s: 100, l: 50 })).toEqual({ r: 0, g: 255, b: 0 });
+    expect(hslToRgb({ hue: 120, saturation: 100, lightness: 50 })).toEqual({
+      red: 0,
+      green: 255,
+      blue: 0,
+    });
   });
 
   it('converts pure blue hsl to rgb', () => {
-    expect(hslToRgb({ h: 240, s: 100, l: 50 })).toEqual({ r: 0, g: 0, b: 255 });
+    expect(hslToRgb({ hue: 240, saturation: 100, lightness: 50 })).toEqual({
+      red: 0,
+      green: 0,
+      blue: 255,
+    });
   });
 
   it('converts achromatic hsl to equal rgb channels', () => {
-    const { r, g, b } = hslToRgb({ h: 0, s: 0, l: 50 });
-    expect(r).toBe(g);
-    expect(g).toBe(b);
+    const { red, green, blue } = hslToRgb({
+      hue: 0,
+      saturation: 0,
+      lightness: 50,
+    });
+    expect(red).toBe(green);
+    expect(green).toBe(blue);
   });
 });
 
 describe('hexToHsl', () => {
   it('composes hexToRgb and rgbToHsl', () => {
-    expect(hexToHsl('#ff0000')).toEqual({ h: 0, s: 100, l: 50 });
+    expect(hexToHsl('#ff0000')).toEqual({
+      hue: 0,
+      saturation: 100,
+      lightness: 50,
+    });
   });
 });
 
 describe('hslToHex', () => {
   it('composes hslToRgb and rgbToHex', () => {
-    expect(hslToHex({ h: 0, s: 100, l: 50 })).toBe('#ff0000');
+    expect(hslToHex({ hue: 0, saturation: 100, lightness: 50 })).toBe(
+      '#ff0000'
+    );
   });
 });
 

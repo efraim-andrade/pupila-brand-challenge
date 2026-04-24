@@ -58,10 +58,14 @@ export function CommentItem({
 
   if (isEditing) {
     return (
-      <div className={`flex flex-col gap-1.5 rounded-lg border border-indigo-200 bg-indigo-50 ${padding}`}>
+      <div
+        className={`flex flex-col gap-1.5 rounded-lg border border-indigo-200 bg-indigo-50 ${padding}`}
+      >
         <textarea
           value={editText}
-          onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setEditText(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+            setEditText(e.target.value)
+          }
           onKeyDown={handleKeyDown}
           rows={2}
           className={`w-full resize-none rounded border border-gray-200 bg-white px-2 py-1 ${textSize} text-gray-900 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500`}
@@ -72,7 +76,10 @@ export function CommentItem({
             variant="ghost"
             size="xs"
             className="px-2"
-            onClick={() => { setEditText(comment.text); setIsEditing(false); }}
+            onClick={() => {
+              setEditText(comment.text);
+              setIsEditing(false);
+            }}
           >
             Cancel
           </Button>
@@ -91,15 +98,26 @@ export function CommentItem({
   }
 
   return (
-    <div className={`group flex items-start gap-2 rounded-lg border border-gray-100 bg-gray-50 ${padding}`}>
+    <div
+      className={`group flex items-start gap-2 rounded-lg border border-gray-100 bg-gray-50 ${padding}`}
+    >
       <div className="min-w-0 flex-1">
-        <p className={`${textSize} text-gray-800 whitespace-pre-wrap break-words`}>{comment.text}</p>
-        <p className={`mt-1 ${dateSize} text-gray-400`}>{formatDate(comment.createdAt)}</p>
+        <p
+          className={`${textSize} text-gray-800 whitespace-pre-wrap break-words`}
+        >
+          {comment.text}
+        </p>
+        <p className={`mt-1 ${dateSize} text-gray-400`}>
+          {formatDate(comment.createdAt)}
+        </p>
       </div>
       <div className="flex shrink-0 gap-0.5 opacity-0 transition-opacity group-hover:opacity-100">
         <button
           type="button"
-          onClick={() => { setEditText(comment.text); setIsEditing(true); }}
+          onClick={() => {
+            setEditText(comment.text);
+            setIsEditing(true);
+          }}
           className="rounded p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-600"
           aria-label="Edit comment"
         >

@@ -128,7 +128,10 @@ export function Toolbar({
             </label>
             <Select
               options={groups.map(
-                (g): SelectOption => ({ label: g.name, value: g.id })
+                (group): SelectOption => ({
+                  label: group.name,
+                  value: group.id,
+                })
               )}
               value={filter.groupId ?? ''}
               onChange={(value) => onFilterChange({ groupId: value })}

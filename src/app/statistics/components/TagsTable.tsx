@@ -8,7 +8,7 @@ interface TagsTableProps {
 
 export function TagsTable({ stats, unusedCount }: TagsTableProps): JSX.Element {
   const sorted = useMemo(
-    () => [...stats].sort((a, b) => b.total - a.total),
+    () => [...stats].sort((tagA, tagB) => tagB.total - tagA.total),
     [stats]
   );
 

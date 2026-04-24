@@ -65,18 +65,18 @@ export function ConfigurationModal({
   };
 
   const groupUsageCount = (groupId: string) =>
-    images.filter((i) => i.groupId === groupId).length +
-    palettes.filter((p) => p.groupId === groupId).length;
+    images.filter((image) => image.groupId === groupId).length +
+    palettes.filter((palette) => palette.groupId === groupId).length;
 
   const tagUsageCount = (tagId: string) =>
-    images.filter((i) => i.tagIds.includes(tagId)).length +
-    palettes.filter((p) => p.tagIds.includes(tagId)).length;
+    images.filter((image) => image.tagIds.includes(tagId)).length +
+    palettes.filter((palette) => palette.tagIds.includes(tagId)).length;
 
   const startEditing = (id: string) => {
     const item =
       activeTab === 'groups'
-        ? groups.find((g) => g.id === id)
-        : tags.find((t) => t.id === id);
+        ? groups.find((group) => group.id === id)
+        : tags.find((tag) => tag.id === id);
     if (!item) return;
     if (activeTab === 'groups') {
       setEditing({ id, name: item.name, color: '' });
@@ -278,7 +278,7 @@ export function ConfigurationModal({
                 return (
                   <li
                     key={item.id}
-                    className="group flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-gray-50"
+                    className="flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-gray-50"
                   >
                     {activeTab === 'tags' ? (
                       <span
@@ -298,7 +298,7 @@ export function ConfigurationModal({
                         {count} item{count !== 1 ? 's' : ''}
                       </span>
                     )}
-                    <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+                    <div className="flex items-center gap-1">
                       <button
                         type="button"
                         onClick={() => startEditing(item.id)}

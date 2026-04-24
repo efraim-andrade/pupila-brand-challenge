@@ -11,7 +11,7 @@ export function GroupsTable({
   unusedCount,
 }: GroupsTableProps): JSX.Element {
   const sorted = useMemo(
-    () => [...stats].sort((a, b) => b.total - a.total),
+    () => [...stats].sort((groupA, groupB) => groupB.total - groupA.total),
     [stats]
   );
 
