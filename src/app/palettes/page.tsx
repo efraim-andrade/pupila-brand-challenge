@@ -63,6 +63,17 @@ export default function PalettesPage(): JSX.Element {
     setPendingDeleteId(null);
   }, []);
 
+  const handleEditPalette = useCallback(
+    (palette: ColorPalette) =>
+      openModal({ type: 'editPalette', payload: palette }),
+    [openModal]
+  );
+  const handleViewPalette = useCallback(
+    (palette: ColorPalette) =>
+      openModal({ type: 'viewPalette', payload: palette }),
+    [openModal]
+  );
+
   return (
     <div className="flex h-full flex-col">
       <PalettesToolbar
@@ -84,12 +95,8 @@ export default function PalettesPage(): JSX.Element {
           tags={tags}
           viewMode={viewMode}
           onDeletePalette={handleDeleteRequest}
-          onEditPalette={(palette) =>
-            openModal({ type: 'editPalette', payload: palette })
-          }
-          onViewPalette={(palette) =>
-            openModal({ type: 'viewPalette', payload: palette })
-          }
+          onEditPalette={handleEditPalette}
+          onViewPalette={handleViewPalette}
         />
       </div>
 
@@ -112,9 +119,7 @@ export default function PalettesPage(): JSX.Element {
         group={viewedPaletteGroup}
         tags={tags}
         onClose={closeModal}
-        onEdit={(palette) =>
-          openModal({ type: 'editPalette', payload: palette })
-        }
+        onEdit={handleEditPalette}
         onDelete={handleDeleteRequest}
         onAddComment={(text) =>
           viewedPalette && addPaletteComment(viewedPalette.id, text)

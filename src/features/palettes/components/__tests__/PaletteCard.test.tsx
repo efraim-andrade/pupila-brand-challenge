@@ -169,7 +169,7 @@ describe('PaletteCard', () => {
         />
       );
 
-      expect(screen.getByText('1 comment')).toBeInTheDocument();
+      expect(screen.getByText('1')).toBeInTheDocument();
     });
 
     it('does not render comments section when no comments', () => {
@@ -184,7 +184,7 @@ describe('PaletteCard', () => {
         />
       );
 
-      expect(screen.queryByText(/comment/)).not.toBeInTheDocument();
+      expect(screen.queryByText('0')).not.toBeInTheDocument();
     });
   });
 

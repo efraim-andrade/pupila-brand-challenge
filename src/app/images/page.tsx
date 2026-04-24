@@ -1,6 +1,6 @@
 'use client';
 
-import type { JSX } from 'react';
+import { type JSX, useCallback } from 'react';
 import { AddImageModal } from '@/features/images/components/AddImageModal';
 import { CreatePaletteFromImageModal } from '@/features/images/components/CreatePaletteFromImageModal';
 import { EditImageModal } from '@/features/images/components/EditImageModal';
@@ -24,6 +24,16 @@ export default function ImagesPage(): JSX.Element {
     deleteImage,
     openModal,
   } = useImagesPage();
+
+  const handleEditImage = useCallback(
+    (image: Image) => openModal({ type: 'editImage', payload: image }),
+    [openModal]
+  );
+  const handleCreatePalette = useCallback(
+    (image: Image) =>
+      openModal({ type: 'createPaletteFromImage', payload: image }),
+    [openModal]
+  );
 
   const modal = useAppStore((store) => store.modal);
   const closeModal = useAppStore((store) => store.closeModal);
@@ -49,12 +59,8 @@ export default function ImagesPage(): JSX.Element {
           tags={tags}
           viewMode={viewMode}
           onDeleteImage={deleteImage}
-          onEditImage={(image) =>
-            openModal({ type: 'editImage', payload: image })
-          }
-          onCreatePalette={(image) =>
-            openModal({ type: 'createPaletteFromImage', payload: image })
-          }
+          onEditImage={handleEditImage}
+          onCreatePalette={handleCreatePalette}
         />
       </div>
 

@@ -6,7 +6,7 @@ import {
   Pencil,
   Trash2,
 } from 'lucide-react';
-import { type JSX, useCallback, useState } from 'react';
+import { type JSX, useCallback, useMemo, useState } from 'react';
 import { DEFAULT_GROUP_COLOR } from '@/lib/colors';
 import { Badge } from '@/shared/ui/Badge';
 import { ConfirmDialog } from '@/shared/ui/ConfirmDialog';
@@ -56,7 +56,10 @@ function ImageListRow({
   onEdit,
   onExpand,
 }: ImageListRowProps): JSX.Element {
-  const imageTags = tags.filter((tag) => image.tagIds.includes(tag.id));
+  const imageTags = useMemo(
+    () => tags.filter((tag) => image.tagIds.includes(tag.id)),
+    [tags, image.tagIds]
+  );
 
   return (
     <div className="group flex items-center gap-4 px-6 py-3 hover:bg-gray-50">
@@ -162,11 +165,12 @@ export function ImageGrid({
     setPendingDeleteId(null);
   }, []);
 
-  if (images.length === 0) return <EmptyState />;
-
-  const groupsById = Object.fromEntries(
-    groups.map((group) => [group.id, group])
+  const groupsById = useMemo(
+    () => Object.fromEntries(groups.map((group) => [group.id, group])),
+    [groups]
   );
+
+  if (images.length === 0) return <EmptyState />;
 
   return (
     <>

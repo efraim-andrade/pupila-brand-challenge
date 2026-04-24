@@ -1,7 +1,7 @@
 'use client';
 
 import { Folder, Palette, Pencil, Trash2, X } from 'lucide-react';
-import { type JSX, useEffect } from 'react';
+import { type JSX, useEffect, useMemo } from 'react';
 import { CommentsSection } from '@/shared/components/comments';
 import { Badge } from '@/shared/ui/Badge';
 import { Button } from '@/shared/ui/Button';
@@ -32,7 +32,10 @@ export function ImageLightbox({
   onUpdateComment,
   onDeleteComment,
 }: ImageLightboxProps): JSX.Element {
-  const imageTags = tags.filter((tag) => image.tagIds.includes(tag.id));
+  const imageTags = useMemo(
+    () => tags.filter((tag) => image.tagIds.includes(tag.id)),
+    [tags, image.tagIds]
+  );
 
   useEffect(() => {
     const handleKeyDown = (event: globalThis.KeyboardEvent) => {

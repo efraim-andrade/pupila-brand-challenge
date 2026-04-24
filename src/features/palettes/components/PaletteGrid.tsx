@@ -1,7 +1,7 @@
 'use client';
 
 import { MessageCircle, Palette, Pencil, Trash2 } from 'lucide-react';
-import type { JSX } from 'react';
+import { type JSX, useMemo } from 'react';
 import { DEFAULT_GROUP_COLOR } from '@/lib/colors';
 import { Badge } from '@/shared/ui/Badge';
 import type { ColorPalette, Group, Tag, ViewMode } from '@/types';
@@ -48,7 +48,10 @@ function PaletteListRow({
   onEdit,
   onView,
 }: PaletteListRowProps): JSX.Element {
-  const paletteTags = tags.filter((tag) => palette.tagIds.includes(tag.id));
+  const paletteTags = useMemo(
+    () => tags.filter((tag) => palette.tagIds.includes(tag.id)),
+    [tags, palette.tagIds]
+  );
 
   return (
     <div
@@ -141,11 +144,12 @@ export function PaletteGrid({
   onEditPalette,
   onViewPalette,
 }: PaletteGridProps): JSX.Element {
-  if (palettes.length === 0) return <EmptyState />;
-
-  const groupsById = Object.fromEntries(
-    groups.map((group) => [group.id, group])
+  const groupsById = useMemo(
+    () => Object.fromEntries(groups.map((group) => [group.id, group])),
+    [groups]
   );
+
+  if (palettes.length === 0) return <EmptyState />;
 
   if (viewMode === 'list') {
     return (

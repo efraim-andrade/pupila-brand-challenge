@@ -1,7 +1,7 @@
 'use client';
 
 import { Copy, Folder, X } from 'lucide-react';
-import { type JSX, useCallback, useState } from 'react';
+import { type JSX, useCallback, useMemo, useState } from 'react';
 import { exportPaletteToJSON } from '@/lib/exportImport';
 import { CommentsSection } from '@/shared/components/comments';
 import { Badge } from '@/shared/ui/Badge';
@@ -83,9 +83,13 @@ export function PaletteViewModal({
     });
   }, []);
 
-  if (!open || !palette) return null;
+  const paletteTags = useMemo(
+    () =>
+      palette ? tags.filter((tag) => palette.tagIds.includes(tag.id)) : [],
+    [tags, palette]
+  );
 
-  const paletteTags = tags.filter((tag) => palette.tagIds.includes(tag.id));
+  if (!open || !palette) return null;
 
   return (
     <div

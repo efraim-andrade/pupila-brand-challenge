@@ -1,7 +1,7 @@
 'use client';
 
 import { LayoutGrid, List, Plus, Search } from 'lucide-react';
-import type { JSX } from 'react';
+import { type JSX, useMemo } from 'react';
 import { Button } from '@/shared/ui/Button';
 import { Select, type SelectOption } from '@/shared/ui/Select';
 import type { FilterState, Group, Tag, ViewMode } from '@/types';
@@ -50,6 +50,13 @@ export function Toolbar({
 }: EntityToolbarProps): JSX.Element {
   const hasActiveFilter =
     filter.search || filter.groupId || filter.tagIds.length > 0;
+  const groupOptions = useMemo(
+    () =>
+      groups.map(
+        (group): SelectOption => ({ label: group.name, value: group.id })
+      ),
+    [groups]
+  );
   const countLabel = buildCountLabel(filteredCount, totalCount, entityType);
   const searchPlaceholder =
     entityType === 'palettes' ? 'Search palettes…' : 'Search images…';
@@ -127,12 +134,7 @@ export function Toolbar({
               Group:
             </label>
             <Select
-              options={groups.map(
-                (group): SelectOption => ({
-                  label: group.name,
-                  value: group.id,
-                })
-              )}
+              options={groupOptions}
               value={filter.groupId ?? ''}
               onChange={(value) => onFilterChange({ groupId: value })}
               placeholder="All groups"

@@ -1,10 +1,9 @@
 'use client';
 
-import { Folder, MessageCircle } from 'lucide-react';
-import type { JSX } from 'react';
+import { type JSX, useMemo } from 'react';
 import { exportPaletteToJSON } from '@/lib/exportImport';
-import { Badge } from '@/shared/ui/Badge';
 import { Card } from '@/shared/ui/Card';
+import { CardContent } from '@/shared/ui/CardContent';
 import type { ColorPalette, Group, Tag } from '@/types';
 
 interface PaletteCardProps {
@@ -24,7 +23,10 @@ export function PaletteCard({
   onEdit,
   onView,
 }: PaletteCardProps): JSX.Element {
-  const paletteTags = tags.filter((tag) => palette.tagIds.includes(tag.id));
+  const paletteTags = useMemo(
+    () => tags.filter((tag) => palette.tagIds.includes(tag.id)),
+    [tags, palette.tagIds]
+  );
 
   return (
     <Card onClick={() => onView(palette)}>
@@ -115,38 +117,13 @@ export function PaletteCard({
         </div>
       </div>
 
-      <div className="p-3">
-        <p className="truncate text-sm font-medium text-gray-900">
-          {palette.name}
-        </p>
-        <p className="mt-0.5 text-xs text-gray-400">
-          {palette.colors.length} color{palette.colors.length !== 1 ? 's' : ''}
-        </p>
-
-        <div className="mt-2 flex flex-wrap items-center gap-1.5">
-          {group && (
-            <span className="inline-flex items-center gap-1 rounded-md border border-gray-200 bg-gray-50 px-1.5 py-0.5 text-xs font-medium text-gray-600">
-              <Folder className="h-2.5 w-2.5" />
-              {group.name}
-            </span>
-          )}
-          {paletteTags.map((tag) => (
-            <Badge key={tag.id} color={tag.color}>
-              {tag.name}
-            </Badge>
-          ))}
-        </div>
-
-        {palette.comments.length > 0 && (
-          <div className="mt-2 flex items-center gap-1 text-xs text-gray-400">
-            <MessageCircle className="h-3.5 w-3.5" />
-            <span>
-              {palette.comments.length} comment
-              {palette.comments.length !== 1 ? 's' : ''}
-            </span>
-          </div>
-        )}
-      </div>
+      <CardContent
+        name={palette.name}
+        subtitle={`${palette.colors.length} color${palette.colors.length !== 1 ? 's' : ''}`}
+        commentCount={palette.comments.length}
+        group={group}
+        tags={paletteTags}
+      />
     </Card>
   );
 }

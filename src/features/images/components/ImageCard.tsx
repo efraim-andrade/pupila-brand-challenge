@@ -1,9 +1,9 @@
 'use client';
 
-import { Folder, MessageCircle, Palette, Pencil, Trash2 } from 'lucide-react';
-import type { JSX } from 'react';
-import { Badge } from '@/shared/ui/Badge';
+import { Palette, Pencil, Trash2 } from 'lucide-react';
+import { type JSX, useMemo } from 'react';
 import { Card } from '@/shared/ui/Card';
+import { CardContent } from '@/shared/ui/CardContent';
 import type { Group, Image, Tag } from '@/types';
 
 interface ImageCardProps {
@@ -25,7 +25,10 @@ export function ImageCard({
   onExpand,
   onCreatePalette,
 }: ImageCardProps): JSX.Element {
-  const imageTags = tags.filter((tag) => image.tagIds.includes(tag.id));
+  const imageTags = useMemo(
+    () => tags.filter((tag) => image.tagIds.includes(tag.id)),
+    [tags, image.tagIds]
+  );
 
   return (
     <Card>
@@ -83,31 +86,12 @@ export function ImageCard({
         </div>
       </div>
 
-      <div className="p-3">
-        <p className="truncate text-sm font-medium text-gray-900">
-          {image.name}
-        </p>
-
-        <div className="mt-2 flex flex-wrap items-center gap-1.5">
-          {image.comments.length > 0 && (
-            <span className="inline-flex items-center gap-1 text-xs text-gray-400">
-              <MessageCircle className="h-3 w-3" />
-              {image.comments.length}
-            </span>
-          )}
-          {group && (
-            <span className="inline-flex items-center gap-1 rounded-md border border-gray-200 bg-gray-50 px-1.5 py-0.5 text-xs font-medium text-gray-600">
-              <Folder className="h-2.5 w-2.5" />
-              {group.name}
-            </span>
-          )}
-          {imageTags.map((tag) => (
-            <Badge key={tag.id} color={tag.color}>
-              {tag.name}
-            </Badge>
-          ))}
-        </div>
-      </div>
+      <CardContent
+        name={image.name}
+        commentCount={image.comments.length}
+        group={group}
+        tags={imageTags}
+      />
     </Card>
   );
 }
