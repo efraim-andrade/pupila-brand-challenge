@@ -93,10 +93,21 @@ export function normalizeHex(hex: string): string {
   return '#' + clean.toLowerCase()
 }
 
+function toProxiedUrl(imageUrl: string): string {
+  try {
+    const parsed = new URL(imageUrl)
+    if (parsed.origin !== window.location.origin) {
+      return `/api/image-proxy?url=${encodeURIComponent(imageUrl)}`
+    }
+  } catch {
+    // relative URLs are same-origin, no proxy needed
+  }
+  return imageUrl
+}
+
 export async function extractDominantColors(imageUrl: string, count: number = 6): Promise<string[]> {
   return new Promise((resolve) => {
     const img = new Image()
-    img.crossOrigin = 'anonymous'
 
     img.onload = () => {
       const canvas = document.createElement('canvas')
@@ -146,6 +157,6 @@ export async function extractDominantColors(imageUrl: string, count: number = 6)
     }
 
     img.onerror = () => resolve([])
-    img.src = imageUrl
+    img.src = toProxiedUrl(imageUrl)
   })
 }
