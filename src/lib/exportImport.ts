@@ -49,16 +49,23 @@ export function importFromJSON(file: File): Promise<ExportData> {
     const reader = new FileReader();
     reader.onload = (event) => {
       try {
-        const raw = JSON.parse(event.target?.result as string) as ExportData;
-        if (raw.version !== 1) {
+        const parsedExportData = JSON.parse(
+          event.target?.result as string
+        ) as ExportData;
+        if (parsedExportData.version !== 1) {
           reject(new Error('Unsupported export version'));
           return;
         }
-        if (!raw.images || !raw.palettes || !raw.groups || !raw.tags) {
+        if (
+          !parsedExportData.images ||
+          !parsedExportData.palettes ||
+          !parsedExportData.groups ||
+          !parsedExportData.tags
+        ) {
           reject(new Error('Invalid export file: missing required fields'));
           return;
         }
-        resolve(raw);
+        resolve(parsedExportData);
       } catch {
         reject(new Error('Invalid JSON file'));
       }

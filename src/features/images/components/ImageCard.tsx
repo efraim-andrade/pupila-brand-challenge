@@ -10,9 +10,9 @@ interface ImageCardProps {
   image: Image;
   group: Group | undefined;
   tags: Tag[];
-  onDelete: (id: string) => void;
-  onEdit: (image: Image) => void;
-  onExpand: (id: string) => void;
+  onDeleteImage: (id: string) => void;
+  onEditImage: (image: Image) => void;
+  onExpandImage: (id: string) => void;
   onCreatePalette: (image: Image) => void;
 }
 
@@ -20,9 +20,9 @@ export function ImageCard({
   image,
   group,
   tags,
-  onDelete,
-  onEdit,
-  onExpand,
+  onDeleteImage,
+  onEditImage,
+  onExpandImage,
   onCreatePalette,
 }: ImageCardProps): JSX.Element {
   const imageTags = useMemo(
@@ -34,12 +34,13 @@ export function ImageCard({
     <Card>
       <div
         className="relative aspect-video cursor-pointer overflow-hidden bg-gray-100"
-        onClick={() => onExpand(image.id)}
+        onClick={() => onExpandImage(image.id)}
         role="button"
         tabIndex={0}
         aria-label={`Expand ${image.name}`}
         onKeyDown={(event) => {
-          if (event.key === 'Enter' || event.key === ' ') onExpand(image.id);
+          if (event.key === 'Enter' || event.key === ' ')
+            onExpandImage(image.id);
         }}
       >
         <img
@@ -66,7 +67,7 @@ export function ImageCard({
           <button
             onClick={(event) => {
               event.stopPropagation();
-              onEdit(image);
+              onEditImage(image);
             }}
             className="rounded-lg bg-white/90 p-1.5 text-gray-700 shadow-sm hover:bg-white"
             aria-label="Edit image"
@@ -76,7 +77,7 @@ export function ImageCard({
           <button
             onClick={(event) => {
               event.stopPropagation();
-              onDelete(image.id);
+              onDeleteImage(image.id);
             }}
             className="rounded-lg bg-white/90 p-1.5 text-red-600 shadow-sm hover:bg-white"
             aria-label="Delete image"

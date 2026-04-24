@@ -75,11 +75,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     );
   }
 
-  const data = await response.json();
-  const rawText: string = data.choices?.[0]?.message?.content ?? '';
+  const aiResponse = await response.json();
+  const responseContent: string =
+    aiResponse.choices?.[0]?.message?.content ?? '';
 
   try {
-    const parsed = JSON.parse(stripMarkdownFences(rawText));
+    const parsed = JSON.parse(stripMarkdownFences(responseContent));
     return NextResponse.json({
       group:
         typeof parsed.group === 'string'
@@ -91,7 +92,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         : [],
     });
   } catch {
-    console.error('[suggest-tags] Failed to parse AI response:', rawText);
+    console.error(
+      '[suggest-tags] Failed to parse AI response:',
+      responseContent
+    );
     return NextResponse.json(
       { error: 'Failed to parse AI response' },
       { status: 502 }

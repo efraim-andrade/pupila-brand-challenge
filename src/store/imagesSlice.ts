@@ -52,21 +52,23 @@ export const createImagesSlice: StateCreator<AppStore, [], [], ImagesSlice> = (
 
   updateImage: (id, updates) => {
     set((state) => ({
-      images: state.images.map((img) =>
-        img.id === id
-          ? { ...img, ...updates, updatedAt: new Date().toISOString() }
-          : img
+      images: state.images.map((image) =>
+        image.id === id
+          ? { ...image, ...updates, updatedAt: new Date().toISOString() }
+          : image
       ),
     }));
     set((state) => {
-      const updated = state.images.find((img) => img.id === id);
-      if (updated) imageDB.put(updated);
+      const updatedImage = state.images.find((image) => image.id === id);
+      if (updatedImage) imageDB.put(updatedImage);
       return {};
     });
   },
 
   deleteImage: (id) => {
-    set((state) => ({ images: state.images.filter((img) => img.id !== id) }));
+    set((state) => ({
+      images: state.images.filter((image) => image.id !== id),
+    }));
     imageDB.delete(id);
   },
 
@@ -78,63 +80,63 @@ export const createImagesSlice: StateCreator<AppStore, [], [], ImagesSlice> = (
       updatedAt: new Date().toISOString(),
     };
     set((state) => ({
-      images: state.images.map((img) =>
-        img.id === imageId
+      images: state.images.map((image) =>
+        image.id === imageId
           ? {
-              ...img,
-              comments: [...img.comments, comment],
+              ...image,
+              comments: [...image.comments, comment],
               updatedAt: new Date().toISOString(),
             }
-          : img
+          : image
       ),
     }));
     set((state) => {
-      const updated = state.images.find((img) => img.id === imageId);
-      if (updated) imageDB.put(updated);
+      const updatedImage = state.images.find((image) => image.id === imageId);
+      if (updatedImage) imageDB.put(updatedImage);
       return {};
     });
   },
 
   updateImageComment: (imageId, commentId, text) => {
     set((state) => ({
-      images: state.images.map((img) =>
-        img.id === imageId
+      images: state.images.map((image) =>
+        image.id === imageId
           ? {
-              ...img,
-              comments: img.comments.map((comment) =>
+              ...image,
+              comments: image.comments.map((comment) =>
                 comment.id === commentId
                   ? { ...comment, text, updatedAt: new Date().toISOString() }
                   : comment
               ),
               updatedAt: new Date().toISOString(),
             }
-          : img
+          : image
       ),
     }));
     set((state) => {
-      const updated = state.images.find((img) => img.id === imageId);
-      if (updated) imageDB.put(updated);
+      const updatedImage = state.images.find((image) => image.id === imageId);
+      if (updatedImage) imageDB.put(updatedImage);
       return {};
     });
   },
 
   deleteImageComment: (imageId, commentId) => {
     set((state) => ({
-      images: state.images.map((img) =>
-        img.id === imageId
+      images: state.images.map((image) =>
+        image.id === imageId
           ? {
-              ...img,
-              comments: img.comments.filter(
+              ...image,
+              comments: image.comments.filter(
                 (comment) => comment.id !== commentId
               ),
               updatedAt: new Date().toISOString(),
             }
-          : img
+          : image
       ),
     }));
     set((state) => {
-      const updated = state.images.find((img) => img.id === imageId);
-      if (updated) imageDB.put(updated);
+      const updatedImage = state.images.find((image) => image.id === imageId);
+      if (updatedImage) imageDB.put(updatedImage);
       return {};
     });
   },

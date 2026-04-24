@@ -42,9 +42,9 @@ describe('PaletteCard', () => {
           palette={makePalette({ name: 'My Palette' })}
           group={undefined}
           tags={[]}
-          onDelete={jest.fn()}
-          onEdit={jest.fn()}
-          onView={jest.fn()}
+          onDeletePalette={jest.fn()}
+          onEditPalette={jest.fn()}
+          onViewPalette={jest.fn()}
         />
       );
 
@@ -57,9 +57,9 @@ describe('PaletteCard', () => {
           palette={makePalette({ colors: [{ hex: '#fff' }] })}
           group={undefined}
           tags={[]}
-          onDelete={jest.fn()}
-          onEdit={jest.fn()}
-          onView={jest.fn()}
+          onDeletePalette={jest.fn()}
+          onEditPalette={jest.fn()}
+          onViewPalette={jest.fn()}
         />
       );
 
@@ -72,9 +72,9 @@ describe('PaletteCard', () => {
           palette={makePalette()}
           group={undefined}
           tags={[]}
-          onDelete={jest.fn()}
-          onEdit={jest.fn()}
-          onView={jest.fn()}
+          onDeletePalette={jest.fn()}
+          onEditPalette={jest.fn()}
+          onViewPalette={jest.fn()}
         />
       );
 
@@ -89,9 +89,9 @@ describe('PaletteCard', () => {
           palette={makePalette()}
           group={undefined}
           tags={[]}
-          onDelete={jest.fn()}
-          onEdit={jest.fn()}
-          onView={jest.fn()}
+          onDeletePalette={jest.fn()}
+          onEditPalette={jest.fn()}
+          onViewPalette={jest.fn()}
         />
       );
 
@@ -104,9 +104,9 @@ describe('PaletteCard', () => {
           palette={makePalette({ colors: [] })}
           group={undefined}
           tags={[]}
-          onDelete={jest.fn()}
-          onEdit={jest.fn()}
-          onView={jest.fn()}
+          onDeletePalette={jest.fn()}
+          onEditPalette={jest.fn()}
+          onViewPalette={jest.fn()}
         />
       );
 
@@ -121,9 +121,9 @@ describe('PaletteCard', () => {
           palette={makePalette()}
           group={makeGroup({ name: 'My Group' })}
           tags={[]}
-          onDelete={jest.fn()}
-          onEdit={jest.fn()}
-          onView={jest.fn()}
+          onDeletePalette={jest.fn()}
+          onEditPalette={jest.fn()}
+          onViewPalette={jest.fn()}
         />
       );
 
@@ -137,9 +137,9 @@ describe('PaletteCard', () => {
           palette={makePalette({ tagIds: ['t-1'] })}
           group={undefined}
           tags={[tag]}
-          onDelete={jest.fn()}
-          onEdit={jest.fn()}
-          onView={jest.fn()}
+          onDeletePalette={jest.fn()}
+          onEditPalette={jest.fn()}
+          onViewPalette={jest.fn()}
         />
       );
 
@@ -163,9 +163,9 @@ describe('PaletteCard', () => {
           })}
           group={undefined}
           tags={[]}
-          onDelete={jest.fn()}
-          onEdit={jest.fn()}
-          onView={jest.fn()}
+          onDeletePalette={jest.fn()}
+          onEditPalette={jest.fn()}
+          onViewPalette={jest.fn()}
         />
       );
 
@@ -178,9 +178,9 @@ describe('PaletteCard', () => {
           palette={makePalette()}
           group={undefined}
           tags={[]}
-          onDelete={jest.fn()}
-          onEdit={jest.fn()}
-          onView={jest.fn()}
+          onDeletePalette={jest.fn()}
+          onEditPalette={jest.fn()}
+          onViewPalette={jest.fn()}
         />
       );
 
@@ -189,36 +189,36 @@ describe('PaletteCard', () => {
   });
 
   describe('interactions', () => {
-    it('calls onView when card is clicked', async () => {
-      const onView = jest.fn();
+    it('calls onViewPalette when card is clicked', async () => {
+      const onViewPalette = jest.fn();
       const palette = makePalette();
       render(
         <PaletteCard
           palette={palette}
           group={undefined}
           tags={[]}
-          onDelete={jest.fn()}
-          onEdit={jest.fn()}
-          onView={onView}
+          onDeletePalette={jest.fn()}
+          onEditPalette={jest.fn()}
+          onViewPalette={onViewPalette}
         />
       );
 
       await userEvent.click(screen.getByText('Test Palette'));
 
-      expect(onView).toHaveBeenCalledWith(palette);
+      expect(onViewPalette).toHaveBeenCalledWith(palette);
     });
 
-    it('calls onEdit when Edit button is clicked', async () => {
-      const onEdit = jest.fn();
+    it('calls onEditPalette when Edit button is clicked', async () => {
+      const onEditPalette = jest.fn();
       const palette = makePalette();
       render(
         <PaletteCard
           palette={palette}
           group={undefined}
           tags={[]}
-          onDelete={jest.fn()}
-          onEdit={onEdit}
-          onView={jest.fn()}
+          onDeletePalette={jest.fn()}
+          onEditPalette={onEditPalette}
+          onViewPalette={jest.fn()}
         />
       );
 
@@ -226,19 +226,19 @@ describe('PaletteCard', () => {
         screen.getByRole('button', { name: 'Edit palette' })
       );
 
-      expect(onEdit).toHaveBeenCalledWith(palette);
+      expect(onEditPalette).toHaveBeenCalledWith(palette);
     });
 
-    it('calls onDelete when Delete button is clicked', async () => {
-      const onDelete = jest.fn();
+    it('calls onDeletePalette when Delete button is clicked', async () => {
+      const onDeletePalette = jest.fn();
       render(
         <PaletteCard
           palette={makePalette()}
           group={undefined}
           tags={[]}
-          onDelete={onDelete}
-          onEdit={jest.fn()}
-          onView={jest.fn()}
+          onDeletePalette={onDeletePalette}
+          onEditPalette={jest.fn()}
+          onViewPalette={jest.fn()}
         />
       );
 
@@ -246,20 +246,20 @@ describe('PaletteCard', () => {
         screen.getByRole('button', { name: 'Delete palette' })
       );
 
-      expect(onDelete).toHaveBeenCalledWith('p-1');
+      expect(onDeletePalette).toHaveBeenCalledWith('p-1');
     });
 
     it('stops propagation when Edit button is clicked', async () => {
-      const onView = jest.fn();
-      const onEdit = jest.fn();
+      const onViewPalette = jest.fn();
+      const onEditPalette = jest.fn();
       render(
         <PaletteCard
           palette={makePalette()}
           group={undefined}
           tags={[]}
-          onDelete={jest.fn()}
-          onEdit={onEdit}
-          onView={onView}
+          onDeletePalette={jest.fn()}
+          onEditPalette={onEditPalette}
+          onViewPalette={onViewPalette}
         />
       );
 
@@ -267,20 +267,20 @@ describe('PaletteCard', () => {
         screen.getByRole('button', { name: 'Edit palette' })
       );
 
-      expect(onView).not.toHaveBeenCalled();
+      expect(onViewPalette).not.toHaveBeenCalled();
     });
 
     it('stops propagation when Delete button is clicked', async () => {
-      const onView = jest.fn();
-      const onDelete = jest.fn();
+      const onViewPalette = jest.fn();
+      const onDeletePalette = jest.fn();
       render(
         <PaletteCard
           palette={makePalette()}
           group={undefined}
           tags={[]}
-          onDelete={onDelete}
-          onEdit={jest.fn()}
-          onView={onView}
+          onDeletePalette={onDeletePalette}
+          onEditPalette={jest.fn()}
+          onViewPalette={onViewPalette}
         />
       );
 
@@ -288,7 +288,7 @@ describe('PaletteCard', () => {
         screen.getByRole('button', { name: 'Delete palette' })
       );
 
-      expect(onView).not.toHaveBeenCalled();
+      expect(onViewPalette).not.toHaveBeenCalled();
     });
   });
 });

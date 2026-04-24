@@ -14,8 +14,8 @@ interface PaletteViewModalProps {
   group: Group | undefined;
   tags: Tag[];
   onClose: () => void;
-  onEdit: (palette: ColorPalette) => void;
-  onDelete: (id: string) => void;
+  onEditPalette: (palette: ColorPalette) => void;
+  onDeletePalette: (id: string) => void;
   onAddComment: (text: string) => void;
   onUpdateComment: (commentId: string, text: string) => void;
   onDeleteComment: (commentId: string) => void;
@@ -68,8 +68,8 @@ export function PaletteViewModal({
   group,
   tags,
   onClose,
-  onEdit,
-  onDelete,
+  onEditPalette,
+  onDeletePalette,
   onAddComment,
   onUpdateComment,
   onDeleteComment,
@@ -193,7 +193,7 @@ export function PaletteViewModal({
                   variant="secondary"
                   size="sm"
                   className="flex-1 justify-center"
-                  onClick={() => onEdit(palette)}
+                  onClick={() => onEditPalette(palette)}
                   aria-label="Edit palette"
                 >
                   <svg
@@ -215,7 +215,7 @@ export function PaletteViewModal({
                   variant="danger"
                   size="sm"
                   className="flex-1 justify-center"
-                  onClick={() => onDelete(palette.id)}
+                  onClick={() => onDeletePalette(palette.id)}
                   aria-label="Delete palette"
                 >
                   <svg

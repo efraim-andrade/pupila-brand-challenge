@@ -10,13 +10,17 @@ import {
 import type { GroupStat } from '@/app/statistics/types';
 
 interface GroupsChartProps {
-  data: GroupStat[];
+  groupStats: GroupStat[];
 }
 
-export function GroupsChart({ data }: GroupsChartProps): JSX.Element {
+export function GroupsChart({ groupStats }: GroupsChartProps): JSX.Element {
   return (
     <ResponsiveContainer width="100%" height={300}>
-      <BarChart data={data} layout="vertical" margin={{ left: 80, right: 20 }}>
+      <BarChart
+        data={groupStats}
+        layout="vertical"
+        margin={{ left: 80, right: 20 }}
+      >
         <XAxis type="number" />
         <YAxis
           type="category"

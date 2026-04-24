@@ -26,42 +26,42 @@ export function GroupSelector({
 }: GroupSelectorProps): JSX.Element {
   const addGroup = useAppStore((store) => store.addGroup);
 
-  const [creating, setCreating] = useState(false);
-  const [newName, setNewName] = useState('');
-  const [newColor, setNewColor] = useState(DEFAULT_TAG_COLOR);
+  const [isCreatingGroup, setIsCreatingGroup] = useState(false);
+  const [newGroupName, setNewGroupName] = useState('');
+  const [newGroupColor, setNewGroupColor] = useState(DEFAULT_TAG_COLOR);
 
-  const handleCreate = () => {
-    const trimmed = newName.trim();
-    if (!trimmed) {
-      setCreating(false);
+  const handleCreateGroup = () => {
+    const trimmedName = newGroupName.trim();
+    if (!trimmedName) {
+      setIsCreatingGroup(false);
       return;
     }
     const created = addGroup({
-      name: trimmed,
+      name: trimmedName,
       type: 'shared',
-      color: newColor,
+      color: newGroupColor,
     });
     onSelect(created.id);
-    setCreating(false);
-    setNewName('');
-    setNewColor(DEFAULT_TAG_COLOR);
+    setIsCreatingGroup(false);
+    setNewGroupName('');
+    setNewGroupColor(DEFAULT_TAG_COLOR);
   };
 
-  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+  const handleGroupInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      handleCreate();
+      handleCreateGroup();
     }
     if (event.key === 'Escape') {
-      setCreating(false);
-      setNewName('');
+      setIsCreatingGroup(false);
+      setNewGroupName('');
     }
   };
 
-  const handleCancel = () => {
-    setCreating(false);
-    setNewName('');
-    setNewColor(DEFAULT_TAG_COLOR);
+  const handleCancelGroupCreation = () => {
+    setIsCreatingGroup(false);
+    setNewGroupName('');
+    setNewGroupColor(DEFAULT_TAG_COLOR);
   };
 
   return (
@@ -86,13 +86,13 @@ export function GroupSelector({
         ))}
       </select>
 
-      {creating ? (
+      {isCreatingGroup ? (
         <div className="flex flex-col gap-2 rounded-lg border border-indigo-200 bg-indigo-50/50 p-2.5">
           <input
             type="text"
-            value={newName}
-            onChange={(event) => setNewName(event.target.value)}
-            onKeyDown={handleKeyDown}
+            value={newGroupName}
+            onChange={(event) => setNewGroupName(event.target.value)}
+            onKeyDown={handleGroupInputKeyDown}
             placeholder="Group name"
             className="w-full rounded border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
           />
@@ -101,15 +101,15 @@ export function GroupSelector({
               type="button"
               variant="ghost"
               size="xs"
-              onClick={handleCancel}
+              onClick={handleCancelGroupCreation}
             >
               Cancel
             </Button>
             <Button
               type="button"
               size="xs"
-              onClick={handleCreate}
-              disabled={!newName.trim()}
+              onClick={handleCreateGroup}
+              disabled={!newGroupName.trim()}
             >
               Create
             </Button>
@@ -118,7 +118,7 @@ export function GroupSelector({
       ) : (
         <button
           type="button"
-          onClick={() => setCreating(true)}
+          onClick={() => setIsCreatingGroup(true)}
           className="self-start text-xs text-indigo-600 hover:text-indigo-800 hover:underline"
         >
           + New group

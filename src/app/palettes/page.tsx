@@ -48,18 +48,18 @@ export default function PalettesPage(): JSX.Element {
     (group) => group.id === viewedPalette?.groupId
   );
 
-  const handleDeleteRequest = useCallback((id: string) => {
+  const handleRequestPaletteDelete = useCallback((id: string) => {
     setPendingDeleteId(id);
   }, []);
 
-  const handleDeleteConfirm = useCallback(() => {
+  const handleConfirmPaletteDelete = useCallback(() => {
     if (!pendingDeleteId) return;
     deletePalette(pendingDeleteId);
     if (modal?.type === 'viewPalette') closeModal();
     setPendingDeleteId(null);
   }, [pendingDeleteId, deletePalette, modal, closeModal]);
 
-  const handleDeleteCancel = useCallback(() => {
+  const handleCancelPaletteDelete = useCallback(() => {
     setPendingDeleteId(null);
   }, []);
 
@@ -94,7 +94,7 @@ export default function PalettesPage(): JSX.Element {
           groups={groups}
           tags={tags}
           viewMode={viewMode}
-          onDeletePalette={handleDeleteRequest}
+          onDeletePalette={handleRequestPaletteDelete}
           onEditPalette={handleEditPalette}
           onViewPalette={handleViewPalette}
         />
@@ -124,8 +124,8 @@ export default function PalettesPage(): JSX.Element {
         group={viewedPaletteGroup}
         tags={tags}
         onClose={closeModal}
-        onEdit={handleEditPalette}
-        onDelete={handleDeleteRequest}
+        onEditPalette={handleEditPalette}
+        onDeletePalette={handleRequestPaletteDelete}
         onAddComment={(text) =>
           viewedPalette && addPaletteComment(viewedPalette.id, text)
         }
@@ -143,8 +143,8 @@ export default function PalettesPage(): JSX.Element {
         title="Delete palette"
         message="Are you sure you want to delete this palette? This action cannot be undone."
         confirmLabel="Delete"
-        onConfirm={handleDeleteConfirm}
-        onCancel={handleDeleteCancel}
+        onConfirm={handleConfirmPaletteDelete}
+        onCancel={handleCancelPaletteDelete}
       />
     </div>
   );

@@ -28,7 +28,7 @@ export function Modal({
 }: ModalProps): JSX.Element | null {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
-  const _previousActiveElement = useRef<HTMLElement | null>(null);
+  const previousActiveElement = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (!open) return;

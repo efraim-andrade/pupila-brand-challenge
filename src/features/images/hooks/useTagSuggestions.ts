@@ -58,12 +58,12 @@ export function useTagSuggestions(imageUrl: string): UseTagSuggestionsResult {
         }
 
         if (!response.ok) {
-          const data = await response.json();
-          throw new Error(data.error ?? 'Suggestion failed');
+          const errorBody = await response.json();
+          throw new Error(errorBody.error ?? 'Suggestion failed');
         }
 
-        const data = await response.json();
-        setSuggestions(data);
+        const tagSuggestionData = await response.json();
+        setSuggestions(tagSuggestionData);
       } catch (err) {
         if (err instanceof DOMException && err.name === 'AbortError') return;
         setError(

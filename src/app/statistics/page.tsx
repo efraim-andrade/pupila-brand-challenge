@@ -20,7 +20,7 @@ export default function StatisticsPage(): JSX.Element {
   const groupStats = useMemo<GroupStat[]>(() => {
     return groups.map((group) => {
       const imageCount = images.filter(
-        (img) => img.groupId === group.id
+        (image) => image.groupId === group.id
       ).length;
       const paletteCount = palettes.filter(
         (palette) => palette.groupId === group.id
@@ -38,8 +38,8 @@ export default function StatisticsPage(): JSX.Element {
 
   const tagStats = useMemo<TagStat[]>(() => {
     return tags.map((tag) => {
-      const imageCount = images.filter((img) =>
-        img.tagIds.includes(tag.id)
+      const imageCount = images.filter((image) =>
+        image.tagIds.includes(tag.id)
       ).length;
       const paletteCount = palettes.filter((palette) =>
         palette.tagIds.includes(tag.id)
@@ -68,7 +68,7 @@ export default function StatisticsPage(): JSX.Element {
   const totalPalettes = palettes.length;
   const totalItems = totalImages + totalPalettes;
 
-  const ungroupedImages = images.filter((img) => !img.groupId).length;
+  const ungroupedImages = images.filter((image) => !image.groupId).length;
   const ungroupedPalettes = palettes.filter(
     (palette) => !palette.groupId
   ).length;
@@ -96,7 +96,7 @@ export default function StatisticsPage(): JSX.Element {
                 <EmptyState message="No groups created yet" />
               ) : (
                 <>
-                  <GroupsChart data={groupStats} />
+                  <GroupsChart groupStats={groupStats} />
                   <GroupsTable stats={groupStats} unusedCount={unusedGroups} />
                 </>
               )}
@@ -110,7 +110,7 @@ export default function StatisticsPage(): JSX.Element {
                 <EmptyState message="No tags created yet" />
               ) : (
                 <>
-                  <TagsChart data={tagChartData} />
+                  <TagsChart tagChartData={tagChartData} />
                   <TagsTable stats={tagStats} unusedCount={unusedTags} />
                 </>
               )}

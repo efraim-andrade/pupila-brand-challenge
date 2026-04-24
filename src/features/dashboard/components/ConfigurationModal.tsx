@@ -49,13 +49,15 @@ export function ConfigurationModal({
   const updateTag = useAppStore((store) => store.updateTag);
   const deleteTag = useAppStore((store) => store.deleteTag);
 
-  const [editing, setEditing] = useState<EditingState | null>(null);
-  const [creating, setCreating] = useState<CreatingState | null>(null);
+  const [editingEntity, setEditingEntity] = useState<EditingState | null>(null);
+  const [creatingEntity, setCreatingEntity] = useState<CreatingState | null>(
+    null
+  );
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
 
   const resetTabState = () => {
-    setEditing(null);
-    setCreating(null);
+    setEditingEntity(null);
+    setCreatingEntity(null);
     setPendingDeleteId(null);
   };
 
@@ -72,69 +74,78 @@ export function ConfigurationModal({
     images.filter((image) => image.tagIds.includes(tagId)).length +
     palettes.filter((palette) => palette.tagIds.includes(tagId)).length;
 
-  const startEditing = (id: string) => {
-    const item =
+  const handleStartEditingEntity = (id: string) => {
+    const targetEntity =
       activeTab === 'groups'
         ? groups.find((group) => group.id === id)
         : tags.find((tag) => tag.id === id);
-    if (!item) return;
+    if (!targetEntity) return;
     if (activeTab === 'groups') {
-      setEditing({ id, name: item.name, color: '' });
+      setEditingEntity({ id, name: targetEntity.name, color: '' });
     } else {
-      setEditing({
+      setEditingEntity({
         id,
-        name: item.name,
-        color: item.color ?? DEFAULT_TAG_COLOR,
+        name: targetEntity.name,
+        color: targetEntity.color ?? DEFAULT_TAG_COLOR,
       });
     }
   };
 
-  const commitEdit = () => {
-    if (!editing) return;
-    const trimmed = editing.name.trim();
-    if (trimmed) {
-      if (activeTab === 'groups') updateGroup(editing.id, { name: trimmed });
-      else updateTag(editing.id, { name: trimmed, color: editing.color });
+  const handleCommitEntityEdit = () => {
+    if (!editingEntity) return;
+    const trimmedName = editingEntity.name.trim();
+    if (trimmedName) {
+      if (activeTab === 'groups')
+        updateGroup(editingEntity.id, { name: trimmedName });
+      else
+        updateTag(editingEntity.id, {
+          name: trimmedName,
+          color: editingEntity.color,
+        });
     }
-    setEditing(null);
+    setEditingEntity(null);
   };
 
   const handleEditKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      commitEdit();
+      handleCommitEntityEdit();
     }
-    if (event.key === 'Escape') setEditing(null);
+    if (event.key === 'Escape') setEditingEntity(null);
   };
 
-  const commitCreate = () => {
-    if (!creating) return;
-    const trimmed = creating.name.trim();
-    if (trimmed) {
-      if (activeTab === 'groups') addGroup({ name: trimmed, type: 'shared' });
+  const handleCommitEntityCreate = () => {
+    if (!creatingEntity) return;
+    const trimmedName = creatingEntity.name.trim();
+    if (trimmedName) {
+      if (activeTab === 'groups')
+        addGroup({ name: trimmedName, type: 'shared' });
       else
-        addTag({ name: trimmed, color: creating.color ?? DEFAULT_TAG_COLOR });
+        addTag({
+          name: trimmedName,
+          color: creatingEntity.color ?? DEFAULT_TAG_COLOR,
+        });
     }
-    setCreating(null);
+    setCreatingEntity(null);
   };
 
   const handleCreateKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      commitCreate();
+      handleCommitEntityCreate();
     }
-    if (event.key === 'Escape') setCreating(null);
+    if (event.key === 'Escape') setCreatingEntity(null);
   };
 
-  const handleDelete = (id: string) => {
+  const handleConfirmDeleteEntity = (id: string) => {
     if (activeTab === 'groups') deleteGroup(id);
     else deleteTag(id);
     setPendingDeleteId(null);
   };
 
-  const items = activeTab === 'groups' ? groups : tags;
+  const currentTabItems = activeTab === 'groups' ? groups : tags;
   const usageCount = activeTab === 'groups' ? groupUsageCount : tagUsageCount;
-  const deleteWarning = (id: string) => {
+  const getDeleteWarningMessage = (id: string) => {
     const count = usageCount(id);
     if (count === 0) return null;
     return activeTab === 'groups'
@@ -166,22 +177,22 @@ export function ConfigurationModal({
         </div>
 
         <div className="flex flex-col gap-3">
-          {items.length === 0 && !creating ? (
+          {currentTabItems.length === 0 && !creatingEntity ? (
             <p className="py-6 text-center text-sm text-gray-400">
               No {activeTab} yet. Create one below.
             </p>
           ) : (
             <ul className="flex flex-col gap-1">
-              {items.map((item) => {
-                const isEditing = editing?.id === item.id;
-                const isConfirmingDelete = pendingDeleteId === item.id;
-                const warning = deleteWarning(item.id);
-                const count = usageCount(item.id);
+              {currentTabItems.map((currentItem) => {
+                const isEditing = editingEntity?.id === currentItem.id;
+                const isConfirmingDelete = pendingDeleteId === currentItem.id;
+                const warning = getDeleteWarningMessage(currentItem.id);
+                const count = usageCount(currentItem.id);
 
                 if (isEditing) {
                   return (
                     <li
-                      key={item.id}
+                      key={currentItem.id}
                       className="flex items-center gap-2 rounded-lg border border-indigo-200 bg-indigo-50/50 p-2.5"
                     >
                       {activeTab === 'tags' && (
@@ -191,12 +202,12 @@ export function ConfigurationModal({
                               key={color}
                               type="button"
                               onClick={() =>
-                                setEditing((prev) =>
-                                  prev ? { ...prev, color } : null
+                                setEditingEntity((prevEntity) =>
+                                  prevEntity ? { ...prevEntity, color } : null
                                 )
                               }
                               className={`h-4 w-4 shrink-0 rounded-full transition-transform ${
-                                editing.color === color
+                                editingEntity.color === color
                                   ? 'scale-125 ring-2 ring-gray-400 ring-offset-1'
                                   : ''
                               }`}
@@ -208,10 +219,12 @@ export function ConfigurationModal({
                       )}
                       <input
                         type="text"
-                        value={editing.name}
+                        value={editingEntity.name}
                         onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                          setEditing((prev) =>
-                            prev ? { ...prev, name: event.target.value } : null
+                          setEditingEntity((prevEntity) =>
+                            prevEntity
+                              ? { ...prevEntity, name: event.target.value }
+                              : null
                           )
                         }
                         onKeyDown={handleEditKeyDown}
@@ -221,8 +234,8 @@ export function ConfigurationModal({
                         type="button"
                         size="xs"
                         className="shrink-0 px-2.5"
-                        onClick={commitEdit}
-                        disabled={!editing.name.trim()}
+                        onClick={handleCommitEntityEdit}
+                        disabled={!editingEntity.name.trim()}
                       >
                         Save
                       </Button>
@@ -231,7 +244,7 @@ export function ConfigurationModal({
                         variant="ghost"
                         size="xs"
                         className="shrink-0"
-                        onClick={() => setEditing(null)}
+                        onClick={() => setEditingEntity(null)}
                       >
                         Cancel
                       </Button>
@@ -242,11 +255,11 @@ export function ConfigurationModal({
                 if (isConfirmingDelete) {
                   return (
                     <li
-                      key={item.id}
+                      key={currentItem.id}
                       className="flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2.5"
                     >
                       <span className="flex-1 text-sm text-red-700">
-                        Delete &ldquo;{item.name}&rdquo;
+                        Delete &ldquo;{currentItem.name}&rdquo;
                         {warning && (
                           <span className="ml-1 text-xs text-red-500">
                             ({warning})
@@ -258,7 +271,9 @@ export function ConfigurationModal({
                         variant="danger"
                         size="xs"
                         className="shrink-0 px-2.5"
-                        onClick={() => handleDelete(item.id)}
+                        onClick={() =>
+                          handleConfirmDeleteEntity(currentItem.id)
+                        }
                       >
                         Delete
                       </Button>
@@ -277,21 +292,22 @@ export function ConfigurationModal({
 
                 return (
                   <li
-                    key={item.id}
+                    key={currentItem.id}
                     className="flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-gray-50"
                   >
                     {activeTab === 'tags' ? (
                       <span
                         className="h-3 w-3 shrink-0 rounded-full"
                         style={{
-                          backgroundColor: item.color ?? DEFAULT_TAG_COLOR,
+                          backgroundColor:
+                            currentItem.color ?? DEFAULT_TAG_COLOR,
                         }}
                       />
                     ) : (
                       <Folder className="h-3 w-3 shrink-0 text-gray-400" />
                     )}
                     <span className="flex-1 text-sm text-gray-800">
-                      {item.name}
+                      {currentItem.name}
                     </span>
                     {count >= 0 && (
                       <span className="text-xs text-gray-400">
@@ -301,17 +317,17 @@ export function ConfigurationModal({
                     <div className="flex items-center gap-1">
                       <button
                         type="button"
-                        onClick={() => startEditing(item.id)}
+                        onClick={() => handleStartEditingEntity(currentItem.id)}
                         className="rounded p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-700"
-                        aria-label={`Edit ${item.name}`}
+                        aria-label={`Edit ${currentItem.name}`}
                       >
                         <Pencil className="h-3.5 w-3.5" />
                       </button>
                       <button
                         type="button"
-                        onClick={() => setPendingDeleteId(item.id)}
+                        onClick={() => setPendingDeleteId(currentItem.id)}
                         className="rounded p-1 text-red-500 hover:bg-red-50"
-                        aria-label={`Delete ${item.name}`}
+                        aria-label={`Delete ${currentItem.name}`}
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
@@ -322,15 +338,17 @@ export function ConfigurationModal({
             </ul>
           )}
 
-          {creating ? (
+          {creatingEntity ? (
             activeTab === 'groups' ? (
               <div className="flex items-center gap-2 rounded-lg border border-indigo-200 bg-indigo-50/50 p-2.5">
                 <input
                   type="text"
-                  value={creating.name}
+                  value={creatingEntity.name}
                   onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                    setCreating((prev) =>
-                      prev ? { ...prev, name: event.target.value } : null
+                    setCreatingEntity((prevEntity) =>
+                      prevEntity
+                        ? { ...prevEntity, name: event.target.value }
+                        : null
                     )
                   }
                   onKeyDown={handleCreateKeyDown}
@@ -342,7 +360,7 @@ export function ConfigurationModal({
                   variant="ghost"
                   size="xs"
                   className="shrink-0"
-                  onClick={() => setCreating(null)}
+                  onClick={() => setCreatingEntity(null)}
                 >
                   Cancel
                 </Button>
@@ -350,8 +368,8 @@ export function ConfigurationModal({
                   type="button"
                   size="xs"
                   className="shrink-0"
-                  onClick={commitCreate}
-                  disabled={!creating.name.trim()}
+                  onClick={handleCommitEntityCreate}
+                  disabled={!creatingEntity.name.trim()}
                 >
                   Create
                 </Button>
@@ -364,12 +382,12 @@ export function ConfigurationModal({
                       key={color}
                       type="button"
                       onClick={() =>
-                        setCreating((prev) =>
-                          prev ? { ...prev, color } : null
+                        setCreatingEntity((prevEntity) =>
+                          prevEntity ? { ...prevEntity, color } : null
                         )
                       }
                       className={`h-4 w-4 shrink-0 rounded-full transition-transform ${
-                        creating.color === color
+                        creatingEntity.color === color
                           ? 'scale-125 ring-2 ring-gray-400 ring-offset-1'
                           : ''
                       }`}
@@ -380,10 +398,12 @@ export function ConfigurationModal({
                 </div>
                 <input
                   type="text"
-                  value={creating.name}
+                  value={creatingEntity.name}
                   onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                    setCreating((prev) =>
-                      prev ? { ...prev, name: event.target.value } : null
+                    setCreatingEntity((prevEntity) =>
+                      prevEntity
+                        ? { ...prevEntity, name: event.target.value }
+                        : null
                     )
                   }
                   onKeyDown={handleCreateKeyDown}
@@ -395,7 +415,7 @@ export function ConfigurationModal({
                   variant="ghost"
                   size="xs"
                   className="shrink-0"
-                  onClick={() => setCreating(null)}
+                  onClick={() => setCreatingEntity(null)}
                 >
                   Cancel
                 </Button>
@@ -403,8 +423,8 @@ export function ConfigurationModal({
                   type="button"
                   size="xs"
                   className="shrink-0"
-                  onClick={commitCreate}
-                  disabled={!creating.name.trim()}
+                  onClick={handleCommitEntityCreate}
+                  disabled={!creatingEntity.name.trim()}
                 >
                   Create
                 </Button>
@@ -413,7 +433,7 @@ export function ConfigurationModal({
           ) : (
             <button
               type="button"
-              onClick={() => setCreating({ name: '', color: undefined })}
+              onClick={() => setCreatingEntity({ name: '', color: undefined })}
               className="flex items-center gap-1.5 self-start rounded-lg border border-dashed border-gray-300 px-3 py-2 text-sm text-gray-500 transition-colors hover:border-indigo-400 hover:text-indigo-600"
             >
               <Plus className="h-4 w-4" />

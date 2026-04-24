@@ -11,11 +11,11 @@ export interface HSL {
 }
 
 export function hexToRgb(hex: string): RGB {
-  const clean = hex.replace('#', '');
+  const hexWithoutPrefix = hex.replace('#', '');
   return {
-    red: parseInt(clean.slice(0, 2), 16),
-    green: parseInt(clean.slice(2, 4), 16),
-    blue: parseInt(clean.slice(4, 6), 16),
+    red: parseInt(hexWithoutPrefix.slice(0, 2), 16),
+    green: parseInt(hexWithoutPrefix.slice(2, 4), 16),
+    blue: parseInt(hexWithoutPrefix.slice(4, 6), 16),
   };
 }
 
@@ -110,17 +110,17 @@ export function isValidHex(hex: string): boolean {
 }
 
 export function normalizeHex(hex: string): string {
-  const clean = hex.replace('#', '');
-  if (clean.length === 3) {
+  const hexWithoutPrefix = hex.replace('#', '');
+  if (hexWithoutPrefix.length === 3) {
     return (
       '#' +
-      clean
+      hexWithoutPrefix
         .split('')
         .map((hexChar) => hexChar + hexChar)
         .join('')
     );
   }
-  return `#${clean.toLowerCase()}`;
+  return `#${hexWithoutPrefix.toLowerCase()}`;
 }
 
 function toProxiedUrl(imageUrl: string): string {

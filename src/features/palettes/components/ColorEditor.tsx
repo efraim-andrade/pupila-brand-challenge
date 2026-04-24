@@ -66,9 +66,11 @@ function SortableColorRow({
   const hexIsValid = isValidHex(item.hex);
 
   const handleHexTextChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const raw = event.target.value;
-    const normalized = raw.startsWith('#') ? raw : `#${raw}`;
-    onHexChange(item.id, normalized.slice(0, 7));
+    const rawHexInput = event.target.value;
+    const normalizedHex = rawHexInput.startsWith('#')
+      ? rawHexInput
+      : `#${rawHexInput}`;
+    onHexChange(item.id, normalizedHex.slice(0, 7));
   };
 
   return (
@@ -165,7 +167,7 @@ export function ColorEditor({
     onChange(items.map((item) => (item.id === id ? { ...item, name } : item)));
   };
 
-  const handleDelete = (id: string) => {
+  const handleDeleteColor = (id: string) => {
     onChange(items.filter((item) => item.id !== id));
   };
 
@@ -186,7 +188,7 @@ export function ColorEditor({
               item={item}
               onHexChange={handleHexChange}
               onNameChange={handleNameChange}
-              onDelete={handleDelete}
+              onDelete={handleDeleteColor}
             />
           ))}
         </SortableContext>

@@ -35,18 +35,18 @@ interface PaletteListRowProps {
   palette: ColorPalette;
   group: Group | undefined;
   tags: Tag[];
-  onDelete: (id: string) => void;
-  onEdit: (palette: ColorPalette) => void;
-  onView: (palette: ColorPalette) => void;
+  onDeletePalette: (id: string) => void;
+  onEditPalette: (palette: ColorPalette) => void;
+  onViewPalette: (palette: ColorPalette) => void;
 }
 
 function PaletteListRow({
   palette,
   group,
   tags,
-  onDelete,
-  onEdit,
-  onView,
+  onDeletePalette,
+  onEditPalette,
+  onViewPalette,
 }: PaletteListRowProps): JSX.Element {
   const paletteTags = useMemo(
     () => tags.filter((tag) => palette.tagIds.includes(tag.id)),
@@ -56,7 +56,7 @@ function PaletteListRow({
   return (
     <div
       className="group flex cursor-pointer items-center gap-4 px-6 py-3 hover:bg-gray-50"
-      onClick={() => onView(palette)}
+      onClick={() => onViewPalette(palette)}
     >
       <div className="flex h-10 w-24 flex-shrink-0 overflow-hidden rounded-lg border border-gray-100">
         {palette.colors.length === 0 ? (
@@ -113,7 +113,7 @@ function PaletteListRow({
         <button
           onClick={(event) => {
             event.stopPropagation();
-            onEdit(palette);
+            onEditPalette(palette);
           }}
           className="rounded-lg p-1.5 text-gray-500 hover:bg-gray-200"
           aria-label="Edit palette"
@@ -123,7 +123,7 @@ function PaletteListRow({
         <button
           onClick={(event) => {
             event.stopPropagation();
-            onDelete(palette.id);
+            onDeletePalette(palette.id);
           }}
           className="rounded-lg p-1.5 text-red-500 hover:bg-red-50"
           aria-label="Delete palette"
@@ -160,9 +160,9 @@ export function PaletteGrid({
             palette={palette}
             group={palette.groupId ? groupsById[palette.groupId] : undefined}
             tags={tags}
-            onDelete={onDeletePalette}
-            onEdit={onEditPalette}
-            onView={onViewPalette}
+            onDeletePalette={onDeletePalette}
+            onEditPalette={onEditPalette}
+            onViewPalette={onViewPalette}
           />
         ))}
       </div>
@@ -177,9 +177,9 @@ export function PaletteGrid({
           palette={palette}
           group={palette.groupId ? groupsById[palette.groupId] : undefined}
           tags={tags}
-          onDelete={onDeletePalette}
-          onEdit={onEditPalette}
-          onView={onViewPalette}
+          onDeletePalette={onDeletePalette}
+          onEditPalette={onEditPalette}
+          onViewPalette={onViewPalette}
         />
       ))}
     </div>

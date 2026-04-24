@@ -19,31 +19,31 @@ export function TagPicker({
 }: TagPickerProps): JSX.Element {
   const addTag = useAppStore((store) => store.addTag);
 
-  const [inputVisible, setInputVisible] = useState(false);
-  const [newName, setNewName] = useState('');
-  const [newColor, setNewColor] = useState(Object.values(TAG_COLORS)[0]);
+  const [isCreatingTag, setIsCreatingTag] = useState(false);
+  const [newTagName, setNewTagName] = useState('');
+  const [newTagColor, setNewTagColor] = useState(Object.values(TAG_COLORS)[0]);
 
-  const handleCreate = () => {
-    const trimmed = newName.trim();
-    if (!trimmed) {
-      setInputVisible(false);
+  const handleCreateTag = () => {
+    const trimmedName = newTagName.trim();
+    if (!trimmedName) {
+      setIsCreatingTag(false);
       return;
     }
-    const created = addTag({ name: trimmed, color: newColor });
+    const created = addTag({ name: trimmedName, color: newTagColor });
     onToggle(created.id);
-    setNewName('');
-    setNewColor(Object.values(TAG_COLORS)[0]);
-    setInputVisible(false);
+    setNewTagName('');
+    setNewTagColor(Object.values(TAG_COLORS)[0]);
+    setIsCreatingTag(false);
   };
 
-  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+  const handleTagInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      handleCreate();
+      handleCreateTag();
     }
     if (event.key === 'Escape') {
-      setInputVisible(false);
-      setNewName('');
+      setIsCreatingTag(false);
+      setNewTagName('');
     }
   };
 
@@ -70,16 +70,16 @@ export function TagPicker({
           );
         })}
 
-        {inputVisible ? (
+        {isCreatingTag ? (
           <div className="flex items-center gap-1.5 rounded-xl border border-indigo-300 bg-indigo-50 px-2.5 py-1">
             <div className="flex gap-1">
               {Object.values(TAG_COLORS).map((color) => (
                 <button
                   key={color}
                   type="button"
-                  onClick={() => setNewColor(color)}
+                  onClick={() => setNewTagColor(color)}
                   className={`h-3 w-3 rounded-full transition-transform ${
-                    newColor === color
+                    newTagColor === color
                       ? 'scale-125 ring-2 ring-gray-400 ring-offset-1'
                       : ''
                   }`}
@@ -90,16 +90,16 @@ export function TagPicker({
             </div>
             <input
               type="text"
-              value={newName}
-              onChange={(event) => setNewName(event.target.value)}
-              onKeyDown={handleKeyDown}
+              value={newTagName}
+              onChange={(event) => setNewTagName(event.target.value)}
+              onKeyDown={handleTagInputKeyDown}
               placeholder="Tag name"
               className="w-20 bg-transparent text-xs text-gray-900 placeholder-gray-400 focus:outline-none"
             />
             <button
               type="button"
-              onClick={handleCreate}
-              disabled={!newName.trim()}
+              onClick={handleCreateTag}
+              disabled={!newTagName.trim()}
               className="text-indigo-600 hover:text-indigo-800 disabled:opacity-40"
               aria-label="Create tag"
             >
@@ -108,8 +108,8 @@ export function TagPicker({
             <button
               type="button"
               onClick={() => {
-                setInputVisible(false);
-                setNewName('');
+                setIsCreatingTag(false);
+                setNewTagName('');
               }}
               className="text-gray-400 hover:text-gray-600"
               aria-label="Cancel"
@@ -120,7 +120,7 @@ export function TagPicker({
         ) : (
           <button
             type="button"
-            onClick={() => setInputVisible(true)}
+            onClick={() => setIsCreatingTag(true)}
             className="rounded-full border border-dashed border-gray-300 px-2.5 py-1 text-xs font-medium text-gray-400 transition-colors hover:border-indigo-400 hover:text-indigo-600"
           >
             + New tag

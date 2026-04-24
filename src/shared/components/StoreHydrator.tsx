@@ -26,25 +26,30 @@ export function StoreHydrator(): null {
 
       // Seed mock data on first run
       if (images.length === 0 && palettes.length === 0) {
-        for (const g of mockGroups)
-          addGroup({ name: g.name, type: g.type, color: g.color });
-        for (const t of mockTags) addTag({ name: t.name, color: t.color });
-        for (const img of mockImages) {
+        for (const mockGroup of mockGroups)
+          addGroup({
+            name: mockGroup.name,
+            type: mockGroup.type,
+            color: mockGroup.color,
+          });
+        for (const mockTag of mockTags)
+          addTag({ name: mockTag.name, color: mockTag.color });
+        for (const mockImage of mockImages) {
           addImage({
-            url: img.url,
-            name: img.name,
+            url: mockImage.url,
+            name: mockImage.name,
             groupId: null,
             tagIds: [],
-            comments: img.comments,
+            comments: mockImage.comments,
           });
         }
-        for (const pal of mockPalettes) {
+        for (const mockPalette of mockPalettes) {
           addPalette({
-            name: pal.name,
-            colors: pal.colors,
+            name: mockPalette.name,
+            colors: mockPalette.colors,
             groupId: null,
             tagIds: [],
-            comments: pal.comments,
+            comments: mockPalette.comments,
           });
         }
       } else {

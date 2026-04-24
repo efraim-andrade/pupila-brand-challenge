@@ -33,7 +33,7 @@ export function EditImageModal({
   const allGroups = useAppStore((store) => store.groups);
 
   const liveImage = useAppStore((store) =>
-    store.images.find((img) => img.id === image?.id)
+    store.images.find((image) => image.id === image?.id)
   );
 
   const [url, setUrl] = useState(image?.url ?? '');

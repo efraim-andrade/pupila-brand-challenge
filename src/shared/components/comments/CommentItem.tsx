@@ -32,26 +32,26 @@ export function CommentItem({
   onDelete,
 }: CommentItemProps): JSX.Element {
   const [isEditing, setIsEditing] = useState(false);
-  const [editText, setEditText] = useState(comment.text);
+  const [editCommentText, setEditCommentText] = useState(comment.text);
 
   const textSize = compact ? 'text-xs' : 'text-sm';
   const padding = compact ? 'p-2' : 'p-3';
   const dateSize = compact ? 'text-[10px]' : 'text-xs';
   const iconSize = compact ? 'h-3 w-3' : 'h-3.5 w-3.5';
 
-  const handleSaveEdit = () => {
-    const trimmed = editText.trim();
-    if (trimmed && trimmed !== comment.text) onUpdate(trimmed);
+  const handleSaveCommentEdit = () => {
+    const trimmedText = editCommentText.trim();
+    if (trimmedText && trimmedText !== comment.text) onUpdate(trimmedText);
     setIsEditing(false);
   };
 
-  const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleEditKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
-      handleSaveEdit();
+      handleSaveCommentEdit();
     }
     if (event.key === 'Escape') {
-      setEditText(comment.text);
+      setEditCommentText(comment.text);
       setIsEditing(false);
     }
   };
@@ -62,11 +62,11 @@ export function CommentItem({
         className={`flex flex-col gap-1.5 rounded-lg border border-indigo-200 bg-indigo-50 ${padding}`}
       >
         <textarea
-          value={editText}
+          value={editCommentText}
           onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-            setEditText(e.target.value)
+            setEditCommentText(e.target.value)
           }
-          onKeyDown={handleKeyDown}
+          onKeyDown={handleEditKeyDown}
           rows={2}
           className={`w-full resize-none rounded border border-gray-200 bg-white px-2 py-1 ${textSize} text-gray-900 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500`}
         />
@@ -77,7 +77,7 @@ export function CommentItem({
             size="xs"
             className="px-2"
             onClick={() => {
-              setEditText(comment.text);
+              setEditCommentText(comment.text);
               setIsEditing(false);
             }}
           >
@@ -87,8 +87,8 @@ export function CommentItem({
             type="button"
             size="xs"
             className="px-2"
-            onClick={handleSaveEdit}
-            disabled={!editText.trim()}
+            onClick={handleSaveCommentEdit}
+            disabled={!editCommentText.trim()}
           >
             Save
           </Button>
@@ -115,7 +115,7 @@ export function CommentItem({
         <button
           type="button"
           onClick={() => {
-            setEditText(comment.text);
+            setEditCommentText(comment.text);
             setIsEditing(true);
           }}
           className="rounded p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-600"

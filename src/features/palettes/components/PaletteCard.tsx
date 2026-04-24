@@ -10,18 +10,18 @@ interface PaletteCardProps {
   palette: ColorPalette;
   group: Group | undefined;
   tags: Tag[];
-  onDelete: (id: string) => void;
-  onEdit: (palette: ColorPalette) => void;
-  onView: (palette: ColorPalette) => void;
+  onDeletePalette: (id: string) => void;
+  onEditPalette: (palette: ColorPalette) => void;
+  onViewPalette: (palette: ColorPalette) => void;
 }
 
 export function PaletteCard({
   palette,
   group,
   tags,
-  onDelete,
-  onEdit,
-  onView,
+  onDeletePalette,
+  onEditPalette,
+  onViewPalette,
 }: PaletteCardProps): JSX.Element {
   const paletteTags = useMemo(
     () => tags.filter((tag) => palette.tagIds.includes(tag.id)),
@@ -29,7 +29,7 @@ export function PaletteCard({
   );
 
   return (
-    <Card onClick={() => onView(palette)}>
+    <Card onClick={() => onViewPalette(palette)}>
       <div className="relative flex h-20 overflow-hidden">
         {palette.colors.length === 0 ? (
           <div className="flex h-full w-full items-center justify-center bg-gray-100">
@@ -73,7 +73,7 @@ export function PaletteCard({
           <button
             onClick={(event) => {
               event.stopPropagation();
-              onEdit(palette);
+              onEditPalette(palette);
             }}
             className="rounded-lg bg-white/90 p-1.5 text-gray-700 shadow-sm hover:bg-white"
             aria-label="Edit palette"
@@ -95,7 +95,7 @@ export function PaletteCard({
           <button
             onClick={(event) => {
               event.stopPropagation();
-              onDelete(palette.id);
+              onDeletePalette(palette.id);
             }}
             className="rounded-lg bg-white/90 p-1.5 text-red-600 shadow-sm hover:bg-white"
             aria-label="Delete palette"

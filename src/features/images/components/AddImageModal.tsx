@@ -53,24 +53,25 @@ export function AddImageModal({
     dismiss: dismissSuggestions,
   } = useTagSuggestions(url);
 
-  const handleApplySuggestions = (
+  const handleApplyTagSuggestions = (
     groupName: string | null,
     tagNames: string[]
   ) => {
     if (groupName) {
-      const existing = allGroups.find(
+      const existingGroup = allGroups.find(
         (group) => group.name.toLowerCase() === groupName.toLowerCase()
       );
-      const group = existing ?? addGroup({ name: groupName, type: 'shared' });
+      const group =
+        existingGroup ?? addGroup({ name: groupName, type: 'shared' });
       setSelectedGroupId(group.id);
     }
 
     const resolvedTagIds = tagNames.map((tagName) => {
-      const existing = allTags.find(
+      const existingTag = allTags.find(
         (tag) => tag.name.toLowerCase() === tagName.toLowerCase()
       );
-      return existing
-        ? existing.id
+      return existingTag
+        ? existingTag.id
         : addTag({ name: tagName, color: Object.values(TAG_COLORS)[0] }).id;
     });
 
@@ -196,7 +197,7 @@ export function AddImageModal({
           error={suggestionsError}
           existingGroups={allGroups}
           existingTags={allTags}
-          onApplyAll={handleApplySuggestions}
+          onApplyAll={handleApplyTagSuggestions}
           onDismiss={dismissSuggestions}
         />
 

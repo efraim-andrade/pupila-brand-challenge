@@ -3,16 +3,16 @@ import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 import type { ChartDataItem } from '@/app/statistics/types';
 
 interface TagsChartProps {
-  data: ChartDataItem[];
+  tagChartData: ChartDataItem[];
 }
 
-export function TagsChart({ data }: TagsChartProps): JSX.Element {
+export function TagsChart({ tagChartData }: TagsChartProps): JSX.Element {
   return (
     <div className="flex flex-col gap-6">
       <ResponsiveContainer width="100%" height={300}>
         <PieChart>
           <Pie
-            data={data}
+            data={tagChartData}
             cx="50%"
             cy="50%"
             innerRadius={60}
@@ -20,7 +20,7 @@ export function TagsChart({ data }: TagsChartProps): JSX.Element {
             paddingAngle={2}
             dataKey="value"
           >
-            {data.map((entry) => (
+            {tagChartData.map((entry) => (
               <Cell key={entry.name} fill={entry.fill} />
             ))}
           </Pie>

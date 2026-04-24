@@ -39,9 +39,9 @@ describe('ImageCard', () => {
           image={makeImage({ name: 'My Image' })}
           group={undefined}
           tags={[]}
-          onDelete={jest.fn()}
-          onEdit={jest.fn()}
-          onExpand={jest.fn()}
+          onDeleteImage={jest.fn()}
+          onEditImage={jest.fn()}
+          onExpandImage={jest.fn()}
           onCreatePalette={jest.fn()}
         />
       );
@@ -55,9 +55,9 @@ describe('ImageCard', () => {
           image={makeImage()}
           group={makeGroup({ name: 'My Group' })}
           tags={[]}
-          onDelete={jest.fn()}
-          onEdit={jest.fn()}
-          onExpand={jest.fn()}
+          onDeleteImage={jest.fn()}
+          onEditImage={jest.fn()}
+          onExpandImage={jest.fn()}
           onCreatePalette={jest.fn()}
         />
       );
@@ -71,9 +71,9 @@ describe('ImageCard', () => {
           image={makeImage()}
           group={undefined}
           tags={[]}
-          onDelete={jest.fn()}
-          onEdit={jest.fn()}
-          onExpand={jest.fn()}
+          onDeleteImage={jest.fn()}
+          onEditImage={jest.fn()}
+          onExpandImage={jest.fn()}
           onCreatePalette={jest.fn()}
         />
       );
@@ -93,9 +93,9 @@ describe('ImageCard', () => {
           image={image}
           group={undefined}
           tags={tags}
-          onDelete={jest.fn()}
-          onEdit={jest.fn()}
-          onExpand={jest.fn()}
+          onDeleteImage={jest.fn()}
+          onEditImage={jest.fn()}
+          onExpandImage={jest.fn()}
           onCreatePalette={jest.fn()}
         />
       );
@@ -127,9 +127,9 @@ describe('ImageCard', () => {
           image={image}
           group={undefined}
           tags={[]}
-          onDelete={jest.fn()}
-          onEdit={jest.fn()}
-          onExpand={jest.fn()}
+          onDeleteImage={jest.fn()}
+          onEditImage={jest.fn()}
+          onExpandImage={jest.fn()}
           onCreatePalette={jest.fn()}
         />
       );
@@ -154,9 +154,9 @@ describe('ImageCard', () => {
           image={image}
           group={undefined}
           tags={[]}
-          onDelete={jest.fn()}
-          onEdit={jest.fn()}
-          onExpand={jest.fn()}
+          onDeleteImage={jest.fn()}
+          onEditImage={jest.fn()}
+          onExpandImage={jest.fn()}
           onCreatePalette={jest.fn()}
         />
       );
@@ -166,8 +166,8 @@ describe('ImageCard', () => {
   });
 
   describe('actions', () => {
-    it('calls onExpand when clicking the image', async () => {
-      const onExpand = jest.fn();
+    it('calls onExpandImage when clicking the image', async () => {
+      const onExpandImage = jest.fn();
       const image = makeImage({ name: 'Expandable Image' });
 
       render(
@@ -175,9 +175,9 @@ describe('ImageCard', () => {
           image={image}
           group={undefined}
           tags={[]}
-          onDelete={jest.fn()}
-          onEdit={jest.fn()}
-          onExpand={onExpand}
+          onDeleteImage={jest.fn()}
+          onEditImage={jest.fn()}
+          onExpandImage={onExpandImage}
           onCreatePalette={jest.fn()}
         />
       );
@@ -186,11 +186,11 @@ describe('ImageCard', () => {
         screen.getByRole('button', { name: 'Expand Expandable Image' })
       );
 
-      expect(onExpand).toHaveBeenCalledWith(image.id);
+      expect(onExpandImage).toHaveBeenCalledWith(image.id);
     });
 
-    it('calls onEdit when clicking edit button', async () => {
-      const onEdit = jest.fn();
+    it('calls onEditImage when clicking edit button', async () => {
+      const onEditImage = jest.fn();
       const image = makeImage({ name: 'Editable Image' });
 
       render(
@@ -198,20 +198,20 @@ describe('ImageCard', () => {
           image={image}
           group={undefined}
           tags={[]}
-          onDelete={jest.fn()}
-          onEdit={onEdit}
-          onExpand={jest.fn()}
+          onDeleteImage={jest.fn()}
+          onEditImage={onEditImage}
+          onExpandImage={jest.fn()}
           onCreatePalette={jest.fn()}
         />
       );
 
       await userEvent.click(screen.getByRole('button', { name: 'Edit image' }));
 
-      expect(onEdit).toHaveBeenCalledWith(image);
+      expect(onEditImage).toHaveBeenCalledWith(image);
     });
 
-    it('calls onDelete when clicking delete button', async () => {
-      const onDelete = jest.fn();
+    it('calls onDeleteImage when clicking delete button', async () => {
+      const onDeleteImage = jest.fn();
       const image = makeImage({ id: 'delete-me' });
 
       render(
@@ -219,9 +219,9 @@ describe('ImageCard', () => {
           image={image}
           group={undefined}
           tags={[]}
-          onDelete={onDelete}
-          onEdit={jest.fn()}
-          onExpand={jest.fn()}
+          onDeleteImage={onDeleteImage}
+          onEditImage={jest.fn()}
+          onExpandImage={jest.fn()}
           onCreatePalette={jest.fn()}
         />
       );
@@ -230,7 +230,7 @@ describe('ImageCard', () => {
         screen.getByRole('button', { name: 'Delete image' })
       );
 
-      expect(onDelete).toHaveBeenCalledWith('delete-me');
+      expect(onDeleteImage).toHaveBeenCalledWith('delete-me');
     });
 
     it('calls onCreatePalette when clicking create palette button', async () => {
@@ -242,9 +242,9 @@ describe('ImageCard', () => {
           image={image}
           group={undefined}
           tags={[]}
-          onDelete={jest.fn()}
-          onEdit={jest.fn()}
-          onExpand={jest.fn()}
+          onDeleteImage={jest.fn()}
+          onEditImage={jest.fn()}
+          onExpandImage={jest.fn()}
           onCreatePalette={onCreatePalette}
         />
       );
@@ -257,8 +257,8 @@ describe('ImageCard', () => {
     });
 
     it('stops propagation when clicking action buttons', async () => {
-      const onExpand = jest.fn();
-      const onEdit = jest.fn();
+      const onExpandImage = jest.fn();
+      const onEditImage = jest.fn();
       const image = makeImage();
 
       render(
@@ -266,16 +266,16 @@ describe('ImageCard', () => {
           image={image}
           group={undefined}
           tags={[]}
-          onDelete={jest.fn()}
-          onEdit={onEdit}
-          onExpand={onExpand}
+          onDeleteImage={jest.fn()}
+          onEditImage={onEditImage}
+          onExpandImage={onExpandImage}
           onCreatePalette={jest.fn()}
         />
       );
 
       await userEvent.click(screen.getByRole('button', { name: 'Edit image' }));
 
-      expect(onExpand).not.toHaveBeenCalled();
+      expect(onExpandImage).not.toHaveBeenCalled();
     });
   });
 
@@ -286,9 +286,9 @@ describe('ImageCard', () => {
           image={makeImage({ name: 'My Image' })}
           group={undefined}
           tags={[]}
-          onDelete={jest.fn()}
-          onEdit={jest.fn()}
-          onExpand={jest.fn()}
+          onDeleteImage={jest.fn()}
+          onEditImage={jest.fn()}
+          onExpandImage={jest.fn()}
           onCreatePalette={jest.fn()}
         />
       );

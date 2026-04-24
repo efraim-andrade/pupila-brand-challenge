@@ -18,19 +18,21 @@ export function CommentInput({
   compact,
   onAdd,
 }: CommentInputProps): JSX.Element {
-  const [text, setText] = useState('');
+  const [commentText, setCommentText] = useState('');
 
-  const handleSubmit = () => {
-    const trimmed = text.trim();
-    if (!trimmed) return;
-    onAdd(trimmed);
-    setText('');
+  const handleCommentSubmit = () => {
+    const trimmedText = commentText.trim();
+    if (!trimmedText) return;
+    onAdd(trimmedText);
+    setCommentText('');
   };
 
-  const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleCommentInputKeyDown = (
+    event: KeyboardEvent<HTMLTextAreaElement>
+  ) => {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
-      handleSubmit();
+      handleCommentSubmit();
     }
   };
 
@@ -38,19 +40,19 @@ export function CommentInput({
     return (
       <div className="mt-2 flex gap-2">
         <textarea
-          value={text}
+          value={commentText}
           onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-            setText(e.target.value)
+            setCommentText(e.target.value)
           }
-          onKeyDown={handleKeyDown}
+          onKeyDown={handleCommentInputKeyDown}
           placeholder="Add a comment…"
           rows={2}
           className="flex-1 resize-none rounded-lg border border-gray-200 px-2 py-1.5 text-xs text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
         />
         <button
           type="button"
-          onClick={handleSubmit}
-          disabled={!text.trim()}
+          onClick={handleCommentSubmit}
+          disabled={!commentText.trim()}
           className="self-end rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <Send className="h-3 w-3" />
@@ -62,11 +64,11 @@ export function CommentInput({
   return (
     <div className="flex flex-col gap-1.5">
       <textarea
-        value={text}
+        value={commentText}
         onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-          setText(e.target.value)
+          setCommentText(e.target.value)
         }
-        onKeyDown={handleKeyDown}
+        onKeyDown={handleCommentInputKeyDown}
         placeholder="Add a comment… (Enter to submit, Shift+Enter for new line)"
         rows={2}
         className="w-full resize-none rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
@@ -76,8 +78,8 @@ export function CommentInput({
           type="button"
           size="xs"
           className="rounded-lg px-3 py-1.5"
-          onClick={handleSubmit}
-          disabled={!text.trim()}
+          onClick={handleCommentSubmit}
+          disabled={!commentText.trim()}
         >
           Add comment
         </Button>

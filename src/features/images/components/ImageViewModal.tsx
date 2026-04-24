@@ -12,8 +12,8 @@ interface ImageViewModalProps {
   group: Group | undefined;
   tags: Tag[];
   onClose: () => void;
-  onDelete: (id: string) => void;
-  onEdit: (image: Image) => void;
+  onDeleteImage: (id: string) => void;
+  onEditImage: (image: Image) => void;
   onCreatePalette: (image: Image) => void;
   onAddComment: (text: string) => void;
   onUpdateComment: (commentId: string, text: string) => void;
@@ -25,8 +25,8 @@ export function ImageViewModal({
   group,
   tags,
   onClose,
-  onDelete,
-  onEdit,
+  onDeleteImage,
+  onEditImage,
   onCreatePalette,
   onAddComment,
   onUpdateComment,
@@ -115,7 +115,7 @@ export function ImageViewModal({
                   variant="secondary"
                   size="sm"
                   className="flex-1 justify-center"
-                  onClick={() => onEdit(image)}
+                  onClick={() => onEditImage(image)}
                   aria-label="Edit image"
                 >
                   <Pencil className="h-4 w-4 shrink-0" />
@@ -125,7 +125,7 @@ export function ImageViewModal({
                   variant="danger"
                   size="sm"
                   className="flex-1 justify-center"
-                  onClick={() => onDelete(image.id)}
+                  onClick={() => onDeleteImage(image.id)}
                   aria-label="Delete image"
                 >
                   <Trash2 className="h-4 w-4 shrink-0" />

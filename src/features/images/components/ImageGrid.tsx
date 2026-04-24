@@ -43,18 +43,18 @@ interface ImageListRowProps {
   image: ImageType;
   group: Group | undefined;
   tags: Tag[];
-  onDelete: (id: string) => void;
-  onEdit: (image: ImageType) => void;
-  onExpand: (id: string) => void;
+  onDeleteImage: (id: string) => void;
+  onEditImage: (image: ImageType) => void;
+  onExpandImage: (id: string) => void;
 }
 
 function ImageListRow({
   image,
   group,
   tags,
-  onDelete,
-  onEdit,
-  onExpand,
+  onDeleteImage,
+  onEditImage,
+  onExpandImage,
 }: ImageListRowProps): JSX.Element {
   const imageTags = useMemo(
     () => tags.filter((tag) => image.tagIds.includes(tag.id)),
@@ -65,7 +65,7 @@ function ImageListRow({
     <div className="group flex items-center gap-4 px-6 py-3 hover:bg-gray-50">
       <button
         className="relative h-14 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100"
-        onClick={() => onExpand(image.id)}
+        onClick={() => onExpandImage(image.id)}
         aria-label={`Expand ${image.name}`}
       >
         <img
@@ -112,14 +112,14 @@ function ImageListRow({
 
       <div className="flex items-center gap-1 transition-opacity sm:opacity-0 sm:group-hover:opacity-100">
         <button
-          onClick={() => onEdit(image)}
+          onClick={() => onEditImage(image)}
           className="rounded-lg p-1.5 text-gray-500 hover:bg-gray-200"
           aria-label="Edit image"
         >
           <Pencil className="h-4 w-4" />
         </button>
         <button
-          onClick={() => onDelete(image.id)}
+          onClick={() => onDeleteImage(image.id)}
           className="rounded-lg p-1.5 text-red-500 hover:bg-red-50"
           aria-label="Delete image"
         >
@@ -144,24 +144,24 @@ export function ImageGrid({
 
   const storeImages = useAppStore((store) => store.images);
   const expandedImage =
-    storeImages.find((img) => img.id === expandedImageId) ?? null;
+    storeImages.find((image) => image.id === expandedImageId) ?? null;
 
   const addImageComment = useAppStore((store) => store.addImageComment);
   const updateImageComment = useAppStore((store) => store.updateImageComment);
   const deleteImageComment = useAppStore((store) => store.deleteImageComment);
 
-  const handleDeleteRequest = useCallback((id: string) => {
+  const handleRequestImageDelete = useCallback((id: string) => {
     setPendingDeleteId(id);
   }, []);
 
-  const handleDeleteConfirm = useCallback(() => {
+  const handleConfirmImageDelete = useCallback(() => {
     if (!pendingDeleteId) return;
     onDeleteImage(pendingDeleteId);
     if (expandedImageId === pendingDeleteId) setExpandedImageId(null);
     setPendingDeleteId(null);
   }, [pendingDeleteId, onDeleteImage, expandedImageId]);
 
-  const handleDeleteCancel = useCallback(() => {
+  const handleCancelImageDelete = useCallback(() => {
     setPendingDeleteId(null);
   }, []);
 
@@ -182,9 +182,9 @@ export function ImageGrid({
               image={image}
               group={image.groupId ? groupsById[image.groupId] : undefined}
               tags={tags}
-              onDelete={handleDeleteRequest}
-              onEdit={onEditImage}
-              onExpand={setExpandedImageId}
+              onDeleteImage={handleRequestImageDelete}
+              onEditImage={onEditImage}
+              onExpandImage={setExpandedImageId}
             />
           ))}
         </div>
@@ -196,9 +196,9 @@ export function ImageGrid({
               image={image}
               group={image.groupId ? groupsById[image.groupId] : undefined}
               tags={tags}
-              onDelete={handleDeleteRequest}
-              onEdit={onEditImage}
-              onExpand={setExpandedImageId}
+              onDeleteImage={handleRequestImageDelete}
+              onEditImage={onEditImage}
+              onExpandImage={setExpandedImageId}
               onCreatePalette={onCreatePalette}
             />
           ))}
@@ -215,8 +215,8 @@ export function ImageGrid({
           }
           tags={tags}
           onClose={() => setExpandedImageId(null)}
-          onDelete={handleDeleteRequest}
-          onEdit={onEditImage}
+          onDeleteImage={handleRequestImageDelete}
+          onEditImage={onEditImage}
           onCreatePalette={onCreatePalette}
           onAddComment={(text) =>
             expandedImage && addImageComment(expandedImage.id, text)
@@ -236,8 +236,8 @@ export function ImageGrid({
         title="Delete image"
         message="Are you sure you want to delete this image? This action cannot be undone."
         confirmLabel="Delete"
-        onConfirm={handleDeleteConfirm}
-        onCancel={handleDeleteCancel}
+        onConfirm={handleConfirmImageDelete}
+        onCancel={handleCancelImageDelete}
       />
     </>
   );
