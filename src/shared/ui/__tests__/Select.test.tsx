@@ -46,7 +46,7 @@ describe('Select', () => {
     })
 
     it('calls onChange when an option is selected', () => {
-      const onChange = jest.fn<SelectProps['onChange']>()
+      const onChange = jest.fn()
       render(<Select options={options} onChange={onChange} />)
 
       fireEvent.change(screen.getByRole('combobox'), { target: { value: 'b' } })
@@ -55,7 +55,7 @@ describe('Select', () => {
     })
 
     it('calls onChange with null when placeholder is selected', () => {
-      const onChange = jest.fn<SelectProps['onChange']>()
+      const onChange = jest.fn()
       render(<Select options={options} value="a" onChange={onChange} />)
 
       fireEvent.change(screen.getByRole('combobox'), { target: { value: '' } })

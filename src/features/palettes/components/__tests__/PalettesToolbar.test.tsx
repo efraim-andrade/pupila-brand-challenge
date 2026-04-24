@@ -19,8 +19,8 @@ describe('PalettesToolbar', () => {
   }
 
   const groups: Group[] = [
-    { id: 'g1', name: 'Group 1', imageIds: ['i1'] },
-    { id: 'g2', name: 'Group 2', imageIds: ['i2'] },
+    { id: 'g1', name: 'Group 1', type: 'shared' },
+    { id: 'g2', name: 'Group 2', type: 'shared' },
   ]
 
   const tags: Tag[] = [

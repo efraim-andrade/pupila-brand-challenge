@@ -11,7 +11,7 @@ const mockedUseAppStore = jest.mocked(useAppStore)
 beforeEach(() => {
   jest.clearAllMocks()
   mockedUseAppStore.mockImplementation(
-    (selector) => selector({ addGroup: mockAddGroup } as Parameters<typeof selector>[0])
+    (selector) => selector({ addGroup: mockAddGroup } as unknown as Parameters<typeof selector>[0])
   )
 })
 
