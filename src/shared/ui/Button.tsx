@@ -13,7 +13,7 @@ const variantClasses: Record<Variant, string> = {
   primary: 'bg-indigo-600 text-white hover:bg-indigo-700',
   secondary: 'border border-gray-200 text-gray-600 hover:bg-gray-50',
   ghost: 'text-gray-500 hover:bg-gray-100',
-  danger: 'bg-red-600 text-white hover:bg-red-700',
+  danger: 'border border-red-200 bg-white text-red-600 hover:bg-red-50',
 }
 
 const sizeClasses: Record<Size, string> = {
@@ -33,6 +33,7 @@ export function Button({
     <button
       className={twMerge(
         'inline-flex items-center justify-center gap-1.5 font-medium transition-colors',
+        'focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2',
         'disabled:cursor-not-allowed disabled:opacity-50',
         variantClasses[variant],
         sizeClasses[size],

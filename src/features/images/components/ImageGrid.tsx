@@ -167,6 +167,9 @@ export function ImageGrid({
           group={expandedImage.groupId ? groupsById[expandedImage.groupId] : undefined}
           tags={tags}
           onClose={() => setExpandedImage(null)}
+          onDelete={onDeleteImage}
+          onEdit={onEditImage}
+          onCreatePalette={onCreatePalette}
         />
       )}
     </>

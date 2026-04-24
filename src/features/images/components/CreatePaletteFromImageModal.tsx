@@ -3,6 +3,7 @@
 import { useState, useEffect, type JSX, type SyntheticEvent, type ChangeEvent } from 'react'
 import { nanoid } from 'nanoid'
 import { Modal } from '@/shared/ui/Modal'
+import { Button } from '@/shared/ui/Button'
 import { GroupSelector } from '@/shared/components/GroupSelector'
 import { TagPicker } from '@/shared/components/TagPicker'
 import { useAppStore } from '@/store'
@@ -147,20 +148,12 @@ export function CreatePaletteFromImageModal({ open, image, onClose }: CreatePale
         />
 
         <div className="flex justify-end gap-2 pt-2">
-          <button
-            type="button"
-            onClick={handleClose}
-            className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50"
-          >
+          <Button variant="secondary" onClick={handleClose}>
             Cancel
-          </button>
-          <button
-            type="submit"
-            disabled={isExtracting}
-            className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
-          >
+          </Button>
+          <Button variant="primary" type="submit" disabled={isExtracting}>
             Create palette
-          </button>
+          </Button>
         </div>
       </form>
     </Modal>

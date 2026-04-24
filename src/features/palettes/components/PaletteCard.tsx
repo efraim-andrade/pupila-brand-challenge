@@ -31,6 +31,8 @@ export function PaletteCard({ palette, group, tags, onDelete, onEdit, onView }: 
               className="flex-1"
               style={{ backgroundColor: color.hex }}
               title={color.name ?? color.hex}
+              role="img"
+              aria-label={`${color.name ?? 'Color'} ${color.hex}`}
             />
           ))
         )}

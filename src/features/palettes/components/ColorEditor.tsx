@@ -87,6 +87,7 @@ function SortableColorRow({
         onChange={(event: ChangeEvent<HTMLInputElement>) => onHexChange(item.id, event.target.value)}
         className="h-8 w-8 flex-shrink-0 cursor-pointer rounded border-0 p-0.5"
         title="Pick color"
+        aria-label="Pick color"
       />
 
       <input
@@ -94,6 +95,7 @@ function SortableColorRow({
         value={item.hex}
         onChange={handleHexTextChange}
         placeholder="#000000"
+        aria-label="Hex color code"
         className={`w-24 rounded-lg border px-2 py-1.5 font-mono text-xs text-gray-900 focus:outline-none focus:ring-1 ${
           hexIsValid
             ? 'border-gray-200 focus:border-indigo-500 focus:ring-indigo-500'
@@ -106,6 +108,7 @@ function SortableColorRow({
         value={item.name}
         onChange={(event: ChangeEvent<HTMLInputElement>) => onNameChange(item.id, event.target.value)}
         placeholder="Color name (optional)"
+        aria-label="Color name"
         className="min-w-0 flex-1 rounded-lg border border-gray-200 px-2 py-1.5 text-xs text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
       />
 

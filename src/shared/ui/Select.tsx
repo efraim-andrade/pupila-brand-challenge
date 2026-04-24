@@ -1,6 +1,6 @@
 'use client'
 
-import { type SelectHTMLAttributes, type JSX } from 'react'
+import { useId, type SelectHTMLAttributes, type JSX } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 export interface SelectOption {
@@ -27,7 +27,8 @@ export function Select({
   id,
   ...props
 }: SelectProps): JSX.Element {
-  const selectId = id || `select-${Math.random().toString(36).slice(2)}`
+  const generatedId = useId()
+  const selectId = id || generatedId
 
   const selectElement = (
     <select
