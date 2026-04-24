@@ -25,8 +25,12 @@ export default function PalettesPage(): JSX.Element {
     openModal,
   } = usePalettesPage()
 
+  const allGroups = useAppStore((store) => store.groups)
   const modal = useAppStore((store) => store.modal)
   const closeModal = useAppStore((store) => store.closeModal)
+
+  const viewedPalette = modal?.type === 'viewPalette' ? (modal.payload as ColorPalette) : null
+  const viewedPaletteGroup = allGroups.find((g) => g.id === viewedPalette?.groupId)
 
   return (
     <div className="flex h-full flex-col">
@@ -67,8 +71,12 @@ export default function PalettesPage(): JSX.Element {
 
       <PaletteViewModal
         open={modal?.type === 'viewPalette'}
-        palette={modal?.type === 'viewPalette' ? (modal.payload as ColorPalette) : null}
+        palette={viewedPalette}
+        group={viewedPaletteGroup}
+        tags={tags}
         onClose={closeModal}
+        onEdit={(palette) => openModal({ type: 'editPalette', payload: palette })}
+        onDelete={(id) => { deletePalette(id); closeModal() }}
       />
     </div>
   )
