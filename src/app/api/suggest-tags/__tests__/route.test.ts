@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
 global.fetch = jest.fn();
 
@@ -28,10 +28,10 @@ describe('POST /api/suggest-tags', () => {
     jest.resetModules();
   });
 
-  function createMockRequest(body: unknown): Request {
+  function createMockRequest(body: unknown): NextRequest {
     return {
       json: async () => body,
-    } as Request;
+    } as NextRequest;
   }
 
   describe('configuration errors', () => {

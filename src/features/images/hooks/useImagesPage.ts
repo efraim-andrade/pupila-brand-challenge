@@ -2,7 +2,6 @@
 
 import { useMemo } from 'react';
 import { useAppStore } from '@/store';
-import type { FilterState, Image } from '@/types';
 import { filterImages } from '../lib/filterImages';
 
 export { filterImages } from '../lib/filterImages';

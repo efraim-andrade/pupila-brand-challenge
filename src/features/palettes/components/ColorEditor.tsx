@@ -29,7 +29,7 @@ export interface ColorItem {
   name: string;
 }
 
-export function createColorItem(hex = DEFAULT_TAG_COLOR): ColorItem {
+export function createColorItem(hex: string = DEFAULT_TAG_COLOR): ColorItem {
   return { id: nanoid(), hex, name: '' };
 }
 
@@ -67,7 +67,7 @@ function SortableColorRow({
 
   const handleHexTextChange = (event: ChangeEvent<HTMLInputElement>) => {
     const raw = event.target.value;
-    const normalized = raw.startsWith('#') ? raw : '#' + raw;
+    const normalized = raw.startsWith('#') ? raw : `#${raw}`;
     onHexChange(item.id, normalized.slice(0, 7));
   };
 

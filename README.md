@@ -20,6 +20,25 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Available Scripts
+
+In the project directory, you can run:
+
+| Script | Description |
+|--------|-------------|
+| `npm run dev` | Runs the app in development mode |
+| `npm run build` | Builds the app for production |
+| `npm run start` | Runs the built app in production mode |
+| `npm run lint` | Runs linting checks using Biome |
+| `npm run lint:fix` | Runs linting and fixes issues automatically |
+| `npm run format` | Formats code using Biome |
+| `npm run typecheck` | Checks TypeScript types without emitting files |
+| `npm test` | Runs Jest tests |
+| `npm run test:watch` | Runs Jest tests in watch mode |
+| `npm run test:coverage` | Runs Jest tests with coverage report |
+
+The `postinstall` script automatically configures Git hooks using `.githooks` directory.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

@@ -15,7 +15,7 @@ export function Badge({
   className = '',
 }: BadgeProps): JSX.Element {
   const style = color
-    ? { backgroundColor: color + '22', color, borderColor: color + '44' }
+    ? { backgroundColor: `${color}22`, color, borderColor: `${color}44` }
     : undefined;
 
   return (

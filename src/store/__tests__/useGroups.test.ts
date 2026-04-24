@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { groupDB, tagDB } from '@/lib/db';
 import type { Group } from '@/types';
 import { createImagesSlice } from '../imagesSlice';
 import type { AppStore } from '../index';

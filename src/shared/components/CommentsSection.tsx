@@ -68,7 +68,6 @@ function CommentItem({
             setEditText(event.target.value)
           }
           onKeyDown={handleEditKeyDown}
-          autoFocus
           rows={2}
           className="w-full resize-none rounded border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-900 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
         />

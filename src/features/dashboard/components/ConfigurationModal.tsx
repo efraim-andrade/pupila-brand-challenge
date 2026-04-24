@@ -215,7 +215,6 @@ export function ConfigurationModal({
                           )
                         }
                         onKeyDown={handleEditKeyDown}
-                        autoFocus
                         className="min-w-0 flex-1 rounded border border-gray-200 bg-white px-2 py-1 text-sm text-gray-900 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                       />
                       <Button
@@ -336,7 +335,6 @@ export function ConfigurationModal({
                   }
                   onKeyDown={handleCreateKeyDown}
                   placeholder={newItemPlaceholder}
-                  autoFocus
                   className="min-w-0 flex-1 rounded border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 />
                 <Button
@@ -390,7 +388,6 @@ export function ConfigurationModal({
                   }
                   onKeyDown={handleCreateKeyDown}
                   placeholder={newItemPlaceholder}
-                  autoFocus
                   className="min-w-0 flex-1 rounded border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 />
                 <Button

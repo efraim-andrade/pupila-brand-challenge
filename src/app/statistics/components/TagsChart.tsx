@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 import type { ChartDataItem } from '@/app/statistics/types';
 
 interface TagsChartProps {

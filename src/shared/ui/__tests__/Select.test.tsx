@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Select, type SelectOption, type SelectProps } from '../Select';
+import { Select, type SelectOption } from '../Select';
 
 beforeEach(() => jest.clearAllMocks());
 

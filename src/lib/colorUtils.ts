@@ -116,7 +116,7 @@ export function normalizeHex(hex: string): string {
         .join('')
     );
   }
-  return '#' + clean.toLowerCase();
+  return `#${clean.toLowerCase()}`;
 }
 
 function toProxiedUrl(imageUrl: string): string {

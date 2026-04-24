@@ -1,4 +1,3 @@
-import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ColorEditor, type ColorItem, createColorItem } from '../ColorEditor';

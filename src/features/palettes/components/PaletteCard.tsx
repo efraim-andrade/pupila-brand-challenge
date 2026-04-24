@@ -1,6 +1,6 @@
 'use client';
 
-import { Folder, MessageCircle, Pencil, Trash2 } from 'lucide-react';
+import { Folder, MessageCircle } from 'lucide-react';
 import type { JSX } from 'react';
 import { exportPaletteToJSON } from '@/lib/exportImport';
 import { Badge } from '@/shared/ui/Badge';

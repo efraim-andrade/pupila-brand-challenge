@@ -94,7 +94,6 @@ export function GroupSelector({
             onChange={(event) => setNewName(event.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Group name"
-            autoFocus
             className="w-full rounded border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
           />
           <div className="flex justify-end gap-1">

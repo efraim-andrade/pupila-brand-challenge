@@ -94,7 +94,6 @@ export function TagPicker({
               onChange={(event) => setNewName(event.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Tag name"
-              autoFocus
               className="w-20 bg-transparent text-xs text-gray-900 placeholder-gray-400 focus:outline-none"
             />
             <button
