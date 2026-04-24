@@ -4,6 +4,8 @@ import { useState, useCallback, type JSX } from 'react'
 import type { Color, ColorPalette, Group, Tag } from '@/types'
 import { Badge } from '@/shared/ui/Badge'
 import { Button } from '@/shared/ui/Button'
+import { exportPaletteToJSON } from '@/lib/exportImport'
+import { X, Folder, MessageCircle, Pencil, Trash2, Copy } from 'lucide-react'
 
 interface PaletteViewModalProps {
   open: boolean
@@ -42,15 +44,7 @@ function ColorStripe({ color, justCopied, onCopy }: ColorStripeProps): JSX.Eleme
                 {color.name}
               </span>
             )}
-            <svg
-              className="mt-2 h-4 w-4 text-white/0 drop-shadow transition-all duration-150 group-hover:text-white/70"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-            </svg>
+            <Copy className="mt-2 h-4 w-4 text-white/0 drop-shadow transition-all duration-150 group-hover:text-white/70" />
           </>
         )}
       </div>
@@ -86,9 +80,7 @@ export function PaletteViewModal({ open, palette, group, tags, onClose, onEdit, 
           className="absolute right-3 top-3 z-10 rounded-full bg-black/50 p-1.5 text-white hover:bg-black/70"
           aria-label="Close"
         >
-          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
+          <X className="h-4 w-4" />
         </button>
 
         {/* Color stripes */}
@@ -119,9 +111,7 @@ export function PaletteViewModal({ open, palette, group, tags, onClose, onEdit, 
             <div className="mt-2 flex flex-wrap gap-1.5">
               {group && (
                 <span className="inline-flex items-center gap-1 rounded-md border border-gray-200 bg-gray-50 px-1.5 py-0.5 text-xs font-medium text-gray-600">
-                  <svg className="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-                  </svg>
+                  <Folder className="h-2.5 w-2.5" />
                   {group.name}
                 </span>
               )}
@@ -133,16 +123,26 @@ export function PaletteViewModal({ open, palette, group, tags, onClose, onEdit, 
             </div>
             {palette.comments.length > 0 && (
               <div className="mt-3 flex items-center gap-1.5 text-xs text-gray-400">
-                <svg className="h-3.5 w-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
-                </svg>
+                <MessageCircle className="h-3.5 w-3.5 shrink-0" />
                 <span>{palette.comments.length} comment{palette.comments.length !== 1 ? 's' : ''}</span>
               </div>
             )}
           </div>
 
-          <div className="border-t border-gray-100 p-4">
+<div className="border-t border-gray-100 p-4">
             <div className="flex gap-2">
+              <Button
+                variant="secondary"
+                size="sm"
+                className="flex-1 justify-center"
+                onClick={() => exportPaletteToJSON(palette)}
+                aria-label="Export palette"
+              >
+                <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                </svg>
+                Export
+              </Button>
               <Button
                 variant="secondary"
                 size="sm"

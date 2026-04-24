@@ -1,4 +1,4 @@
-import type { ExportData } from '@/types'
+import type { ColorPalette, ExportData } from '@/types'
 
 export function exportToJSON(content: Omit<ExportData, 'version' | 'exportedAt'>): void {
   const payload: ExportData = {
@@ -11,6 +11,24 @@ export function exportToJSON(content: Omit<ExportData, 'version' | 'exportedAt'>
   const a = document.createElement('a')
   a.href = url
   a.download = `pupila-export-${Date.now()}.json`
+  a.click()
+  URL.revokeObjectURL(url)
+}
+
+export function exportPaletteToJSON(palette: ColorPalette, filename?: string): void {
+  const payload = {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    palette: {
+      name: palette.name,
+      colors: palette.colors,
+    },
+  }
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = filename ?? `${palette.name.replace(/[^a-z0-9]/gi, '-').toLowerCase()}-palette-${Date.now()}.json`
   a.click()
   URL.revokeObjectURL(url)
 }
