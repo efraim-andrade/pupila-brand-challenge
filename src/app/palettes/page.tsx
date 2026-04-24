@@ -1,15 +1,15 @@
-'use client'
+'use client';
 
-import { useState, useCallback, type JSX } from 'react'
-import { usePalettesPage } from '@/features/palettes/hooks/usePalettesPage'
-import { PalettesToolbar } from '@/features/palettes/components/PalettesToolbar'
-import { PaletteGrid } from '@/features/palettes/components/PaletteGrid'
-import { AddPaletteModal } from '@/features/palettes/components/AddPaletteModal'
-import { EditPaletteModal } from '@/features/palettes/components/EditPaletteModal'
-import { PaletteViewModal } from '@/features/palettes/components/PaletteViewModal'
-import { ConfirmDialog } from '@/shared/ui/ConfirmDialog'
-import { useAppStore } from '@/store'
-import type { ColorPalette } from '@/types'
+import { type JSX, useCallback, useState } from 'react';
+import { AddPaletteModal } from '@/features/palettes/components/AddPaletteModal';
+import { EditPaletteModal } from '@/features/palettes/components/EditPaletteModal';
+import { PaletteGrid } from '@/features/palettes/components/PaletteGrid';
+import { PalettesToolbar } from '@/features/palettes/components/PalettesToolbar';
+import { PaletteViewModal } from '@/features/palettes/components/PaletteViewModal';
+import { usePalettesPage } from '@/features/palettes/hooks/usePalettesPage';
+import { ConfirmDialog } from '@/shared/ui/ConfirmDialog';
+import { useAppStore } from '@/store';
+import type { ColorPalette } from '@/types';
 
 export default function PalettesPage(): JSX.Element {
   const {
@@ -24,31 +24,41 @@ export default function PalettesPage(): JSX.Element {
     setViewMode,
     deletePalette,
     openModal,
-  } = usePalettesPage()
+  } = usePalettesPage();
 
-  const allGroups = useAppStore((store) => store.groups)
-  const modal = useAppStore((store) => store.modal)
-  const closeModal = useAppStore((store) => store.closeModal)
+  const allGroups = useAppStore((store) => store.groups);
+  const modal = useAppStore((store) => store.modal);
+  const closeModal = useAppStore((store) => store.closeModal);
+  const addPaletteComment = useAppStore((store) => store.addPaletteComment);
+  const updatePaletteComment = useAppStore(
+    (store) => store.updatePaletteComment
+  );
+  const deletePaletteComment = useAppStore(
+    (store) => store.deletePaletteComment
+  );
 
-  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
 
-  const viewedPalette = modal?.type === 'viewPalette' ? (modal.payload as ColorPalette) : null
-  const viewedPaletteGroup = allGroups.find((g) => g.id === viewedPalette?.groupId)
+  const viewedPalette =
+    modal?.type === 'viewPalette' ? (modal.payload as ColorPalette) : null;
+  const viewedPaletteGroup = allGroups.find(
+    (group) => group.id === viewedPalette?.groupId
+  );
 
   const handleDeleteRequest = useCallback((id: string) => {
-    setPendingDeleteId(id)
-  }, [])
+    setPendingDeleteId(id);
+  }, []);
 
   const handleDeleteConfirm = useCallback(() => {
-    if (!pendingDeleteId) return
-    deletePalette(pendingDeleteId)
-    if (modal?.type === 'viewPalette') closeModal()
-    setPendingDeleteId(null)
-  }, [pendingDeleteId, deletePalette, modal, closeModal])
+    if (!pendingDeleteId) return;
+    deletePalette(pendingDeleteId);
+    if (modal?.type === 'viewPalette') closeModal();
+    setPendingDeleteId(null);
+  }, [pendingDeleteId, deletePalette, modal, closeModal]);
 
   const handleDeleteCancel = useCallback(() => {
-    setPendingDeleteId(null)
-  }, [])
+    setPendingDeleteId(null);
+  }, []);
 
   return (
     <div className="flex h-full flex-col">
@@ -71,8 +81,12 @@ export default function PalettesPage(): JSX.Element {
           tags={tags}
           viewMode={viewMode}
           onDeletePalette={handleDeleteRequest}
-          onEditPalette={(palette) => openModal({ type: 'editPalette', payload: palette })}
-          onViewPalette={(palette) => openModal({ type: 'viewPalette', payload: palette })}
+          onEditPalette={(palette) =>
+            openModal({ type: 'editPalette', payload: palette })
+          }
+          onViewPalette={(palette) =>
+            openModal({ type: 'viewPalette', payload: palette })
+          }
         />
       </div>
 
@@ -83,7 +97,9 @@ export default function PalettesPage(): JSX.Element {
 
       <EditPaletteModal
         open={modal?.type === 'editPalette'}
-        palette={modal?.type === 'editPalette' ? (modal.payload as ColorPalette) : null}
+        palette={
+          modal?.type === 'editPalette' ? (modal.payload as ColorPalette) : null
+        }
         onClose={closeModal}
       />
 
@@ -93,8 +109,20 @@ export default function PalettesPage(): JSX.Element {
         group={viewedPaletteGroup}
         tags={tags}
         onClose={closeModal}
-        onEdit={(palette) => openModal({ type: 'editPalette', payload: palette })}
+        onEdit={(palette) =>
+          openModal({ type: 'editPalette', payload: palette })
+        }
         onDelete={handleDeleteRequest}
+        onAddComment={(text) =>
+          viewedPalette && addPaletteComment(viewedPalette.id, text)
+        }
+        onUpdateComment={(commentId, text) =>
+          viewedPalette &&
+          updatePaletteComment(viewedPalette.id, commentId, text)
+        }
+        onDeleteComment={(commentId) =>
+          viewedPalette && deletePaletteComment(viewedPalette.id, commentId)
+        }
       />
 
       <ConfirmDialog
@@ -106,5 +134,5 @@ export default function PalettesPage(): JSX.Element {
         onCancel={handleDeleteCancel}
       />
     </div>
-  )
+  );
 }

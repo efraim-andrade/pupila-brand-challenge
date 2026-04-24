@@ -1,26 +1,21 @@
-'use client'
+'use client';
 
-import { useState, type JSX, type ChangeEvent, type KeyboardEvent } from 'react'
-import { useAppStore } from '@/store'
-import { Button } from '@/shared/ui/Button'
-import type { Group } from '@/types'
-
-const PRESET_COLORS = [
-  '#6366f1',
-  '#3b82f6',
-  '#10b981',
-  '#f59e0b',
-  '#ef4444',
-  '#8b5cf6',
-  '#f97316',
-  '#14b8a6',
-]
+import {
+  type ChangeEvent,
+  type JSX,
+  type KeyboardEvent,
+  useState,
+} from 'react';
+import { DEFAULT_TAG_COLOR } from '@/lib/colors';
+import { Button } from '@/shared/ui/Button';
+import { useAppStore } from '@/store';
+import type { Group } from '@/types';
 
 interface GroupSelectorProps {
-  groups: Group[]
-  selectedGroupId: string | null
-  onSelect: (groupId: string | null) => void
-  inputId?: string
+  groups: Group[];
+  selectedGroupId: string | null;
+  onSelect: (groupId: string | null) => void;
+  inputId?: string;
 }
 
 export function GroupSelector({
@@ -29,41 +24,45 @@ export function GroupSelector({
   onSelect,
   inputId = 'group-select',
 }: GroupSelectorProps): JSX.Element {
-  const addGroup = useAppStore((store) => store.addGroup)
+  const addGroup = useAppStore((store) => store.addGroup);
 
-  const [creating, setCreating] = useState(false)
-  const [newName, setNewName] = useState('')
-  const [newColor, setNewColor] = useState(PRESET_COLORS[0])
+  const [creating, setCreating] = useState(false);
+  const [newName, setNewName] = useState('');
+  const [newColor, setNewColor] = useState(DEFAULT_TAG_COLOR);
 
   const handleCreate = () => {
-    const trimmed = newName.trim()
+    const trimmed = newName.trim();
     if (!trimmed) {
-      setCreating(false)
-      return
+      setCreating(false);
+      return;
     }
-    const created = addGroup({ name: trimmed, type: 'shared', color: newColor })
-    onSelect(created.id)
-    setCreating(false)
-    setNewName('')
-    setNewColor(PRESET_COLORS[0])
-  }
+    const created = addGroup({
+      name: trimmed,
+      type: 'shared',
+      color: newColor,
+    });
+    onSelect(created.id);
+    setCreating(false);
+    setNewName('');
+    setNewColor(DEFAULT_TAG_COLOR);
+  };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      event.preventDefault()
-      handleCreate()
+      event.preventDefault();
+      handleCreate();
     }
     if (event.key === 'Escape') {
-      setCreating(false)
-      setNewName('')
+      setCreating(false);
+      setNewName('');
     }
-  }
+  };
 
   const handleCancel = () => {
-    setCreating(false)
-    setNewName('')
-    setNewColor(PRESET_COLORS[0])
-  }
+    setCreating(false);
+    setNewName('');
+    setNewColor(DEFAULT_TAG_COLOR);
+  };
 
   return (
     <div className="flex flex-col gap-1.5">
@@ -74,7 +73,9 @@ export function GroupSelector({
       <select
         id={inputId}
         value={selectedGroupId ?? ''}
-        onChange={(event: ChangeEvent<HTMLSelectElement>) => onSelect(event.target.value || null)}
+        onChange={(event: ChangeEvent<HTMLSelectElement>) =>
+          onSelect(event.target.value || null)
+        }
         className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
       >
         <option value="">No group</option>
@@ -97,10 +98,20 @@ export function GroupSelector({
             className="w-full rounded border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
           />
           <div className="flex justify-end gap-1">
-            <Button type="button" variant="ghost" size="xs" onClick={handleCancel}>
+            <Button
+              type="button"
+              variant="ghost"
+              size="xs"
+              onClick={handleCancel}
+            >
               Cancel
             </Button>
-            <Button type="button" size="xs" onClick={handleCreate} disabled={!newName.trim()}>
+            <Button
+              type="button"
+              size="xs"
+              onClick={handleCreate}
+              disabled={!newName.trim()}
+            >
               Create
             </Button>
           </div>
@@ -115,5 +126,5 @@ export function GroupSelector({
         </button>
       )}
     </div>
-  )
+  );
 }

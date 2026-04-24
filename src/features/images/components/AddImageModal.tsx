@@ -1,85 +1,110 @@
-'use client'
+'use client';
 
-import { useState, type JSX, type SyntheticEvent, type ChangeEvent } from 'react'
-import { Modal } from '@/shared/ui/Modal'
-import { Button } from '@/shared/ui/Button'
-import { GroupSelector } from '@/shared/components/GroupSelector'
-import { TagPicker } from '@/shared/components/TagPicker'
-import { useAppStore } from '@/store'
-import { useTagSuggestions } from '../hooks/useTagSuggestions'
-import { AiSuggestionBar } from './AiSuggestionBar'
+import {
+  type ChangeEvent,
+  type JSX,
+  type SyntheticEvent,
+  useState,
+} from 'react';
+import { TAG_COLORS } from '@/lib/colors';
+import { GroupSelector } from '@/shared/components/GroupSelector';
+import { TagPicker } from '@/shared/components/TagPicker';
+import { Button } from '@/shared/ui/Button';
+import { Modal } from '@/shared/ui/Modal';
+import { useAppStore } from '@/store';
+import { useTagSuggestions } from '../hooks/useTagSuggestions';
+import { AiSuggestionBar } from './AiSuggestionBar';
 
 interface AddImageModalProps {
-  open: boolean
-  onClose: () => void
+  open: boolean;
+  onClose: () => void;
 }
 
 function deriveNameFromUrl(url: string): string {
   try {
-    const pathname = new URL(url).pathname
-    const filename = pathname.split('/').filter(Boolean).pop() ?? ''
-    return filename.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ')
+    const pathname = new URL(url).pathname;
+    const filename = pathname.split('/').filter(Boolean).pop() ?? '';
+    return filename.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
   } catch {
-    return ''
+    return '';
   }
 }
 
-export function AddImageModal({ open, onClose }: AddImageModalProps): JSX.Element {
-  const addImage = useAppStore((store) => store.addImage)
-  const addGroup = useAppStore((store) => store.addGroup)
-  const addTag = useAppStore((store) => store.addTag)
-  const allGroups = useAppStore((store) => store.groups)
-  const allTags = useAppStore((store) => store.tags)
+export function AddImageModal({
+  open,
+  onClose,
+}: AddImageModalProps): JSX.Element {
+  const addImage = useAppStore((store) => store.addImage);
+  const addGroup = useAppStore((store) => store.addGroup);
+  const addTag = useAppStore((store) => store.addTag);
+  const allGroups = useAppStore((store) => store.groups);
+  const allTags = useAppStore((store) => store.tags);
 
-  const [url, setUrl] = useState('')
-  const [name, setName] = useState('')
-  const [urlError, setUrlError] = useState('')
-  const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null)
-  const [selectedTagIds, setSelectedTagIds] = useState<string[]>([])
+  const [url, setUrl] = useState('');
+  const [name, setName] = useState('');
+  const [urlError, setUrlError] = useState('');
+  const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null);
+  const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
 
-  const { suggestions, isLoading: isSuggestionsLoading, error: suggestionsError, dismiss: dismissSuggestions } = useTagSuggestions(url)
+  const {
+    suggestions,
+    isLoading: isSuggestionsLoading,
+    error: suggestionsError,
+    dismiss: dismissSuggestions,
+  } = useTagSuggestions(url);
 
-  const handleApplySuggestions = (groupName: string | null, tagNames: string[]) => {
+  const handleApplySuggestions = (
+    groupName: string | null,
+    tagNames: string[]
+  ) => {
     if (groupName) {
-      const existing = allGroups.find((g) => g.name.toLowerCase() === groupName.toLowerCase())
-      const group = existing ?? addGroup({ name: groupName, type: 'shared' })
-      setSelectedGroupId(group.id)
+      const existing = allGroups.find(
+        (g) => g.name.toLowerCase() === groupName.toLowerCase()
+      );
+      const group = existing ?? addGroup({ name: groupName, type: 'shared' });
+      setSelectedGroupId(group.id);
     }
 
     const resolvedTagIds = tagNames.map((tagName) => {
-      const existing = allTags.find((t) => t.name.toLowerCase() === tagName.toLowerCase())
-      return existing ? existing.id : addTag({ name: tagName }).id
-    })
+      const existing = allTags.find(
+        (t) => t.name.toLowerCase() === tagName.toLowerCase()
+      );
+      return existing
+        ? existing.id
+        : addTag({ name: tagName, color: Object.values(TAG_COLORS)[0] }).id;
+    });
 
-    setSelectedTagIds((previous) => [...new Set([...previous, ...resolvedTagIds])])
-    dismissSuggestions()
-  }
+    setSelectedTagIds((previous) => [
+      ...new Set([...previous, ...resolvedTagIds]),
+    ]);
+    dismissSuggestions();
+  };
 
   const handleUrlChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const nextUrl = event.target.value
-    setUrl(nextUrl)
-    setUrlError('')
+    const nextUrl = event.target.value;
+    setUrl(nextUrl);
+    setUrlError('');
     if (!name) {
-      setName(deriveNameFromUrl(nextUrl))
+      setName(deriveNameFromUrl(nextUrl));
     }
-  }
+  };
 
   const handleTagToggle = (tagId: string) => {
     setSelectedTagIds((previous) =>
       previous.includes(tagId)
         ? previous.filter((id) => id !== tagId)
         : [...previous, tagId]
-    )
-  }
+    );
+  };
 
   const handleSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
-    event.preventDefault()
+    event.preventDefault();
 
     try {
-      new URL(url)
+      new URL(url);
     } catch {
-      setUrlError('Please enter a valid URL.')
-      return
+      setUrlError('Please enter a valid URL.');
+      return;
     }
 
     addImage({
@@ -88,30 +113,33 @@ export function AddImageModal({ open, onClose }: AddImageModalProps): JSX.Elemen
       groupId: selectedGroupId,
       tagIds: selectedTagIds,
       comments: [],
-    })
+    });
 
-    resetForm()
-    onClose()
-  }
+    resetForm();
+    onClose();
+  };
 
   const resetForm = () => {
-    setUrl('')
-    setName('')
-    setUrlError('')
-    setSelectedGroupId(null)
-    setSelectedTagIds([])
-  }
+    setUrl('');
+    setName('');
+    setUrlError('');
+    setSelectedGroupId(null);
+    setSelectedTagIds([]);
+  };
 
   const handleClose = () => {
-    resetForm()
-    onClose()
-  }
+    resetForm();
+    onClose();
+  };
 
   return (
     <Modal open={open} onClose={handleClose} title="Add image" size="md">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="image-url" className="text-sm font-medium text-gray-700">
+          <label
+            htmlFor="image-url"
+            className="text-sm font-medium text-gray-700"
+          >
             Image URL
           </label>
           <input
@@ -130,14 +158,19 @@ export function AddImageModal({ open, onClose }: AddImageModalProps): JSX.Elemen
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="image-name" className="text-sm font-medium text-gray-700">
+          <label
+            htmlFor="image-name"
+            className="text-sm font-medium text-gray-700"
+          >
             Name
           </label>
           <input
             id="image-name"
             type="text"
             value={name}
-            onChange={(event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)}
+            onChange={(event: ChangeEvent<HTMLInputElement>) =>
+              setName(event.target.value)
+            }
             placeholder="My image"
             className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
           />
@@ -151,7 +184,7 @@ export function AddImageModal({ open, onClose }: AddImageModalProps): JSX.Elemen
               alt="Preview"
               className="mx-auto max-h-40 w-full object-contain"
               onError={(event) => {
-                event.currentTarget.style.display = 'none'
+                event.currentTarget.style.display = 'none';
               }}
             />
           </div>
@@ -171,7 +204,6 @@ export function AddImageModal({ open, onClose }: AddImageModalProps): JSX.Elemen
           groups={allGroups}
           selectedGroupId={selectedGroupId}
           onSelect={setSelectedGroupId}
-
           inputId="image-group"
         />
 
@@ -191,5 +223,5 @@ export function AddImageModal({ open, onClose }: AddImageModalProps): JSX.Elemen
         </div>
       </form>
     </Modal>
-  )
+  );
 }

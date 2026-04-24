@@ -1,21 +1,27 @@
-import { nanoid } from 'nanoid'
-import type { Image, ColorPalette, Group, Tag } from '@/types'
+import { nanoid } from 'nanoid';
+import type { ColorPalette, Group, Image, Tag } from '@/types';
+import { TAG_COLORS } from './colors';
 
-const now = new Date().toISOString()
+const now = new Date().toISOString();
 
 export const mockGroups: Group[] = [
-  { id: 'g1', name: 'Brand Identity', type: 'shared', color: '#6366f1' },
-  { id: 'g2', name: 'Campaign 2024', type: 'shared', color: '#f59e0b' },
-  { id: 'g3', name: 'Web Design', type: 'shared', color: '#10b981' },
-]
+  {
+    id: 'g1',
+    name: 'Brand Identity',
+    type: 'shared',
+    color: TAG_COLORS.indigo,
+  },
+  { id: 'g2', name: 'Campaign 2024', type: 'shared', color: TAG_COLORS.amber },
+  { id: 'g3', name: 'Web Design', type: 'shared', color: TAG_COLORS.emerald },
+];
 
 export const mockTags: Tag[] = [
   { id: 't1', name: 'minimal', color: '#94a3b8' },
-  { id: 't2', name: 'bold', color: '#ef4444' },
+  { id: 't2', name: 'bold', color: TAG_COLORS.red },
   { id: 't3', name: 'nature', color: '#22c55e' },
-  { id: 't4', name: 'corporate', color: '#3b82f6' },
-  { id: 't5', name: 'warm', color: '#f97316' },
-]
+  { id: 't4', name: 'corporate', color: TAG_COLORS.blue },
+  { id: 't5', name: 'warm', color: TAG_COLORS.orange },
+];
 
 export const mockImages: Image[] = [
   {
@@ -25,7 +31,12 @@ export const mockImages: Image[] = [
     groupId: 'g1',
     tagIds: ['t1', 't3'],
     comments: [
-      { id: nanoid(), text: 'Great for hero sections', createdAt: now, updatedAt: now },
+      {
+        id: nanoid(),
+        text: 'Great for hero sections',
+        createdAt: now,
+        updatedAt: now,
+      },
     ],
     createdAt: now,
     updatedAt: now,
@@ -60,7 +71,7 @@ export const mockImages: Image[] = [
     createdAt: now,
     updatedAt: now,
   },
-]
+];
 
 export const mockPalettes: ColorPalette[] = [
   {
@@ -76,7 +87,12 @@ export const mockPalettes: ColorPalette[] = [
     groupId: 'g1',
     tagIds: ['t1', 't4'],
     comments: [
-      { id: nanoid(), text: 'Perfect for SaaS product', createdAt: now, updatedAt: now },
+      {
+        id: nanoid(),
+        text: 'Perfect for SaaS product',
+        createdAt: now,
+        updatedAt: now,
+      },
     ],
     createdAt: now,
     updatedAt: now,
@@ -129,4 +145,4 @@ export const mockPalettes: ColorPalette[] = [
     createdAt: now,
     updatedAt: now,
   },
-]
+];

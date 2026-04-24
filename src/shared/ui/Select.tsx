@@ -1,19 +1,20 @@
-'use client'
+'use client';
 
-import { useId, type SelectHTMLAttributes, type JSX } from 'react'
-import { twMerge } from 'tailwind-merge'
+import { type JSX, type SelectHTMLAttributes, useId } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 export interface SelectOption {
-  label: string
-  value: string
+  label: string;
+  value: string;
 }
 
-export interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'onChange'> {
-  options: SelectOption[]
-  label?: string
-  placeholder?: string
-  showPlaceholder?: boolean
-  onChange?: (value: string | null) => void
+export interface SelectProps
+  extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'onChange'> {
+  options: SelectOption[];
+  label?: string;
+  placeholder?: string;
+  showPlaceholder?: boolean;
+  onChange?: (value: string | null) => void;
 }
 
 export function Select({
@@ -27,8 +28,8 @@ export function Select({
   id,
   ...props
 }: SelectProps): JSX.Element {
-  const generatedId = useId()
-  const selectId = id || generatedId
+  const generatedId = useId();
+  const selectId = id || generatedId;
 
   const selectElement = (
     <select
@@ -39,7 +40,7 @@ export function Select({
         'rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900',
         'focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500',
         'disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500',
-        className,
+        className
       )}
       {...props}
     >
@@ -50,10 +51,10 @@ export function Select({
         </option>
       ))}
     </select>
-  )
+  );
 
   if (!label) {
-    return selectElement
+    return selectElement;
   }
 
   return (
@@ -63,5 +64,5 @@ export function Select({
       </label>
       {selectElement}
     </div>
-  )
+  );
 }

@@ -1,56 +1,51 @@
-'use client'
+'use client';
 
-import { useState, type JSX, type KeyboardEvent } from 'react'
-import { useAppStore } from '@/store'
-import type { Tag } from '@/types'
-
-const PRESET_COLORS = [
-  '#6366f1',
-  '#3b82f6',
-  '#10b981',
-  '#f59e0b',
-  '#ef4444',
-  '#8b5cf6',
-  '#f97316',
-  '#14b8a6',
-]
+import { Check, X } from 'lucide-react';
+import { type JSX, type KeyboardEvent, useState } from 'react';
+import { TAG_COLORS } from '@/lib/colors';
+import { useAppStore } from '@/store';
+import type { Tag } from '@/types';
 
 interface TagPickerProps {
-  tags: Tag[]
-  selectedTagIds: string[]
-  onToggle: (tagId: string) => void
+  tags: Tag[];
+  selectedTagIds: string[];
+  onToggle: (tagId: string) => void;
 }
 
-export function TagPicker({ tags, selectedTagIds, onToggle }: TagPickerProps): JSX.Element {
-  const addTag = useAppStore((store) => store.addTag)
+export function TagPicker({
+  tags,
+  selectedTagIds,
+  onToggle,
+}: TagPickerProps): JSX.Element {
+  const addTag = useAppStore((store) => store.addTag);
 
-  const [inputVisible, setInputVisible] = useState(false)
-  const [newName, setNewName] = useState('')
-  const [newColor, setNewColor] = useState(PRESET_COLORS[0])
+  const [inputVisible, setInputVisible] = useState(false);
+  const [newName, setNewName] = useState('');
+  const [newColor, setNewColor] = useState(Object.values(TAG_COLORS)[0]);
 
   const handleCreate = () => {
-    const trimmed = newName.trim()
+    const trimmed = newName.trim();
     if (!trimmed) {
-      setInputVisible(false)
-      return
+      setInputVisible(false);
+      return;
     }
-    const created = addTag({ name: trimmed, color: newColor })
-    onToggle(created.id)
-    setNewName('')
-    setNewColor(PRESET_COLORS[0])
-    setInputVisible(false)
-  }
+    const created = addTag({ name: trimmed, color: newColor });
+    onToggle(created.id);
+    setNewName('');
+    setNewColor(Object.values(TAG_COLORS)[0]);
+    setInputVisible(false);
+  };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      event.preventDefault()
-      handleCreate()
+      event.preventDefault();
+      handleCreate();
     }
     if (event.key === 'Escape') {
-      setInputVisible(false)
-      setNewName('')
+      setInputVisible(false);
+      setNewName('');
     }
-  }
+  };
 
   return (
     <div className="flex flex-col gap-1.5">
@@ -58,7 +53,7 @@ export function TagPicker({ tags, selectedTagIds, onToggle }: TagPickerProps): J
 
       <div className="flex flex-wrap items-center gap-1.5">
         {tags.map((tag) => {
-          const isSelected = selectedTagIds.includes(tag.id)
+          const isSelected = selectedTagIds.includes(tag.id);
           return (
             <button
               key={tag.id}
@@ -72,19 +67,21 @@ export function TagPicker({ tags, selectedTagIds, onToggle }: TagPickerProps): J
             >
               {tag.name}
             </button>
-          )
+          );
         })}
 
         {inputVisible ? (
           <div className="flex items-center gap-1.5 rounded-xl border border-indigo-300 bg-indigo-50 px-2.5 py-1">
             <div className="flex gap-1">
-              {PRESET_COLORS.map((color) => (
+              {Object.values(TAG_COLORS).map((color) => (
                 <button
                   key={color}
                   type="button"
                   onClick={() => setNewColor(color)}
                   className={`h-3 w-3 rounded-full transition-transform ${
-                    newColor === color ? 'scale-125 ring-2 ring-gray-400 ring-offset-1' : ''
+                    newColor === color
+                      ? 'scale-125 ring-2 ring-gray-400 ring-offset-1'
+                      : ''
                   }`}
                   style={{ backgroundColor: color }}
                   aria-label={`Select color ${color}`}
@@ -107,19 +104,18 @@ export function TagPicker({ tags, selectedTagIds, onToggle }: TagPickerProps): J
               className="text-indigo-600 hover:text-indigo-800 disabled:opacity-40"
               aria-label="Create tag"
             >
-              <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-              </svg>
+              <Check className="h-3 w-3" />
             </button>
             <button
               type="button"
-              onClick={() => { setInputVisible(false); setNewName('') }}
+              onClick={() => {
+                setInputVisible(false);
+                setNewName('');
+              }}
               className="text-gray-400 hover:text-gray-600"
               aria-label="Cancel"
             >
-              <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              <X className="h-3 w-3" />
             </button>
           </div>
         ) : (
@@ -133,5 +129,5 @@ export function TagPicker({ tags, selectedTagIds, onToggle }: TagPickerProps): J
         )}
       </div>
     </div>
-  )
+  );
 }

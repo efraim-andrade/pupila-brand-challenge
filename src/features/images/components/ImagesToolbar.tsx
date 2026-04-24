@@ -1,25 +1,35 @@
-'use client'
+'use client';
 
-import type { JSX } from 'react'
-import { Toolbar, type EntityToolbarProps, buildCountLabel } from '@/shared/ui/Toolbar'
-import type { FilterState, ViewMode } from '@/types'
-import type { Group, Tag } from '@/types'
+import type { JSX } from 'react';
+import {
+  buildCountLabel,
+  type EntityToolbarProps,
+  Toolbar,
+} from '@/shared/ui/Toolbar';
+import type { FilterState, Group, Tag, ViewMode } from '@/types';
 
-export type { FilterState, ViewMode, Group, Tag }
+export type { FilterState, Group, Tag, ViewMode };
 
 export function buildImageCountLabel(
   filteredCount: number,
   totalCount: number
 ): string {
-  return buildCountLabel(filteredCount, totalCount, 'images')
+  return buildCountLabel(filteredCount, totalCount, 'images');
 }
 
-type ImagesToolbarProps = Omit<EntityToolbarProps, 'entityType' | 'onAdd' | 'onFilterChange' | 'onResetFilter' | 'onViewModeChange'> & {
-  onFilterChange: (filter: Partial<EntityToolbarProps['filter']>) => void
-  onResetFilter: () => void
-  onViewModeChange: (mode: EntityToolbarProps['viewMode']) => void
-  onAddImage: () => void
-}
+type ImagesToolbarProps = Omit<
+  EntityToolbarProps,
+  | 'entityType'
+  | 'onAdd'
+  | 'onFilterChange'
+  | 'onResetFilter'
+  | 'onViewModeChange'
+> & {
+  onFilterChange: (filter: Partial<EntityToolbarProps['filter']>) => void;
+  onResetFilter: () => void;
+  onViewModeChange: (mode: EntityToolbarProps['viewMode']) => void;
+  onAddImage: () => void;
+};
 
 export function ImagesToolbar({
   totalCount,
@@ -47,5 +57,5 @@ export function ImagesToolbar({
       onViewModeChange={onViewModeChange}
       onAdd={onAddImage}
     />
-  )
+  );
 }

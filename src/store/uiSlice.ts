@@ -1,20 +1,22 @@
-import type { StateCreator } from 'zustand'
-import type { ModalState } from '@/types'
-import type { AppStore } from './index'
+import type { StateCreator } from 'zustand';
+import type { ModalState } from '@/types';
+import type { AppStore } from './index';
 
 export interface UISlice {
-  sidebarOpen: boolean
-  modal: ModalState | null
-  hydrated: boolean
+  sidebarOpen: boolean;
+  modal: ModalState | null;
+  hydrated: boolean;
 
-  toggleSidebar: () => void
-  closeSidebar: () => void
-  openModal: (modal: ModalState) => void
-  closeModal: () => void
-  setHydrated: (hydrated: boolean) => void
+  toggleSidebar: () => void;
+  closeSidebar: () => void;
+  openModal: (modal: ModalState) => void;
+  closeModal: () => void;
+  setHydrated: (hydrated: boolean) => void;
 }
 
-export const createUISlice: StateCreator<AppStore, [], [], UISlice> = (set) => ({
+export const createUISlice: StateCreator<AppStore, [], [], UISlice> = (
+  set
+) => ({
   sidebarOpen: true,
   modal: null,
   hydrated: false,
@@ -24,4 +26,4 @@ export const createUISlice: StateCreator<AppStore, [], [], UISlice> = (set) => (
   openModal: (modal) => set({ modal }),
   closeModal: () => set({ modal: null }),
   setHydrated: (hydrated) => set({ hydrated }),
-})
+});

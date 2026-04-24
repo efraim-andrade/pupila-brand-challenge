@@ -1,30 +1,200 @@
-'use client'
+'use client';
 
-import { useEffect, type JSX } from 'react'
-import type { Image, Group, Tag } from '@/types'
-import { Badge } from '@/shared/ui/Badge'
-import { Button } from '@/shared/ui/Button'
+import { Folder, Palette, Pencil, Send, Trash2, X } from 'lucide-react';
+import {
+  type ChangeEvent,
+  type JSX,
+  type KeyboardEvent,
+  useEffect,
+  useState,
+} from 'react';
+import { Badge } from '@/shared/ui/Badge';
+import { Button } from '@/shared/ui/Button';
+import type { Group, Image, Tag } from '@/types';
 
 interface ImageLightboxProps {
-  image: Image
-  group: Group | undefined
-  tags: Tag[]
-  onClose: () => void
-  onDelete: (id: string) => void
-  onEdit: (image: Image) => void
-  onCreatePalette: (image: Image) => void
+  image: Image;
+  group: Group | undefined;
+  tags: Tag[];
+  onClose: () => void;
+  onDelete: (id: string) => void;
+  onEdit: (image: Image) => void;
+  onCreatePalette: (image: Image) => void;
+  onAddComment: (text: string) => void;
+  onUpdateComment: (commentId: string, text: string) => void;
+  onDeleteComment: (commentId: string) => void;
 }
 
-export function ImageLightbox({ image, group, tags, onClose, onDelete, onEdit, onCreatePalette }: ImageLightboxProps): JSX.Element {
-  const imageTags = tags.filter((tag) => image.tagIds.includes(tag.id))
+function formatDate(isoString: string): string {
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  }).format(new Date(isoString));
+}
+
+interface CommentItemProps {
+  text: string;
+  createdAt: string;
+  onUpdate: (text: string) => void;
+  onDelete: () => void;
+}
+
+function CommentItem({
+  text,
+  createdAt,
+  onUpdate,
+  onDelete,
+}: CommentItemProps): JSX.Element {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editText, setEditText] = useState(text);
+
+  const handleSaveEdit = () => {
+    const trimmed = editText.trim();
+    if (trimmed && trimmed !== text) onUpdate(trimmed);
+    setIsEditing(false);
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      handleSaveEdit();
+    }
+    if (event.key === 'Escape') {
+      setEditText(text);
+      setIsEditing(false);
+    }
+  };
+
+  if (isEditing) {
+    return (
+      <div className="flex flex-col gap-1.5 rounded-lg border border-indigo-200 bg-indigo-50 p-2">
+        <textarea
+          value={editText}
+          onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+            setEditText(event.target.value)
+          }
+          onKeyDown={handleKeyDown}
+          autoFocus
+          rows={2}
+          className="w-full resize-none rounded border border-gray-200 bg-white px-2 py-1 text-xs text-gray-900 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+        />
+        <div className="flex justify-end gap-1">
+          <Button
+            type="button"
+            variant="ghost"
+            size="xs"
+            className="px-2"
+            onClick={() => {
+              setEditText(text);
+              setIsEditing(false);
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="button"
+            size="xs"
+            className="px-2"
+            onClick={handleSaveEdit}
+            disabled={!editText.trim()}
+          >
+            Save
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="group flex items-start gap-2 rounded-lg border border-gray-100 bg-gray-50 p-2">
+      <div className="min-w-0 flex-1">
+        <p className="text-xs text-gray-800 whitespace-pre-wrap break-words">
+          {text}
+        </p>
+        <p className="mt-1 text-[10px] text-gray-400">
+          {formatDate(createdAt)}
+        </p>
+      </div>
+      <div className="flex shrink-0 gap-0.5 opacity-0 transition-opacity group-hover:opacity-100">
+        <button
+          type="button"
+          onClick={() => {
+            setEditText(text);
+            setIsEditing(true);
+          }}
+          className="rounded p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-600"
+          aria-label="Edit comment"
+        >
+          <svg
+            className="h-3 w-3"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125"
+            />
+          </svg>
+        </button>
+        <button
+          type="button"
+          onClick={onDelete}
+          className="rounded p-1 text-gray-400 hover:bg-red-50 hover:text-red-500"
+          aria-label="Delete comment"
+        >
+          <svg
+            className="h-3 w-3"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export function ImageLightbox({
+  image,
+  group,
+  tags,
+  onClose,
+  onDelete,
+  onEdit,
+  onCreatePalette,
+  onAddComment,
+  onUpdateComment,
+  onDeleteComment,
+}: ImageLightboxProps): JSX.Element {
+  const [newComment, setNewComment] = useState('');
+  const imageTags = tags.filter((tag) => image.tagIds.includes(tag.id));
+
+  const handleAddComment = () => {
+    const text = newComment.trim();
+    if (text) {
+      onAddComment(text);
+      setNewComment('');
+    }
+  };
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose()
-    }
-    document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [onClose])
+    const handleKeyDown = (event: globalThis.KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
 
   return (
     <div
@@ -40,9 +210,7 @@ export function ImageLightbox({ image, group, tags, onClose, onDelete, onEdit, o
           className="absolute right-3 top-3 z-10 rounded-full bg-black/50 p-1.5 text-white hover:bg-black/70"
           aria-label="Close lightbox"
         >
-          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
+          <X className="h-4 w-4" />
         </button>
 
         {/* Image area */}
@@ -52,7 +220,7 @@ export function ImageLightbox({ image, group, tags, onClose, onDelete, onEdit, o
             alt={image.name}
             className="max-h-[55vh] w-full object-contain sm:max-h-[90vh]"
             onError={(event) => {
-              event.currentTarget.src = `https://placehold.co/800x600/e2e8f0/94a3b8?text=${encodeURIComponent(image.name)}`
+              event.currentTarget.src = `https://placehold.co/800x600/e2e8f0/94a3b8?text=${encodeURIComponent(image.name)}`;
             }}
           />
         </div>
@@ -65,9 +233,7 @@ export function ImageLightbox({ image, group, tags, onClose, onDelete, onEdit, o
             <div className="mt-2 flex flex-wrap gap-1.5">
               {group && (
                 <span className="inline-flex items-center gap-1 rounded-md border border-gray-200 bg-gray-50 px-1.5 py-0.5 text-xs font-medium text-gray-600">
-                  <svg className="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-                  </svg>
+                  <Folder className="h-2.5 w-2.5" />
                   {group.name}
                 </span>
               )}
@@ -77,14 +243,60 @@ export function ImageLightbox({ image, group, tags, onClose, onDelete, onEdit, o
                 </Badge>
               ))}
             </div>
-            {image.comments.length > 0 && (
-              <div className="mt-3 flex items-center gap-1.5 text-xs text-gray-400">
-                <svg className="h-3.5 w-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
-                </svg>
-                <span>{image.comments.length} comment{image.comments.length !== 1 ? 's' : ''}</span>
+          </div>
+
+          {/* Comments */}
+          <div className="border-t border-gray-100 p-4">
+            <div className="flex flex-col gap-2">
+              <span className="text-xs font-medium text-gray-700">
+                Comments{' '}
+                {image.comments.length > 0 && (
+                  <span className="text-gray-400">
+                    ({image.comments.length})
+                  </span>
+                )}
+              </span>
+              {image.comments.length > 0 ? (
+                <div className="flex max-h-32 flex-col gap-1.5 overflow-y-auto">
+                  {image.comments.map((comment) => (
+                    <CommentItem
+                      key={comment.id}
+                      text={comment.text}
+                      createdAt={comment.createdAt}
+                      onUpdate={(text) => onUpdateComment(comment.id, text)}
+                      onDelete={() => onDeleteComment(comment.id)}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <p className="text-xs text-gray-400 italic">No comments yet</p>
+              )}
+              <div className="flex gap-2">
+                <textarea
+                  value={newComment}
+                  onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+                    setNewComment(event.target.value)
+                  }
+                  onKeyDown={(event: KeyboardEvent<HTMLTextAreaElement>) => {
+                    if (event.key === 'Enter' && !event.shiftKey) {
+                      event.preventDefault();
+                      handleAddComment();
+                    }
+                  }}
+                  placeholder="Add a comment…"
+                  rows={2}
+                  className="flex-1 resize-none rounded-lg border border-gray-200 px-2 py-1.5 text-xs text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                />
+                <button
+                  type="button"
+                  onClick={handleAddComment}
+                  disabled={!newComment.trim()}
+                  className="self-end rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <Send className="h-3 w-3" />
+                </button>
               </div>
-            )}
+            </div>
           </div>
 
           {/* Actions */}
@@ -96,9 +308,7 @@ export function ImageLightbox({ image, group, tags, onClose, onDelete, onEdit, o
                 onClick={() => onCreatePalette(image)}
                 aria-label="Create palette from image"
               >
-                <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 003.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.59l-2.879 2.88M6.75 17.25h.008v.008H6.75v-.008z" />
-                </svg>
+                <Palette className="h-4 w-4 shrink-0" />
                 Create palette
               </Button>
               <div className="flex gap-2">
@@ -109,9 +319,7 @@ export function ImageLightbox({ image, group, tags, onClose, onDelete, onEdit, o
                   onClick={() => onEdit(image)}
                   aria-label="Edit image"
                 >
-                  <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125" />
-                  </svg>
+                  <Pencil className="h-4 w-4 shrink-0" />
                   Edit
                 </Button>
                 <Button
@@ -121,9 +329,7 @@ export function ImageLightbox({ image, group, tags, onClose, onDelete, onEdit, o
                   onClick={() => onDelete(image.id)}
                   aria-label="Delete image"
                 >
-                  <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                  </svg>
+                  <Trash2 className="h-4 w-4 shrink-0" />
                   Delete
                 </Button>
               </div>
@@ -132,5 +338,5 @@ export function ImageLightbox({ image, group, tags, onClose, onDelete, onEdit, o
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -1,46 +1,46 @@
-'use client'
+'use client';
 
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react';
 
 export interface TagSuggestions {
-  group: string | null
-  tags: string[]
+  group: string | null;
+  tags: string[];
 }
 
 export interface UseTagSuggestionsResult {
-  suggestions: TagSuggestions | null
-  isLoading: boolean
-  error: string | null
-  dismiss: () => void
+  suggestions: TagSuggestions | null;
+  isLoading: boolean;
+  error: string | null;
+  dismiss: () => void;
 }
 
 function isValidUrl(url: string): boolean {
   try {
-    new URL(url)
-    return true
+    new URL(url);
+    return true;
   } catch {
-    return false
+    return false;
   }
 }
 
 export function useTagSuggestions(imageUrl: string): UseTagSuggestionsResult {
-  const [suggestions, setSuggestions] = useState<TagSuggestions | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [suggestions, setSuggestions] = useState<TagSuggestions | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current)
+    if (debounceRef.current) clearTimeout(debounceRef.current);
 
-    setSuggestions(null)
-    setError(null)
+    setSuggestions(null);
+    setError(null);
 
     if (!imageUrl || !isValidUrl(imageUrl)) {
-      setIsLoading(false)
-      return
+      setIsLoading(false);
+      return;
     }
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     debounceRef.current = setTimeout(async () => {
       try {
@@ -48,31 +48,33 @@ export function useTagSuggestions(imageUrl: string): UseTagSuggestionsResult {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ imageUrl }),
-        })
+        });
 
         if (response.status === 503) {
-          setIsLoading(false)
-          return
+          setIsLoading(false);
+          return;
         }
 
         if (!response.ok) {
-          const data = await response.json()
-          throw new Error(data.error ?? 'Suggestion failed')
+          const data = await response.json();
+          throw new Error(data.error ?? 'Suggestion failed');
         }
 
-        const data = await response.json()
-        setSuggestions(data)
+        const data = await response.json();
+        setSuggestions(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Could not fetch suggestions')
+        setError(
+          err instanceof Error ? err.message : 'Could not fetch suggestions'
+        );
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    }, 1200)
+    }, 1200);
 
     return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current)
-    }
-  }, [imageUrl])
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [imageUrl]);
 
-  return { suggestions, isLoading, error, dismiss: () => setSuggestions(null) }
+  return { suggestions, isLoading, error, dismiss: () => setSuggestions(null) };
 }

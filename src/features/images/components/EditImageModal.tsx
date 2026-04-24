@@ -1,69 +1,80 @@
-'use client'
+'use client';
 
-import { useState, useEffect, type JSX, type SyntheticEvent, type ChangeEvent } from 'react'
-import { Modal } from '@/shared/ui/Modal'
-import { Button } from '@/shared/ui/Button'
-import { GroupSelector } from '@/shared/components/GroupSelector'
-import { CommentsSection } from '@/shared/components/CommentsSection'
-import { TagPicker } from '@/shared/components/TagPicker'
-import { useAppStore } from '@/store'
-import type { Image } from '@/types'
+import {
+  type ChangeEvent,
+  type JSX,
+  type SyntheticEvent,
+  useEffect,
+  useState,
+} from 'react';
+import { CommentsSection } from '@/shared/components/CommentsSection';
+import { GroupSelector } from '@/shared/components/GroupSelector';
+import { TagPicker } from '@/shared/components/TagPicker';
+import { Button } from '@/shared/ui/Button';
+import { Modal } from '@/shared/ui/Modal';
+import { useAppStore } from '@/store';
+import type { Image } from '@/types';
 
 interface EditImageModalProps {
-  open: boolean
-  image: Image | null
-  onClose: () => void
+  open: boolean;
+  image: Image | null;
+  onClose: () => void;
 }
 
-export function EditImageModal({ open, image, onClose }: EditImageModalProps): JSX.Element {
-  const updateImage = useAppStore((store) => store.updateImage)
-  const addImageComment = useAppStore((store) => store.addImageComment)
-  const updateImageComment = useAppStore((store) => store.updateImageComment)
-  const deleteImageComment = useAppStore((store) => store.deleteImageComment)
-  const allTags = useAppStore((store) => store.tags)
-  const allGroups = useAppStore((store) => store.groups)
+export function EditImageModal({
+  open,
+  image,
+  onClose,
+}: EditImageModalProps): JSX.Element {
+  const updateImage = useAppStore((store) => store.updateImage);
+  const addImageComment = useAppStore((store) => store.addImageComment);
+  const updateImageComment = useAppStore((store) => store.updateImageComment);
+  const deleteImageComment = useAppStore((store) => store.deleteImageComment);
+  const allTags = useAppStore((store) => store.tags);
+  const allGroups = useAppStore((store) => store.groups);
 
-  const liveImage = useAppStore((store) => store.images.find((img) => img.id === image?.id))
+  const liveImage = useAppStore((store) =>
+    store.images.find((img) => img.id === image?.id)
+  );
 
-
-  const [url, setUrl] = useState('')
-  const [name, setName] = useState('')
-  const [urlError, setUrlError] = useState('')
-  const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null)
-  const [selectedTagIds, setSelectedTagIds] = useState<string[]>([])
+  const [url, setUrl] = useState('');
+  const [name, setName] = useState('');
+  const [urlError, setUrlError] = useState('');
+  const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null);
+  const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
 
   useEffect(() => {
     if (open && image) {
-      setUrl(image.url)
-      setName(image.name)
-      setUrlError('')
-      setSelectedGroupId(image.groupId)
-      setSelectedTagIds(image.tagIds)
+      setUrl(image.url);
+      setName(image.name);
+      setUrlError('');
+      setSelectedGroupId(image.groupId);
+      setSelectedTagIds(image.tagIds);
     }
-  }, [open, image])
+  }, [open, image]);
 
   const handleUrlChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setUrl(event.target.value)
-    setUrlError('')
-  }
+    setUrl(event.target.value);
+    setUrlError('');
+  };
 
   const handleTagToggle = (tagId: string) => {
     setSelectedTagIds((previous) =>
       previous.includes(tagId)
         ? previous.filter((id) => id !== tagId)
         : [...previous, tagId]
-    )
-  }
+    );
+  };
 
   const handleSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    if (!image) return
+    event.preventDefault();
+    if (!image) return;
 
     try {
-      new URL(url)
+      new URL(url);
     } catch {
-      setUrlError('Please enter a valid URL.')
-      return
+      setUrlError('Please enter a valid URL.');
+      return;
     }
 
     updateImage(image.id, {
@@ -71,18 +82,21 @@ export function EditImageModal({ open, image, onClose }: EditImageModalProps): J
       name: name.trim() || 'Untitled',
       groupId: selectedGroupId,
       tagIds: selectedTagIds,
-    })
+    });
 
-    onClose()
-  }
+    onClose();
+  };
 
-  const comments = liveImage?.comments ?? []
+  const comments = liveImage?.comments ?? [];
 
   return (
     <Modal open={open} onClose={onClose} title="Edit image" size="xl">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="edit-image-url" className="text-sm font-medium text-gray-700">
+          <label
+            htmlFor="edit-image-url"
+            className="text-sm font-medium text-gray-700"
+          >
             Image URL
           </label>
           <input
@@ -102,14 +116,19 @@ export function EditImageModal({ open, image, onClose }: EditImageModalProps): J
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="edit-image-name" className="text-sm font-medium text-gray-700">
+          <label
+            htmlFor="edit-image-name"
+            className="text-sm font-medium text-gray-700"
+          >
             Name
           </label>
           <input
             id="edit-image-name"
             type="text"
             value={name}
-            onChange={(event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)}
+            onChange={(event: ChangeEvent<HTMLInputElement>) =>
+              setName(event.target.value)
+            }
             placeholder="My image"
             className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
           />
@@ -123,7 +142,7 @@ export function EditImageModal({ open, image, onClose }: EditImageModalProps): J
               alt="Preview"
               className="mx-auto max-h-40 w-full object-contain"
               onError={(event) => {
-                event.currentTarget.style.display = 'none'
+                event.currentTarget.style.display = 'none';
               }}
             />
           </div>
@@ -146,8 +165,12 @@ export function EditImageModal({ open, image, onClose }: EditImageModalProps): J
           <CommentsSection
             comments={comments}
             onAdd={(text) => image && addImageComment(image.id, text)}
-            onUpdate={(commentId, text) => image && updateImageComment(image.id, commentId, text)}
-            onDelete={(commentId) => image && deleteImageComment(image.id, commentId)}
+            onUpdate={(commentId, text) =>
+              image && updateImageComment(image.id, commentId, text)
+            }
+            onDelete={(commentId) =>
+              image && deleteImageComment(image.id, commentId)
+            }
           />
         </div>
 
@@ -161,5 +184,5 @@ export function EditImageModal({ open, image, onClose }: EditImageModalProps): J
         </div>
       </form>
     </Modal>
-  )
+  );
 }

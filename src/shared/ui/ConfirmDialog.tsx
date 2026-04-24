@@ -1,16 +1,16 @@
-'use client'
+'use client';
 
-import type { JSX } from 'react'
-import { Modal } from './Modal'
-import { Button } from './Button'
+import type { JSX } from 'react';
+import { Button } from './Button';
+import { Modal } from './Modal';
 
 interface ConfirmDialogProps {
-  open: boolean
-  title: string
-  message: string
-  confirmLabel?: string
-  onConfirm: () => void
-  onCancel: () => void
+  open: boolean;
+  title: string;
+  message: string;
+  confirmLabel?: string;
+  onConfirm: () => void;
+  onCancel: () => void;
 }
 
 export function ConfirmDialog({
@@ -33,5 +33,5 @@ export function ConfirmDialog({
         </Button>
       </div>
     </Modal>
-  )
+  );
 }

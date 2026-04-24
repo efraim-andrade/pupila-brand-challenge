@@ -1,18 +1,22 @@
-import type { ReactNode, JSX } from 'react'
+import type { JSX, ReactNode } from 'react';
 
 interface CardProps {
-  children: ReactNode
-  className?: string
-  onClick?: () => void
+  children: ReactNode;
+  className?: string;
+  onClick?: () => void;
 }
 
-export function Card({ children, className = '', onClick }: CardProps): JSX.Element {
+export function Card({
+  children,
+  className = '',
+  onClick,
+}: CardProps): JSX.Element {
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (onClick && (event.key === 'Enter' || event.key === ' ')) {
-      event.preventDefault()
-      onClick()
+      event.preventDefault();
+      onClick();
     }
-  }
+  };
 
   return (
     <div
@@ -26,5 +30,5 @@ export function Card({ children, className = '', onClick }: CardProps): JSX.Elem
     >
       {children}
     </div>
-  )
+  );
 }

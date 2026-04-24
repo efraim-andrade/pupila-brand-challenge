@@ -1,8 +1,8 @@
-import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { ConfirmDialog } from '../ConfirmDialog'
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { ConfirmDialog } from '../ConfirmDialog';
 
-beforeEach(() => jest.clearAllMocks())
+beforeEach(() => jest.clearAllMocks());
 
 describe('ConfirmDialog', () => {
   describe('open/closed state', () => {
@@ -15,10 +15,10 @@ describe('ConfirmDialog', () => {
           onConfirm={jest.fn()}
           onCancel={jest.fn()}
         />
-      )
+      );
 
-      expect(container).toBeEmptyDOMElement()
-    })
+      expect(container).toBeEmptyDOMElement();
+    });
 
     it('renders the dialog when open is true', () => {
       render(
@@ -29,11 +29,11 @@ describe('ConfirmDialog', () => {
           onConfirm={jest.fn()}
           onCancel={jest.fn()}
         />
-      )
+      );
 
-      expect(screen.getByRole('dialog')).toBeInTheDocument()
-    })
-  })
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+    });
+  });
 
   describe('title', () => {
     it('renders the title in the modal', () => {
@@ -45,11 +45,13 @@ describe('ConfirmDialog', () => {
           onConfirm={jest.fn()}
           onCancel={jest.fn()}
         />
-      )
+      );
 
-      expect(screen.getByRole('heading', { level: 2, name: 'Delete Palette' })).toBeInTheDocument()
-    })
-  })
+      expect(
+        screen.getByRole('heading', { level: 2, name: 'Delete Palette' })
+      ).toBeInTheDocument();
+    });
+  });
 
   describe('message', () => {
     it('renders the message text', () => {
@@ -61,11 +63,13 @@ describe('ConfirmDialog', () => {
           onConfirm={jest.fn()}
           onCancel={jest.fn()}
         />
-      )
+      );
 
-      expect(screen.getByText('This action cannot be undone.')).toBeInTheDocument()
-    })
-  })
+      expect(
+        screen.getByText('This action cannot be undone.')
+      ).toBeInTheDocument();
+    });
+  });
 
   describe('buttons', () => {
     it('renders Cancel button', () => {
@@ -77,10 +81,12 @@ describe('ConfirmDialog', () => {
           onConfirm={jest.fn()}
           onCancel={jest.fn()}
         />
-      )
+      );
 
-      expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument()
-    })
+      expect(
+        screen.getByRole('button', { name: 'Cancel' })
+      ).toBeInTheDocument();
+    });
 
     it('renders default confirm label as "Delete"', () => {
       render(
@@ -91,10 +97,12 @@ describe('ConfirmDialog', () => {
           onConfirm={jest.fn()}
           onCancel={jest.fn()}
         />
-      )
+      );
 
-      expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
-    })
+      expect(
+        screen.getByRole('button', { name: 'Delete' })
+      ).toBeInTheDocument();
+    });
 
     it('renders custom confirm label when provided', () => {
       render(
@@ -106,15 +114,17 @@ describe('ConfirmDialog', () => {
           onConfirm={jest.fn()}
           onCancel={jest.fn()}
         />
-      )
+      );
 
-      expect(screen.getByRole('button', { name: 'Remove' })).toBeInTheDocument()
-    })
-  })
+      expect(
+        screen.getByRole('button', { name: 'Remove' })
+      ).toBeInTheDocument();
+    });
+  });
 
   describe('callbacks', () => {
     it('calls onCancel when Cancel button is clicked', async () => {
-      const onCancel = jest.fn()
+      const onCancel = jest.fn();
       render(
         <ConfirmDialog
           open={true}
@@ -123,15 +133,15 @@ describe('ConfirmDialog', () => {
           onConfirm={jest.fn()}
           onCancel={onCancel}
         />
-      )
+      );
 
-      await userEvent.click(screen.getByRole('button', { name: 'Cancel' }))
+      await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
 
-      expect(onCancel).toHaveBeenCalledTimes(1)
-    })
+      expect(onCancel).toHaveBeenCalledTimes(1);
+    });
 
     it('calls onConfirm when Confirm button is clicked', async () => {
-      const onConfirm = jest.fn()
+      const onConfirm = jest.fn();
       render(
         <ConfirmDialog
           open={true}
@@ -140,11 +150,11 @@ describe('ConfirmDialog', () => {
           onConfirm={onConfirm}
           onCancel={jest.fn()}
         />
-      )
+      );
 
-      await userEvent.click(screen.getByRole('button', { name: 'Delete' }))
+      await userEvent.click(screen.getByRole('button', { name: 'Delete' }));
 
-      expect(onConfirm).toHaveBeenCalledTimes(1)
-    })
-  })
-})
+      expect(onConfirm).toHaveBeenCalledTimes(1);
+    });
+  });
+});

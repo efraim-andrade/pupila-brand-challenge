@@ -1,14 +1,14 @@
-'use client'
+'use client';
 
-import type { JSX } from 'react'
-import { useImagesPage } from '@/features/images/hooks/useImagesPage'
-import { ImagesToolbar } from '@/features/images/components/ImagesToolbar'
-import { ImageGrid } from '@/features/images/components/ImageGrid'
-import { AddImageModal } from '@/features/images/components/AddImageModal'
-import { EditImageModal } from '@/features/images/components/EditImageModal'
-import { CreatePaletteFromImageModal } from '@/features/images/components/CreatePaletteFromImageModal'
-import { useAppStore } from '@/store'
-import type { Image } from '@/types'
+import type { JSX } from 'react';
+import { AddImageModal } from '@/features/images/components/AddImageModal';
+import { CreatePaletteFromImageModal } from '@/features/images/components/CreatePaletteFromImageModal';
+import { EditImageModal } from '@/features/images/components/EditImageModal';
+import { ImageGrid } from '@/features/images/components/ImageGrid';
+import { ImagesToolbar } from '@/features/images/components/ImagesToolbar';
+import { useImagesPage } from '@/features/images/hooks/useImagesPage';
+import { useAppStore } from '@/store';
+import type { Image } from '@/types';
 
 export default function ImagesPage(): JSX.Element {
   const {
@@ -23,12 +23,12 @@ export default function ImagesPage(): JSX.Element {
     setViewMode,
     deleteImage,
     openModal,
-  } = useImagesPage()
+  } = useImagesPage();
 
-  const modal = useAppStore((store) => store.modal)
-  const closeModal = useAppStore((store) => store.closeModal)
+  const modal = useAppStore((store) => store.modal);
+  const closeModal = useAppStore((store) => store.closeModal);
 
-return (
+  return (
     <div className="flex h-full flex-col">
       <ImagesToolbar
         totalCount={totalCount}
@@ -49,15 +49,16 @@ return (
           tags={tags}
           viewMode={viewMode}
           onDeleteImage={deleteImage}
-          onEditImage={(image) => openModal({ type: 'editImage', payload: image })}
-          onCreatePalette={(image) => openModal({ type: 'createPaletteFromImage', payload: image })}
+          onEditImage={(image) =>
+            openModal({ type: 'editImage', payload: image })
+          }
+          onCreatePalette={(image) =>
+            openModal({ type: 'createPaletteFromImage', payload: image })
+          }
         />
       </div>
 
-      <AddImageModal
-        open={modal?.type === 'addImage'}
-        onClose={closeModal}
-      />
+      <AddImageModal open={modal?.type === 'addImage'} onClose={closeModal} />
 
       <EditImageModal
         open={modal?.type === 'editImage'}
@@ -67,9 +68,13 @@ return (
 
       <CreatePaletteFromImageModal
         open={modal?.type === 'createPaletteFromImage'}
-        image={modal?.type === 'createPaletteFromImage' ? (modal.payload as Image) : null}
+        image={
+          modal?.type === 'createPaletteFromImage'
+            ? (modal.payload as Image)
+            : null
+        }
         onClose={closeModal}
       />
     </div>
-  )
+  );
 }
