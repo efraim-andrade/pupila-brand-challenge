@@ -10,7 +10,7 @@ export interface PalettesSlice {
   palettesFilter: FilterState
 
   hydratePalettes: (palettes: ColorPalette[]) => void
-  addPalette: (fields: Omit<ColorPalette, 'id' | 'createdAt' | 'updatedAt'>) => void
+  addPalette: (fields: Omit<ColorPalette, 'id' | 'createdAt' | 'updatedAt'>) => ColorPalette
   updatePalette: (id: string, updates: Partial<Omit<ColorPalette, 'id' | 'createdAt'>>) => void
   deletePalette: (id: string) => void
   addPaletteComment: (paletteId: string, text: string) => void
@@ -39,6 +39,7 @@ export const createPalettesSlice: StateCreator<AppStore, [], [], PalettesSlice> 
     }
     set((state) => ({ palettes: [palette, ...state.palettes] }))
     paletteDB.put(palette)
+    return palette
   },
 
   updatePalette: (id, updates) => {

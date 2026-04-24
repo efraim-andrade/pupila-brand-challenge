@@ -6,6 +6,8 @@ import { Button } from '@/shared/ui/Button'
 import { GroupSelector } from '@/shared/components/GroupSelector'
 import { TagPicker } from '@/shared/components/TagPicker'
 import { useAppStore } from '@/store'
+import { useTagSuggestions } from '../hooks/useTagSuggestions'
+import { AiSuggestionBar } from './AiSuggestionBar'
 
 interface AddImageModalProps {
   open: boolean
@@ -24,15 +26,34 @@ function deriveNameFromUrl(url: string): string {
 
 export function AddImageModal({ open, onClose }: AddImageModalProps): JSX.Element {
   const addImage = useAppStore((store) => store.addImage)
+  const addGroup = useAppStore((store) => store.addGroup)
+  const addTag = useAppStore((store) => store.addTag)
   const allGroups = useAppStore((store) => store.groups)
   const allTags = useAppStore((store) => store.tags)
-
 
   const [url, setUrl] = useState('')
   const [name, setName] = useState('')
   const [urlError, setUrlError] = useState('')
   const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null)
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([])
+
+  const { suggestions, isLoading: isSuggestionsLoading, error: suggestionsError, dismiss: dismissSuggestions } = useTagSuggestions(url)
+
+  const handleApplySuggestions = (groupName: string | null, tagNames: string[]) => {
+    if (groupName) {
+      const existing = allGroups.find((g) => g.name.toLowerCase() === groupName.toLowerCase())
+      const group = existing ?? addGroup({ name: groupName, type: 'shared' })
+      setSelectedGroupId(group.id)
+    }
+
+    const resolvedTagIds = tagNames.map((tagName) => {
+      const existing = allTags.find((t) => t.name.toLowerCase() === tagName.toLowerCase())
+      return existing ? existing.id : addTag({ name: tagName }).id
+    })
+
+    setSelectedTagIds((previous) => [...new Set([...previous, ...resolvedTagIds])])
+    dismissSuggestions()
+  }
 
   const handleUrlChange = (event: ChangeEvent<HTMLInputElement>) => {
     const nextUrl = event.target.value
@@ -135,6 +156,16 @@ export function AddImageModal({ open, onClose }: AddImageModalProps): JSX.Elemen
             />
           </div>
         )}
+
+        <AiSuggestionBar
+          suggestions={suggestions}
+          isLoading={isSuggestionsLoading}
+          error={suggestionsError}
+          existingGroups={allGroups}
+          existingTags={allTags}
+          onApplyAll={handleApplySuggestions}
+          onDismiss={dismissSuggestions}
+        />
 
         <GroupSelector
           groups={allGroups}

@@ -1,12 +1,13 @@
 'use client'
 
-import type { JSX } from 'react'
+import { useState, useCallback, type JSX } from 'react'
 import { usePalettesPage } from '@/features/palettes/hooks/usePalettesPage'
 import { PalettesToolbar } from '@/features/palettes/components/PalettesToolbar'
 import { PaletteGrid } from '@/features/palettes/components/PaletteGrid'
 import { AddPaletteModal } from '@/features/palettes/components/AddPaletteModal'
 import { EditPaletteModal } from '@/features/palettes/components/EditPaletteModal'
 import { PaletteViewModal } from '@/features/palettes/components/PaletteViewModal'
+import { ConfirmDialog } from '@/shared/ui/ConfirmDialog'
 import { useAppStore } from '@/store'
 import type { ColorPalette } from '@/types'
 
@@ -29,8 +30,25 @@ export default function PalettesPage(): JSX.Element {
   const modal = useAppStore((store) => store.modal)
   const closeModal = useAppStore((store) => store.closeModal)
 
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
+
   const viewedPalette = modal?.type === 'viewPalette' ? (modal.payload as ColorPalette) : null
   const viewedPaletteGroup = allGroups.find((g) => g.id === viewedPalette?.groupId)
+
+  const handleDeleteRequest = useCallback((id: string) => {
+    setPendingDeleteId(id)
+  }, [])
+
+  const handleDeleteConfirm = useCallback(() => {
+    if (!pendingDeleteId) return
+    deletePalette(pendingDeleteId)
+    if (modal?.type === 'viewPalette') closeModal()
+    setPendingDeleteId(null)
+  }, [pendingDeleteId, deletePalette, modal, closeModal])
+
+  const handleDeleteCancel = useCallback(() => {
+    setPendingDeleteId(null)
+  }, [])
 
   return (
     <div className="flex h-full flex-col">
@@ -52,7 +70,7 @@ export default function PalettesPage(): JSX.Element {
           groups={groups}
           tags={tags}
           viewMode={viewMode}
-          onDeletePalette={deletePalette}
+          onDeletePalette={handleDeleteRequest}
           onEditPalette={(palette) => openModal({ type: 'editPalette', payload: palette })}
           onViewPalette={(palette) => openModal({ type: 'viewPalette', payload: palette })}
         />
@@ -76,7 +94,16 @@ export default function PalettesPage(): JSX.Element {
         tags={tags}
         onClose={closeModal}
         onEdit={(palette) => openModal({ type: 'editPalette', payload: palette })}
-        onDelete={(id) => { deletePalette(id); closeModal() }}
+        onDelete={handleDeleteRequest}
+      />
+
+      <ConfirmDialog
+        open={pendingDeleteId !== null}
+        title="Delete palette"
+        message="Are you sure you want to delete this palette? This action cannot be undone."
+        confirmLabel="Delete"
+        onConfirm={handleDeleteConfirm}
+        onCancel={handleDeleteCancel}
       />
     </div>
   )

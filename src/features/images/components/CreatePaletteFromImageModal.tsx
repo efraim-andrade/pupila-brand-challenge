@@ -2,6 +2,7 @@
 
 import { useState, useEffect, type JSX, type SyntheticEvent, type ChangeEvent } from 'react'
 import { nanoid } from 'nanoid'
+import { useRouter } from 'next/navigation'
 import { Modal } from '@/shared/ui/Modal'
 import { Button } from '@/shared/ui/Button'
 import { GroupSelector } from '@/shared/components/GroupSelector'
@@ -32,10 +33,13 @@ function ExtractionStatus({ isExtracting }: { isExtracting: boolean }): JSX.Elem
 
 export function CreatePaletteFromImageModal({ open, image, onClose }: CreatePaletteFromImageModalProps): JSX.Element {
   const addPalette = useAppStore((store) => store.addPalette)
+  const openModal = useAppStore((store) => store.openModal)
   const updateImage = useAppStore((store) => store.updateImage)
   const allGroups = useAppStore((store) => store.groups)
   const allTags = useAppStore((store) => store.tags)
 
+
+  const router = useRouter()
 
   const [name, setName] = useState('')
   const [colorItems, setColorItems] = useState<ColorItem[]>([])
@@ -70,7 +74,7 @@ export function CreatePaletteFromImageModal({ open, image, onClose }: CreatePale
     event.preventDefault()
     if (!image) return
 
-    addPalette({
+    const newPalette = addPalette({
       name: name.trim() || `${image.name} palette`,
       colors: colorItems
         .filter((item) => isValidHex(item.hex))
@@ -85,7 +89,8 @@ export function CreatePaletteFromImageModal({ open, image, onClose }: CreatePale
       updateImage(image.id, { extractedPaletteId: 'pending' })
     }
 
-    onClose()
+    openModal({ type: 'viewPalette', payload: newPalette })
+    router.push('/palettes')
   }
 
   const handleClose = () => {

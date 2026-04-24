@@ -32,7 +32,7 @@ export function ImageLightbox({ image, group, tags, onClose, onDelete, onEdit, o
       onClick={onClose}
     >
       <div
-        className="relative flex w-full max-h-[90vh] max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl sm:h-[50vh] sm:flex-row"
+        className="relative flex w-full max-h-[90vh] max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl sm:flex-row"
         onClick={(event) => event.stopPropagation()}
       >
         <button

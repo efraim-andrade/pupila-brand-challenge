@@ -28,7 +28,7 @@ export default function ImagesPage(): JSX.Element {
   const modal = useAppStore((store) => store.modal)
   const closeModal = useAppStore((store) => store.closeModal)
 
-  return (
+return (
     <div className="flex h-full flex-col">
       <ImagesToolbar
         totalCount={totalCount}

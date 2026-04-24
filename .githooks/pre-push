@@ -1,12 +1,27 @@
 #!/bin/sh
 
-echo "Building project..."
+echo "Running tests with coverage..."
 
-npm run build
+OUTPUT=$(npm run test:coverage 2>&1)
+STATUS=$?
 
-if [ $? -ne 0 ]; then
-  echo "Build failed! Push aborted."
+echo "$OUTPUT"
+
+if [ $STATUS -ne 0 ]; then
+  echo "Tests failed! Push aborted."
   exit 1
 fi
 
-echo "Build passed! Proceeding with push."
+COVERAGE=$(echo "$OUTPUT" | grep -E "^All files" | sed 's/|/ /g' | awk '{gsub(/^[[:space:]]+|[[:space:]]+$/, ""); print $3}')
+
+if [ -z "$COVERAGE" ] || ! echo "$COVERAGE" | grep -qE '^[0-9]+\.?[0-9]*$'; then
+  echo "Could not determine coverage! Push aborted."
+  exit 1
+fi
+
+if [ "$(echo "$COVERAGE 90" | awk '{print ($1 < $2) ? 1 : 0}')" -eq 1 ]; then
+  echo "Coverage is ${COVERAGE}%, which is below 90%! Push aborted."
+  exit 1
+fi
+
+echo "All tests passed and coverage is ${COVERAGE}%! Proceeding with push."

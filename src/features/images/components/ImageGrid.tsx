@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, type JSX } from 'react'
+import { useState, useCallback, type JSX } from 'react'
 import type { Image, Group, Tag, ViewMode } from '@/types'
 import { Badge } from '@/shared/ui/Badge'
+import { ConfirmDialog } from '@/shared/ui/ConfirmDialog'
 import { ImageCard } from './ImageCard'
 import { ImageLightbox } from './ImageLightbox'
 
@@ -123,6 +124,22 @@ export function ImageGrid({
   onCreatePalette,
 }: ImageGridProps): JSX.Element {
   const [expandedImage, setExpandedImage] = useState<Image | null>(null)
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
+
+  const handleDeleteRequest = useCallback((id: string) => {
+    setPendingDeleteId(id)
+  }, [])
+
+  const handleDeleteConfirm = useCallback(() => {
+    if (!pendingDeleteId) return
+    onDeleteImage(pendingDeleteId)
+    if (expandedImage?.id === pendingDeleteId) setExpandedImage(null)
+    setPendingDeleteId(null)
+  }, [pendingDeleteId, onDeleteImage, expandedImage])
+
+  const handleDeleteCancel = useCallback(() => {
+    setPendingDeleteId(null)
+  }, [])
 
   if (images.length === 0) return <EmptyState />
 
@@ -138,7 +155,7 @@ export function ImageGrid({
               image={image}
               group={image.groupId ? groupsById[image.groupId] : undefined}
               tags={tags}
-              onDelete={onDeleteImage}
+              onDelete={handleDeleteRequest}
               onEdit={onEditImage}
               onExpand={setExpandedImage}
             />
@@ -152,7 +169,7 @@ export function ImageGrid({
               image={image}
               group={image.groupId ? groupsById[image.groupId] : undefined}
               tags={tags}
-              onDelete={onDeleteImage}
+              onDelete={handleDeleteRequest}
               onEdit={onEditImage}
               onExpand={setExpandedImage}
               onCreatePalette={onCreatePalette}
@@ -167,11 +184,20 @@ export function ImageGrid({
           group={expandedImage.groupId ? groupsById[expandedImage.groupId] : undefined}
           tags={tags}
           onClose={() => setExpandedImage(null)}
-          onDelete={onDeleteImage}
+          onDelete={handleDeleteRequest}
           onEdit={onEditImage}
           onCreatePalette={onCreatePalette}
         />
       )}
+
+      <ConfirmDialog
+        open={pendingDeleteId !== null}
+        title="Delete image"
+        message="Are you sure you want to delete this image? This action cannot be undone."
+        confirmLabel="Delete"
+        onConfirm={handleDeleteConfirm}
+        onCancel={handleDeleteCancel}
+      />
     </>
   )
 }
