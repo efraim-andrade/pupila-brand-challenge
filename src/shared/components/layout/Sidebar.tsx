@@ -24,7 +24,7 @@ const navItems = [
   },
 ];
 
-const configurationIcon = Settings;
+const _configurationIcon = Settings;
 
 export function Sidebar(): JSX.Element {
   const pathname = usePathname();

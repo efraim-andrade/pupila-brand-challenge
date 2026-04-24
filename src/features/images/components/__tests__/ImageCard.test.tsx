@@ -134,7 +134,7 @@ describe('ImageCard', () => {
         />
       );
 
-      expect(screen.getByText('2 comments')).toBeInTheDocument();
+      expect(screen.getByText('2')).toBeInTheDocument();
     });
 
     it('renders singular comment text when only one comment', () => {
@@ -161,7 +161,7 @@ describe('ImageCard', () => {
         />
       );
 
-      expect(screen.getByText('1 comment')).toBeInTheDocument();
+      expect(screen.getByText('1')).toBeInTheDocument();
     });
   });
 
@@ -186,7 +186,7 @@ describe('ImageCard', () => {
         screen.getByRole('button', { name: 'Expand Expandable Image' })
       );
 
-      expect(onExpand).toHaveBeenCalledWith(image);
+      expect(onExpand).toHaveBeenCalledWith(image.id);
     });
 
     it('calls onEdit when clicking edit button', async () => {

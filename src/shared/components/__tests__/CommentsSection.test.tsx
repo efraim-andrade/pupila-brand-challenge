@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { Comment } from '@/types';
 import { CommentsSection } from '../CommentsSection';
@@ -233,7 +233,9 @@ describe('CommentsSection', () => {
       await userEvent.click(
         screen.getByRole('button', { name: 'Edit comment' })
       );
-      await userEvent.keyboard('{Escape}');
+      const textarea = screen.getByDisplayValue('original');
+      textarea.focus();
+      fireEvent.keyDown(textarea, { key: 'Escape' });
 
       expect(onUpdate).not.toHaveBeenCalled();
       expect(

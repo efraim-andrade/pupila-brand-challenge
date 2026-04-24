@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useAppStore } from '@/store';
 import type { Tag } from '@/types';
@@ -105,7 +105,9 @@ describe('TagPicker', () => {
       render(<TagPicker {...defaultProps} />);
 
       await userEvent.click(screen.getByRole('button', { name: '+ New tag' }));
-      await userEvent.keyboard('{Escape}');
+      const input = screen.getByPlaceholderText('Tag name');
+      input.focus();
+      fireEvent.keyDown(input, { key: 'Escape' });
 
       expect(screen.queryByPlaceholderText('Tag name')).not.toBeInTheDocument();
     });

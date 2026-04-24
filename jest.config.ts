@@ -10,6 +10,7 @@ const config: Config = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
+  transformIgnorePatterns: ['/node_modules/(?!nanoid|url-alphabet)'],
 };
 
 export default createJestConfig(config);

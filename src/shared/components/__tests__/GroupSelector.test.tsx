@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useAppStore } from '@/store';
 import type { Group } from '@/types';
@@ -136,7 +136,9 @@ describe('GroupSelector', () => {
       await userEvent.click(
         screen.getByRole('button', { name: '+ New group' })
       );
-      await userEvent.keyboard('{Escape}');
+      const input = screen.getByPlaceholderText('Group name');
+      input.focus();
+      fireEvent.keyDown(input, { key: 'Escape' });
 
       expect(
         screen.queryByPlaceholderText('Group name')

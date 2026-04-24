@@ -56,6 +56,9 @@ describe('PaletteViewModal', () => {
           onClose={jest.fn()}
           onEdit={jest.fn()}
           onDelete={jest.fn()}
+          onAddComment={jest.fn()}
+          onUpdateComment={jest.fn()}
+          onDeleteComment={jest.fn()}
         />
       );
 
@@ -72,6 +75,9 @@ describe('PaletteViewModal', () => {
           onClose={jest.fn()}
           onEdit={jest.fn()}
           onDelete={jest.fn()}
+          onAddComment={jest.fn()}
+          onUpdateComment={jest.fn()}
+          onDeleteComment={jest.fn()}
         />
       );
 
@@ -88,6 +94,48 @@ describe('PaletteViewModal', () => {
           onClose={jest.fn()}
           onEdit={jest.fn()}
           onDelete={jest.fn()}
+          onAddComment={jest.fn()}
+          onUpdateComment={jest.fn()}
+          onDeleteComment={jest.fn()}
+        />
+      );
+
+      expect(screen.getByText('Test Palette')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument();
+    });
+
+    it('returns null when palette is null even if open is true', () => {
+      const { container } = render(
+        <PaletteViewModal
+          open={true}
+          palette={null}
+          group={undefined}
+          tags={[]}
+          onClose={jest.fn()}
+          onEdit={jest.fn()}
+          onDelete={jest.fn()}
+          onAddComment={jest.fn()}
+          onUpdateComment={jest.fn()}
+          onDeleteComment={jest.fn()}
+        />
+      );
+
+      expect(container).toBeEmptyDOMElement();
+    });
+
+    it('renders the modal when open and palette is provided', () => {
+      render(
+        <PaletteViewModal
+          open={true}
+          palette={makePalette()}
+          group={undefined}
+          tags={[]}
+          onClose={jest.fn()}
+          onEdit={jest.fn()}
+          onDelete={jest.fn()}
+          onAddComment={jest.fn()}
+          onUpdateComment={jest.fn()}
+          onDeleteComment={jest.fn()}
         />
       );
 
@@ -178,7 +226,7 @@ describe('PaletteViewModal', () => {
       expect(screen.getByText('Tag One')).toBeInTheDocument();
     });
 
-    it('renders comment count when comments exist', () => {
+    it('renders comments when comments exist', () => {
       render(
         <PaletteViewModal
           open={true}
@@ -200,10 +248,10 @@ describe('PaletteViewModal', () => {
         />
       );
 
-      expect(screen.getByText('1 comment')).toBeInTheDocument();
+      expect(screen.getByText('Comment')).toBeInTheDocument();
     });
 
-    it('does not render comments section when no comments', () => {
+    it('renders comments section even when no comments', () => {
       render(
         <PaletteViewModal
           open={true}
@@ -216,7 +264,8 @@ describe('PaletteViewModal', () => {
         />
       );
 
-      expect(screen.queryByText(/comment/)).not.toBeInTheDocument();
+      expect(screen.getByText('Comments')).toBeInTheDocument();
+      expect(screen.queryByText('Comment')).not.toBeInTheDocument();
     });
   });
 

@@ -1,4 +1,4 @@
-import { type JSX, useMemo } from 'react';
+import type { JSX } from 'react';
 
 interface StatCardProps {
   title: string;

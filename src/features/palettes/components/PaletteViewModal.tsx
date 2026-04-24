@@ -1,6 +1,6 @@
 'use client';
 
-import { Copy, Folder, Pencil, Trash2, X } from 'lucide-react';
+import { Copy, Folder, X } from 'lucide-react';
 import { type JSX, useCallback, useState } from 'react';
 import { exportPaletteToJSON } from '@/lib/exportImport';
 import { CommentsSection } from '@/shared/components/CommentsSection';
@@ -16,9 +16,9 @@ interface PaletteViewModalProps {
   onClose: () => void;
   onEdit: (palette: ColorPalette) => void;
   onDelete: (id: string) => void;
-  onAddComment: (text: string) => void;
-  onUpdateComment: (commentId: string, text: string) => void;
-  onDeleteComment: (commentId: string) => void;
+  onAddComment?: (text: string) => void;
+  onUpdateComment?: (commentId: string, text: string) => void;
+  onDeleteComment?: (commentId: string) => void;
 }
 
 interface ColorStripeProps {
@@ -70,9 +70,9 @@ export function PaletteViewModal({
   onClose,
   onEdit,
   onDelete,
-  onAddComment,
-  onUpdateComment,
-  onDeleteComment,
+  onAddComment = () => {},
+  onUpdateComment = () => {},
+  onDeleteComment = () => {},
 }: PaletteViewModalProps): JSX.Element | null {
   const [copiedHex, setCopiedHex] = useState<string | null>(null);
 

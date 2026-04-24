@@ -1,6 +1,6 @@
 'use client';
 
-import { Home, Image, Menu, Palette } from 'lucide-react';
+import { BarChart3, Home, Image, Menu, Palette } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import type { JSX, ReactNode } from 'react';
 import { Toaster } from 'sonner';
@@ -16,7 +16,7 @@ const pageNames: Record<string, { label: string; icon: typeof Home }> = {
   '/': { label: 'Dashboard', icon: Home },
   '/images': { label: 'Images', icon: Image },
   '/palettes': { label: 'Palettes', icon: Palette },
-  '/statistics': { label: 'Statistics', icon: Palette },
+  '/statistics': { label: 'Statistics', icon: BarChart3 },
 };
 
 export function AppShell({ children }: AppShellProps): JSX.Element {
