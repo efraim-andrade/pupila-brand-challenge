@@ -1,7 +1,13 @@
 'use client';
 
 import { Copy, Folder, Send, X } from 'lucide-react';
-import { type ChangeEvent, type JSX, type KeyboardEvent, useCallback, useState } from 'react';
+import {
+  type ChangeEvent,
+  type JSX,
+  type KeyboardEvent,
+  useCallback,
+  useState,
+} from 'react';
 import { exportPaletteToJSON } from '@/lib/exportImport';
 import { Badge } from '@/shared/ui/Badge';
 import { Button } from '@/shared/ui/Button';
@@ -74,23 +80,23 @@ export function PaletteViewModal({
   onUpdateComment,
   onDeleteComment,
 }: PaletteViewModalProps): JSX.Element | null {
-   const [copiedHex, setCopiedHex] = useState<string | null>(null);
-   const [newComment, setNewComment] = useState('');
+  const [copiedHex, setCopiedHex] = useState<string | null>(null);
+  const [newComment, setNewComment] = useState('');
 
-   const handleCopy = useCallback((hex: string) => {
-     navigator.clipboard.writeText(hex).then(() => {
-       setCopiedHex(hex);
-       setTimeout(() => setCopiedHex(null), 1500);
-     });
-   }, []);
+  const handleCopy = useCallback((hex: string) => {
+    navigator.clipboard.writeText(hex).then(() => {
+      setCopiedHex(hex);
+      setTimeout(() => setCopiedHex(null), 1500);
+    });
+  }, []);
 
-   const handleAddComment = () => {
-     const text = newComment.trim();
-     if (text) {
-       onAddComment(text);
-       setNewComment('');
-     }
-   };
+  const handleAddComment = () => {
+    const text = newComment.trim();
+    if (text) {
+      onAddComment(text);
+      setNewComment('');
+    }
+  };
 
   if (!open || !palette) return null;
 

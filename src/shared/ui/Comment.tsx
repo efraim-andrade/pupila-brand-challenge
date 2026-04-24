@@ -1,6 +1,11 @@
 'use client';
 
-import { type ChangeEvent, type JSX, type KeyboardEvent, useState } from 'react';
+import {
+  type ChangeEvent,
+  type JSX,
+  type KeyboardEvent,
+  useState,
+} from 'react';
 import { Button } from '@/shared/ui/Button';
 
 interface CommentItemProps {

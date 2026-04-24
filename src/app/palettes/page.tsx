@@ -41,9 +41,7 @@ export default function PalettesPage(): JSX.Element {
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
 
   const viewedPaletteId =
-    modal?.type === 'viewPalette'
-      ? (modal.payload as ColorPalette).id
-      : null;
+    modal?.type === 'viewPalette' ? (modal.payload as ColorPalette).id : null;
   const viewedPalette =
     allPalettes.find((p) => p.id === viewedPaletteId) ?? null;
   const viewedPaletteGroup = allGroups.find(

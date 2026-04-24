@@ -249,9 +249,7 @@ export function ImageLightbox({
             <span className="text-xs font-medium text-gray-700">
               Comments{' '}
               {image.comments.length > 0 && (
-                <span className="text-gray-400">
-                  ({image.comments.length})
-                </span>
+                <span className="text-gray-400">({image.comments.length})</span>
               )}
             </span>
             <div className="mt-2 flex-1 overflow-y-auto">

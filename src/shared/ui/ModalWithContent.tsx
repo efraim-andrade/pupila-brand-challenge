@@ -1,6 +1,6 @@
 'use client';
 
-import { type JSX, type ReactNode } from 'react';
+import type { JSX, ReactNode } from 'react';
 import { Modal } from './Modal';
 
 interface ModalWithContentProps {
@@ -22,16 +22,8 @@ export function ModalWithContent({
 }: ModalWithContentProps): JSX.Element | null {
   return (
     <Modal open={open} onClose={onClose} title={title} size={size}>
-      {showHeader && (
-        <div className="mb-6">
-          {children}
-        </div>
-      )}
-      {!showHeader && (
-        <div className="space-y-6">
-          {children}
-        </div>
-      )}
+      {showHeader && <div className="mb-6">{children}</div>}
+      {!showHeader && <div className="space-y-6">{children}</div>}
     </Modal>
   );
 }
