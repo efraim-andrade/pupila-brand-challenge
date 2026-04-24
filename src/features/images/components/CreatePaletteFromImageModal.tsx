@@ -48,8 +48,8 @@ export function CreatePaletteFromImageModal({ open, image, onClose }: CreatePale
 
     setName(image.name)
     setColorItems([])
-    setSelectedGroupId(null)
-    setSelectedTagIds([])
+    setSelectedGroupId(image.groupId)
+    setSelectedTagIds(image.tagIds)
     setIsExtracting(true)
 
     extractDominantColors(image.url).then((hexColors) => {
