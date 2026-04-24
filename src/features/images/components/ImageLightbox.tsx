@@ -201,7 +201,7 @@ export function ImageLightbox({
       onClick={onClose}
     >
       <div
-        className="relative flex w-full max-h-[90vh] max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl sm:flex-row sm:items-stretch"
+        className="relative flex w-full max-h-[60vh] max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl sm:flex-row sm:items-stretch"
         onClick={(event) => event.stopPropagation()}
       >
         <button
@@ -225,9 +225,9 @@ export function ImageLightbox({
         </div>
 
         {/* Details panel */}
-        <div className="flex w-full flex-col border-t border-gray-100 sm:h-full sm:w-72 sm:shrink-0 sm:border-l sm:border-t-0">
-          {/* Metadata */}
-          <div className="overflow-y-auto p-4">
+        <div className="flex w-full flex-col border-t border-gray-100 sm:w-72 sm:shrink-0 sm:border-l sm:border-t-0">
+          {/* Header */}
+          <div className="border-b border-gray-100 p-4">
             <p className="text-sm font-semibold text-gray-900">{image.name}</p>
             <div className="mt-2 flex flex-wrap gap-1.5">
               {group && (
@@ -244,19 +244,19 @@ export function ImageLightbox({
             </div>
           </div>
 
-          {/* Comments */}
-          <div className="flex min-h-0 flex-1 flex-col border-t border-gray-100 p-4">
-            <div className="flex flex-col gap-2">
-              <span className="text-xs font-medium text-gray-700">
-                Comments{' '}
-                {image.comments.length > 0 && (
-                  <span className="text-gray-400">
-                    ({image.comments.length})
-                  </span>
-                )}
-              </span>
+          {/* Comments (scrollable) */}
+          <div className="flex min-h-0 flex-1 flex-col p-4">
+            <span className="text-xs font-medium text-gray-700">
+              Comments{' '}
+              {image.comments.length > 0 && (
+                <span className="text-gray-400">
+                  ({image.comments.length})
+                </span>
+              )}
+            </span>
+            <div className="mt-2 flex-1 overflow-y-auto">
               {image.comments.length > 0 ? (
-                <div className="flex max-h-[27vh] flex-col gap-1.5 overflow-y-auto">
+                <div className="flex flex-col gap-1.5">
                   {image.comments.map((comment) => (
                     <CommentItem
                       key={comment.id}
@@ -270,40 +270,41 @@ export function ImageLightbox({
               ) : (
                 <p className="text-xs text-gray-400 italic">No comments yet</p>
               )}
-              <div className="flex gap-2">
-                <textarea
-                  value={newComment}
-                  onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
-                    setNewComment(event.target.value)
+            </div>
+            <div className="mt-2 flex gap-2">
+              <textarea
+                value={newComment}
+                onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+                  setNewComment(event.target.value)
+                }
+                onKeyDown={(event: KeyboardEvent<HTMLTextAreaElement>) => {
+                  if (event.key === 'Enter' && !event.shiftKey) {
+                    event.preventDefault();
+                    handleAddComment();
                   }
-                  onKeyDown={(event: KeyboardEvent<HTMLTextAreaElement>) => {
-                    if (event.key === 'Enter' && !event.shiftKey) {
-                      event.preventDefault();
-                      handleAddComment();
-                    }
-                  }}
-                  placeholder="Add a comment…"
-                  rows={2}
-                  className="flex-1 resize-none rounded-lg border border-gray-200 px-2 py-1.5 text-xs text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                />
-                <button
-                  type="button"
-                  onClick={handleAddComment}
-                  disabled={!newComment.trim()}
-                  className="self-end rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  <Send className="h-3 w-3" />
-                </button>
-              </div>
+                }}
+                placeholder="Add a comment…"
+                rows={2}
+                className="flex-1 resize-none rounded-lg border border-gray-200 px-2 py-1.5 text-xs text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              />
+              <button
+                type="button"
+                onClick={handleAddComment}
+                disabled={!newComment.trim()}
+                className="self-end rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <Send className="h-3 w-3" />
+              </button>
             </div>
           </div>
 
-          {/* Actions */}
+          {/* Footer actions */}
           <div className="border-t border-gray-100 p-4">
             <div className="flex flex-col gap-2">
               <Button
                 variant="primary"
                 size="sm"
+                className="w-full"
                 onClick={() => onCreatePalette(image)}
                 aria-label="Create palette from image"
               >

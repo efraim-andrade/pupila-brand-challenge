@@ -27,6 +27,7 @@ export default function PalettesPage(): JSX.Element {
   } = usePalettesPage();
 
   const allGroups = useAppStore((store) => store.groups);
+  const allPalettes = useAppStore((store) => store.palettes);
   const modal = useAppStore((store) => store.modal);
   const closeModal = useAppStore((store) => store.closeModal);
   const addPaletteComment = useAppStore((store) => store.addPaletteComment);
@@ -39,8 +40,12 @@ export default function PalettesPage(): JSX.Element {
 
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
 
+  const viewedPaletteId =
+    modal?.type === 'viewPalette'
+      ? (modal.payload as ColorPalette).id
+      : null;
   const viewedPalette =
-    modal?.type === 'viewPalette' ? (modal.payload as ColorPalette) : null;
+    allPalettes.find((p) => p.id === viewedPaletteId) ?? null;
   const viewedPaletteGroup = allGroups.find(
     (group) => group.id === viewedPalette?.groupId
   );

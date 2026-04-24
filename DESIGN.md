@@ -66,6 +66,15 @@
                      │
                      ▼
     (rehydration na inicialização)
+
+Fluxo paralelo — sugestão de tags por IA:
+┌────────────────────────────────────────────┐
+│  useTagSuggestions (debounce 1200ms)        │
+│  → POST /api/suggest-tags { imageUrl }      │
+│  → Groq API (LLaMA 4-scout vision)          │
+│  → { group: string|null, tags: string[] }   │
+│  → AiSuggestionBar exibe e permite aplicar  │
+└────────────────────────────────────────────┘
 ```
 
 ### Modelo de Estado Global
@@ -113,8 +122,12 @@ src/
 │   ├── page.tsx            # redirect → /images
 │   ├── images/page.tsx
 │   ├── palettes/page.tsx
+│   ├── statistics/
+│   │   ├── page.tsx
+│   │   └── components/           # StatCard, GroupsChart, GroupsTable, TagsChart, TagsTable, EmptyState
 │   └── api/
-│       └── image-proxy/route.ts  # proxy para imagens cross-origin
+│       ├── image-proxy/route.ts    # proxy para imagens cross-origin
+│       └── suggest-tags/route.ts  # sugestão de tags via IA (Groq)
 │
 ├── features/
 │   ├── images/
@@ -125,9 +138,13 @@ src/
 │   │   │   ├── EditImageModal.tsx
 │   │   │   ├── ImageLightbox.tsx
 │   │   │   ├── ImagesToolbar.tsx       # wrapper de Toolbar para images
+│   │   │   ├── AiSuggestionBar.tsx     # barra de sugestões de grupo/tags via IA
 │   │   │   └── CreatePaletteFromImageModal.tsx
-│   │   └── hooks/
-│   │       └── useImagesPage.ts
+│   │   ├── hooks/
+│   │   │   ├── useImagesPage.ts
+│   │   │   └── useTagSuggestions.ts   # debounce + chamada à /api/suggest-tags
+│   │   └── lib/
+│   │       └── filterImages.ts
 │   │
 │   ├── palettes/
 │   │   ├── components/
@@ -160,8 +177,11 @@ src/
 │   └── ui/
 │       ├── Button.tsx
 │       ├── Modal.tsx
+│       ├── ModalWithContent.tsx    # wrapper de Modal com layout de conteúdo
 │       ├── Card.tsx
 │       ├── Badge.tsx
+│       ├── Comment.tsx             # exibição de comentário individual com ações
+│       ├── ConfirmDialog.tsx       # modal de confirmação para ações destrutivas
 │       ├── Select.tsx
 │       └── Toolbar.tsx             # toolbar genérica compartilhada
 │
@@ -177,6 +197,7 @@ src/
 │   ├── db.ts
 │   ├── exportImport.ts
 │   ├── colorUtils.ts
+│   ├── colors.ts
 │   └── mockData.ts
 │
 └── types/
@@ -195,13 +216,19 @@ src/
 | `PaletteViewModal` | Visão expandida de paleta com cores |
 | `ImageLightbox` | Visualização em tela cheia de imagem |
 | `ColorEditor` | Ajuste de cor via HEX / RGB / HSL / picker nativo |
+| `AiSuggestionBar` | Exibe sugestões de grupo e tags geradas pela IA; permite aplicar com um clique |
 | `Toolbar` | Toolbar genérica compartilhada: busca, filtro por grupo/tag, viewMode, botão de ação |
 | `ImagesToolbar` / `PalettesToolbar` | Wrappers de `Toolbar` com props específicas do domínio |
 | `GroupSelector` | Seleção de grupo para itens |
 | `TagPicker` | Seleção múltipla de tags |
-| `CommentsSection` | Comentários em itens |
+| `CommentsSection` | Lista de comentários com add/edit/delete; usa `Comment` para cada item |
+| `Comment` | Exibe um comentário individual com ações de editar/deletar inline |
+| `ConfirmDialog` | Modal de confirmação reutilizável para ações destrutivas (ex.: deletar paleta) |
+| `ModalWithContent` | Wrapper de `Modal` com layout padronizado (header + conteúdo + footer) |
 | `ConfigurationModal` | Configurações do app (grupos, tags, export/import) |
+| `StatCard` / `GroupsChart` / `GroupsTable` / `TagsChart` / `TagsTable` | Componentes da página `/statistics`: contadores e gráficos de uso de grupos e tags |
 | `image-proxy` (API route) | Proxy server-side para contornar CORS ao buscar imagens externas |
+| `suggest-tags` (API route) | Envia URL da imagem ao Groq (LLaMA 4-scout) e retorna sugestões de grupo e tags |
 
 ---
 
@@ -345,8 +372,9 @@ type ModalType =
 | **idb** | IndexedDB wrapper | API Promise-based, tipada, sem overhead de ORM |
 | **Tailwind CSS 4** | Estilização | Utilitários inline evitam saltos de contexto, consistência visual fácil |
 | **sonner** | Toast notifications | API simples, integra nativamente com React 19 |
-| **recharts** | Gráficos | Biblioteca declarativa para visualizações de dados |
+| **recharts** | Gráficos | Biblioteca declarativa para visualizações de dados (usada na página de estatísticas) |
 | **@dnd-kit/core + sortable** | Drag-and-drop | Acessível, headless, funciona bem com React 19 |
+| **Groq API (LLaMA 4-scout)** | IA para sugestão de tags | Vision LLM — analisa a imagem e sugere grupo + tags; configurado via `GROQ_API_KEY` |
 | **Jest + Testing Library** | Testes | Integração nativa via `next/jest`, API familiar |
 
 ### Padrões de Design
@@ -368,8 +396,9 @@ type ModalType =
 ### Considerações de Usabilidade
 
 - Feedback imediato em todas as ações via `sonner` (toast)
-- Confirmação explícita apenas para exclusão permanente
+- Confirmação explícita (`ConfirmDialog`) apenas para exclusão permanente
 - Drag-and-drop para reordenar cores dentro de uma paleta (`@dnd-kit/sortable`)
+- Sugestões de grupo/tags por IA com debounce (1200ms) e aplicação opcional com um clique
 
 ### Estratégia de Testes
 
@@ -377,11 +406,15 @@ type ModalType =
 ┌────────────────────────────────────┐
 │  Cobertura prioritária:            │
 └────────────────────────────────────┘
-   1. colorUtils.ts        → pure functions: hex ↔ rgb ↔ hsl, contraste
-   2. store slices         → ações e seletores com estado mockado
-   3. exportImport.ts      → serialização/desserialização JSON round-trip
-   4. filterPalettes.ts    → lógica de filtragem combinada
-   5. Toolbar / UI atoms   → comportamento de interação
+   1. colorUtils.ts            → pure functions: hex ↔ rgb ↔ hsl, contraste
+   2. store slices             → ações e seletores com estado mockado
+   3. exportImport.ts          → serialização/desserialização JSON round-trip
+   4. filterPalettes.ts        → lógica de filtragem combinada
+   5. filterImages.ts          → lógica de filtragem para imagens
+   6. colorEditorUtils.ts      → utilitários do editor de cores
+   7. useTagSuggestions.ts     → hook de sugestão via IA (Groq)
+   8. suggest-tags (API route) → endpoint de sugestão de tags
+   9. Toolbar / UI atoms       → comportamento de interação
 
 ┌────────────────────────────────────┐
 │  Integração:                       │

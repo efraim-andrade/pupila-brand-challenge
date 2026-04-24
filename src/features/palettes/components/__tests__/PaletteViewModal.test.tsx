@@ -155,6 +155,9 @@ describe('PaletteViewModal', () => {
           onClose={jest.fn()}
           onEdit={jest.fn()}
           onDelete={jest.fn()}
+          onAddComment={jest.fn()}
+          onUpdateComment={jest.fn()}
+          onDeleteComment={jest.fn()}
         />
       );
 
@@ -171,6 +174,9 @@ describe('PaletteViewModal', () => {
           onClose={jest.fn()}
           onEdit={jest.fn()}
           onDelete={jest.fn()}
+          onAddComment={jest.fn()}
+          onUpdateComment={jest.fn()}
+          onDeleteComment={jest.fn()}
         />
       );
 
@@ -187,6 +193,9 @@ describe('PaletteViewModal', () => {
           onClose={jest.fn()}
           onEdit={jest.fn()}
           onDelete={jest.fn()}
+          onAddComment={jest.fn()}
+          onUpdateComment={jest.fn()}
+          onDeleteComment={jest.fn()}
         />
       );
 
@@ -203,6 +212,9 @@ describe('PaletteViewModal', () => {
           onClose={jest.fn()}
           onEdit={jest.fn()}
           onDelete={jest.fn()}
+          onAddComment={jest.fn()}
+          onUpdateComment={jest.fn()}
+          onDeleteComment={jest.fn()}
         />
       );
 
@@ -220,6 +232,9 @@ describe('PaletteViewModal', () => {
           onClose={jest.fn()}
           onEdit={jest.fn()}
           onDelete={jest.fn()}
+          onAddComment={jest.fn()}
+          onUpdateComment={jest.fn()}
+          onDeleteComment={jest.fn()}
         />
       );
 
@@ -245,6 +260,9 @@ describe('PaletteViewModal', () => {
           onClose={jest.fn()}
           onEdit={jest.fn()}
           onDelete={jest.fn()}
+          onAddComment={jest.fn()}
+          onUpdateComment={jest.fn()}
+          onDeleteComment={jest.fn()}
         />
       );
 
@@ -261,6 +279,9 @@ describe('PaletteViewModal', () => {
           onClose={jest.fn()}
           onEdit={jest.fn()}
           onDelete={jest.fn()}
+          onAddComment={jest.fn()}
+          onUpdateComment={jest.fn()}
+          onDeleteComment={jest.fn()}
         />
       );
 
@@ -280,6 +301,9 @@ describe('PaletteViewModal', () => {
           onClose={jest.fn()}
           onEdit={jest.fn()}
           onDelete={jest.fn()}
+          onAddComment={jest.fn()}
+          onUpdateComment={jest.fn()}
+          onDeleteComment={jest.fn()}
         />
       );
 
@@ -297,6 +321,9 @@ describe('PaletteViewModal', () => {
           onClose={jest.fn()}
           onEdit={jest.fn()}
           onDelete={jest.fn()}
+          onAddComment={jest.fn()}
+          onUpdateComment={jest.fn()}
+          onDeleteComment={jest.fn()}
         />
       );
 
@@ -315,6 +342,9 @@ describe('PaletteViewModal', () => {
           onClose={jest.fn()}
           onEdit={jest.fn()}
           onDelete={jest.fn()}
+          onAddComment={jest.fn()}
+          onUpdateComment={jest.fn()}
+          onDeleteComment={jest.fn()}
         />
       );
 
@@ -333,6 +363,9 @@ describe('PaletteViewModal', () => {
           onClose={jest.fn()}
           onEdit={jest.fn()}
           onDelete={jest.fn()}
+          onAddComment={jest.fn()}
+          onUpdateComment={jest.fn()}
+          onDeleteComment={jest.fn()}
         />
       );
 
@@ -351,6 +384,9 @@ describe('PaletteViewModal', () => {
           onClose={jest.fn()}
           onEdit={jest.fn()}
           onDelete={jest.fn()}
+          onAddComment={jest.fn()}
+          onUpdateComment={jest.fn()}
+          onDeleteComment={jest.fn()}
         />
       );
 
@@ -368,6 +404,9 @@ describe('PaletteViewModal', () => {
           onClose={onClose}
           onEdit={jest.fn()}
           onDelete={jest.fn()}
+          onAddComment={jest.fn()}
+          onUpdateComment={jest.fn()}
+          onDeleteComment={jest.fn()}
         />
       );
 
@@ -388,6 +427,9 @@ describe('PaletteViewModal', () => {
           onClose={jest.fn()}
           onEdit={onEdit}
           onDelete={jest.fn()}
+          onAddComment={jest.fn()}
+          onUpdateComment={jest.fn()}
+          onDeleteComment={jest.fn()}
         />
       );
 
@@ -410,6 +452,9 @@ describe('PaletteViewModal', () => {
           onClose={jest.fn()}
           onEdit={jest.fn()}
           onDelete={onDelete}
+          onAddComment={jest.fn()}
+          onUpdateComment={jest.fn()}
+          onDeleteComment={jest.fn()}
         />
       );
 
