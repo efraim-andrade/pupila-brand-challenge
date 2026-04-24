@@ -1,17 +1,11 @@
 'use client';
 
-import { Copy, Folder, Send, X } from 'lucide-react';
-import {
-  type ChangeEvent,
-  type JSX,
-  type KeyboardEvent,
-  useCallback,
-  useState,
-} from 'react';
+import { Copy, Folder, X } from 'lucide-react';
+import { type JSX, useCallback, useState } from 'react';
 import { exportPaletteToJSON } from '@/lib/exportImport';
+import { CommentsSection } from '@/shared/components/comments';
 import { Badge } from '@/shared/ui/Badge';
 import { Button } from '@/shared/ui/Button';
-import { CommentItem } from '@/shared/ui/Comment';
 import type { Color, ColorPalette, Group, Tag } from '@/types';
 
 interface PaletteViewModalProps {
@@ -81,7 +75,6 @@ export function PaletteViewModal({
   onDeleteComment,
 }: PaletteViewModalProps): JSX.Element | null {
   const [copiedHex, setCopiedHex] = useState<string | null>(null);
-  const [newComment, setNewComment] = useState('');
 
   const handleCopy = useCallback((hex: string) => {
     navigator.clipboard.writeText(hex).then(() => {
@@ -89,14 +82,6 @@ export function PaletteViewModal({
       setTimeout(() => setCopiedHex(null), 1500);
     });
   }, []);
-
-  const handleAddComment = () => {
-    const text = newComment.trim();
-    if (text) {
-      onAddComment(text);
-      setNewComment('');
-    }
-  };
 
   if (!open || !palette) return null;
 
@@ -164,58 +149,15 @@ export function PaletteViewModal({
           </div>
 
           {/* Comments (scrollable) */}
-          <div className="flex min-h-0 flex-1 flex-col p-4">
-            <span className="text-xs font-medium text-gray-700">
-              Comments{' '}
-              {palette.comments.length > 0 && (
-                <span className="text-gray-400">
-                  ({palette.comments.length})
-                </span>
-              )}
-            </span>
-            <div className="mt-2 flex-1 overflow-y-auto">
-              {palette.comments.length > 0 ? (
-                <div className="flex flex-col gap-1.5">
-                  {palette.comments.map((comment) => (
-                    <CommentItem
-                      key={comment.id}
-                      text={comment.text}
-                      createdAt={comment.createdAt}
-                      onUpdate={(text) => onUpdateComment(comment.id, text)}
-                      onDelete={() => onDeleteComment(comment.id)}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <p className="text-xs text-gray-400 italic">No comments yet</p>
-              )}
-            </div>
-            <div className="mt-2 flex gap-2">
-              <textarea
-                value={newComment}
-                onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
-                  setNewComment(event.target.value)
-                }
-                onKeyDown={(event: KeyboardEvent<HTMLTextAreaElement>) => {
-                  if (event.key === 'Enter' && !event.shiftKey) {
-                    event.preventDefault();
-                    handleAddComment();
-                  }
-                }}
-                placeholder="Add a comment…"
-                rows={2}
-                className="flex-1 resize-none rounded-lg border border-gray-200 px-2 py-1.5 text-xs text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-              />
-              <button
-                type="button"
-                onClick={handleAddComment}
-                disabled={!newComment.trim()}
-                className="self-end rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                <Send className="h-3 w-3" />
-              </button>
-            </div>
-          </div>
+          <CommentsSection
+            comments={palette.comments}
+            onAdd={onAddComment}
+            onUpdate={onUpdateComment}
+            onDelete={onDeleteComment}
+            compact
+            scrollable
+            className="p-4"
+          />
 
           {/* Footer actions */}
           <div className="border-t border-gray-100 p-4">

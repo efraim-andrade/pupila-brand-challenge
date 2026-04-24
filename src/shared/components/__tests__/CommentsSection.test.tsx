@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { Comment } from '@/types';
-import { CommentsSection } from '../CommentsSection';
+import { CommentsSection } from '../comments';
 
 beforeEach(() => jest.clearAllMocks());
 

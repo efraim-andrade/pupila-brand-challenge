@@ -7,7 +7,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { CommentsSection } from '@/shared/components/CommentsSection';
+import { CommentsSection } from '@/shared/components/comments';
 import { GroupSelector } from '@/shared/components/GroupSelector';
 import { TagPicker } from '@/shared/components/TagPicker';
 import { Button } from '@/shared/ui/Button';
