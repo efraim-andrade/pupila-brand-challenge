@@ -37,9 +37,10 @@ export function Select({
       value={value ?? ''}
       onChange={(event) => onChange?.(event.target.value || null)}
       className={twMerge(
-        'rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900',
-        'focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500',
-        'disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500',
+        'rounded-md bg-surface px-3 py-2 text-sm text-text-primary',
+        'shadow-border',
+        'focus:outline-none focus:ring-2 focus:ring-focus focus:ring-offset-0',
+        'disabled:cursor-not-allowed disabled:bg-surface-subtle disabled:text-text-muted',
         className
       )}
       {...props}
@@ -59,7 +60,10 @@ export function Select({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={selectId} className="text-sm font-medium text-gray-700">
+      <label
+        htmlFor={selectId}
+        className="text-sm font-medium text-text-primary"
+      >
         {label}
       </label>
       {selectElement}

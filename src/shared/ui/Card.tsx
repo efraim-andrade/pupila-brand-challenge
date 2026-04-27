@@ -20,7 +20,7 @@ export function Card({
 
   return (
     <div
-      className={`group relative overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-md ${
+      className={`group relative overflow-hidden rounded-lg bg-surface shadow-card transition-shadow hover:shadow-card-hover ${
         onClick ? 'cursor-pointer' : ''
       } ${className}`}
       onClick={onClick}

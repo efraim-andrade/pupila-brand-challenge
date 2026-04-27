@@ -57,8 +57,8 @@ describe('TagPicker', () => {
       );
 
       expect(screen.getByRole('button', { name: 'Nature' })).toHaveClass(
-        'bg-indigo-100',
-        'text-indigo-700'
+        'bg-text-primary',
+        'text-surface'
       );
     });
 
@@ -68,8 +68,8 @@ describe('TagPicker', () => {
       render(<TagPicker {...defaultProps} tags={tags} selectedTagIds={[]} />);
 
       expect(screen.getByRole('button', { name: 'Nature' })).not.toHaveClass(
-        'bg-indigo-100',
-        'text-indigo-700'
+        'bg-text-primary',
+        'text-white'
       );
     });
 

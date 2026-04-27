@@ -41,20 +41,21 @@ export function Sidebar(): JSX.Element {
   return (
     <aside
       className={[
-        'flex flex-col border-r border-gray-200 bg-white transition-all duration-200',
+        'flex flex-col bg-surface transition-all duration-200',
+        'shadow-border',
         'fixed inset-y-0 left-0 z-40 w-56',
         sidebarOpen ? 'translate-x-0' : '-translate-x-full',
         'md:relative md:inset-auto md:z-auto md:translate-x-0',
         sidebarOpen ? 'md:w-56' : 'md:w-16',
       ].join(' ')}
     >
-      <div className="flex h-14 items-center border-b border-gray-200 px-4">
+      <div className="flex h-14 items-center border-b border-surface-muted px-4">
         {sidebarOpen ? (
-          <span className="font-semibold text-gray-900 tracking-tight">
+          <span className="text-base font-semibold tracking-[-0.32px] text-text-primary">
             Pupila
           </span>
         ) : (
-          <span className="font-bold text-indigo-600">P</span>
+          <span className="text-base font-semibold text-text-primary">P</span>
         )}
       </div>
 
@@ -66,14 +67,14 @@ export function Sidebar(): JSX.Element {
               key={href}
               href={href}
               onClick={handleNavClick}
-              className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+              className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
                 active
-                  ? 'bg-indigo-50 text-indigo-700'
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  ? 'bg-surface-subtle text-text-primary'
+                  : 'text-text-tertiary hover:bg-surface-subtle hover:text-text-primary'
               }`}
               title={!sidebarOpen ? label : undefined}
             >
-              <Icon className="h-5 w-5 shrink-0" />
+              <Icon className="h-[18px] w-[18px] shrink-0" />
               {sidebarOpen && <span>{label}</span>}
             </Link>
           );
@@ -82,10 +83,10 @@ export function Sidebar(): JSX.Element {
         <button
           type="button"
           onClick={() => openModal({ type: 'configuration' })}
-          className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900"
+          className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-text-tertiary transition-colors hover:bg-surface-subtle hover:text-text-primary"
           title={!sidebarOpen ? 'Configuration' : undefined}
         >
-          <Settings className="h-5 w-5 shrink-0" />
+          <Settings className="h-[18px] w-[18px] shrink-0" />
           {sidebarOpen && <span>Configuration</span>}
         </button>
       </nav>

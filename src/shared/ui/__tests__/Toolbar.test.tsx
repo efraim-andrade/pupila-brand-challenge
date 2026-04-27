@@ -256,14 +256,14 @@ describe('Toolbar', () => {
       render(<Toolbar {...defaultProps} viewMode="grid" />);
 
       const gridButton = screen.getByLabelText('Grid view');
-      expect(gridButton).toHaveClass('bg-indigo-50', 'text-indigo-700');
+      expect(gridButton).toHaveClass('bg-surface-subtle', 'text-text-primary');
     });
 
     it('applies active class to list button when viewMode is list', () => {
       render(<Toolbar {...defaultProps} viewMode="list" />);
 
       const listButton = screen.getByLabelText('List view');
-      expect(listButton).toHaveClass('bg-indigo-50', 'text-indigo-700');
+      expect(listButton).toHaveClass('bg-surface-subtle', 'text-text-primary');
     });
 
     it('calls onViewModeChange when grid button is clicked', async () => {

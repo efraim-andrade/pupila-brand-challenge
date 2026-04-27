@@ -10,16 +10,17 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantClasses: Record<Variant, string> = {
-  primary: 'bg-indigo-600 text-white hover:bg-indigo-700',
-  secondary: 'border border-gray-200 text-gray-600 hover:bg-gray-50',
-  ghost: 'text-gray-500 hover:bg-gray-100',
-  danger: 'border border-red-200 bg-white text-red-600 hover:bg-red-50',
+  primary: 'bg-text-primary text-surface hover:bg-black',
+  secondary:
+    'bg-surface text-text-primary shadow-border hover:bg-surface-subtle',
+  ghost: 'text-text-tertiary hover:bg-surface-subtle hover:text-text-primary',
+  danger: 'bg-surface text-red-600 shadow-border hover:bg-danger-bg',
 };
 
 const sizeClasses: Record<Size, string> = {
-  xs: 'rounded px-2 py-1 text-xs',
-  sm: 'rounded-lg px-2.5 py-1.5 text-sm',
-  md: 'rounded-lg px-4 py-2 text-sm',
+  xs: 'rounded-md px-2 py-1 text-xs',
+  sm: 'rounded-md px-2.5 py-1.5 text-sm',
+  md: 'rounded-md px-4 py-2 text-sm',
 };
 
 export function Button({
@@ -33,7 +34,7 @@ export function Button({
     <button
       className={twMerge(
         'inline-flex items-center justify-center gap-1.5 font-medium transition-colors',
-        'focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2',
+        'focus:outline-none focus:ring-2 focus:ring-focus focus:ring-offset-2',
         'disabled:cursor-not-allowed disabled:opacity-50',
         variantClasses[variant],
         sizeClasses[size],
