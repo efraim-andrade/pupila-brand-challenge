@@ -49,7 +49,7 @@ export function TagPicker({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <span className="text-sm font-medium text-gray-700">Tags</span>
+      <span className="text-[14px] font-medium text-text-primary">Tags</span>
 
       <div className="flex flex-wrap items-center gap-1.5">
         {tags.map((tag) => {
@@ -59,10 +59,10 @@ export function TagPicker({
               key={tag.id}
               type="button"
               onClick={() => onToggle(tag.id)}
-              className={`rounded-full border px-2.5 py-1 text-xs font-medium transition-colors ${
+              className={`rounded-full px-2.5 py-1 text-[12px] font-medium transition-colors ${
                 isSelected
-                  ? 'border-transparent bg-indigo-100 text-indigo-700'
-                  : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
+                  ? 'bg-text-primary text-surface'
+                  : 'bg-surface text-text-tertiary shadow-border hover:bg-surface-subtle'
               }`}
             >
               {tag.name}
@@ -71,7 +71,7 @@ export function TagPicker({
         })}
 
         {isCreatingTag ? (
-          <div className="flex items-center gap-1.5 rounded-xl border border-indigo-300 bg-indigo-50 px-2.5 py-1">
+          <div className="flex items-center gap-1.5 rounded-full bg-surface-subtle px-2.5 py-1 shadow-border">
             <div className="flex gap-1">
               {Object.values(TAG_COLORS).map((color) => (
                 <button
@@ -80,7 +80,7 @@ export function TagPicker({
                   onClick={() => setNewTagColor(color)}
                   className={`h-3 w-3 rounded-full transition-transform ${
                     newTagColor === color
-                      ? 'scale-125 ring-2 ring-gray-400 ring-offset-1'
+                      ? 'scale-125 ring-2 ring-text-primary ring-offset-1'
                       : ''
                   }`}
                   style={{ backgroundColor: color }}
@@ -94,13 +94,13 @@ export function TagPicker({
               onChange={(event) => setNewTagName(event.target.value)}
               onKeyDown={handleTagInputKeyDown}
               placeholder="Tag name"
-              className="w-20 bg-transparent text-xs text-gray-900 placeholder-gray-400 focus:outline-none"
+              className="w-20 bg-transparent text-[12px] text-text-primary placeholder-text-muted focus:outline-none"
             />
             <button
               type="button"
               onClick={handleCreateTag}
               disabled={!newTagName.trim()}
-              className="text-indigo-600 hover:text-indigo-800 disabled:opacity-40"
+              className="text-text-primary hover:text-black disabled:opacity-40"
               aria-label="Create tag"
             >
               <Check className="h-3 w-3" />
@@ -111,7 +111,7 @@ export function TagPicker({
                 setIsCreatingTag(false);
                 setNewTagName('');
               }}
-              className="text-gray-400 hover:text-gray-600"
+              className="text-text-muted hover:text-text-primary"
               aria-label="Cancel"
             >
               <X className="h-3 w-3" />
@@ -121,7 +121,7 @@ export function TagPicker({
           <button
             type="button"
             onClick={() => setIsCreatingTag(true)}
-            className="rounded-full border border-dashed border-gray-300 px-2.5 py-1 text-xs font-medium text-gray-400 transition-colors hover:border-indigo-400 hover:text-indigo-600"
+            className="rounded-full px-2.5 py-1 text-[12px] font-medium text-text-muted transition-colors shadow-border hover:bg-surface-subtle hover:text-text-primary"
           >
             + New tag
           </button>

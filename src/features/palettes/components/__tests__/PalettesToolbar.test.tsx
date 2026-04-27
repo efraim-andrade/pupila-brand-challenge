@@ -188,7 +188,7 @@ describe('PalettesToolbar', () => {
       render(<PalettesToolbar {...defaultProps} viewMode="grid" />);
 
       const gridButton = screen.getByRole('button', { name: 'Grid view' });
-      expect(gridButton).toHaveClass('bg-indigo-50', 'text-indigo-700');
+      expect(gridButton).toHaveClass('bg-surface-subtle', 'text-text-primary');
     });
   });
 
@@ -324,7 +324,7 @@ describe('PalettesToolbar', () => {
       );
 
       const tagButton = screen.getByRole('button', { name: 'Tag One' });
-      expect(tagButton).toHaveClass('bg-indigo-100', 'text-indigo-700');
+      expect(tagButton).toHaveClass('bg-text-primary', 'text-surface');
     });
   });
 

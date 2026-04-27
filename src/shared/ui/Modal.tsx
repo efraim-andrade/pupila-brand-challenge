@@ -55,23 +55,27 @@ export function Modal({
       />
       <div
         ref={modalRef}
-        className={`relative flex max-h-[90vh] w-full flex-col ${sizes[size]} rounded-xl bg-white shadow-xl`}
+        className={`relative flex max-h-[90vh] w-full flex-col ${sizes[size]} rounded-lg bg-surface shadow-elevated`}
         role="dialog"
         aria-modal="true"
         aria-labelledby={title ? titleId : undefined}
       >
         {title && (
-          <div className="flex shrink-0 items-center justify-between border-b border-gray-100 px-6 py-4">
-            <h2 id={titleId} className="text-base font-semibold text-gray-900">
+          <div className="flex shrink-0 items-center justify-between border-b border-surface-muted px-6 py-4">
+            <h2
+              id={titleId}
+              className="text-[16px] font-semibold tracking-[-0.32px] text-text-primary"
+            >
               {title}
             </h2>
             <button
               ref={closeButtonRef}
+              type="button"
               onClick={onClose}
-              className="rounded-lg p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="rounded-md p-1 text-text-muted hover:bg-surface-subtle hover:text-text-primary focus:outline-none focus:ring-2 focus:ring-focus focus:ring-offset-2"
               aria-label="Close"
             >
-              <X className="h-5 w-5" />
+              <X className="h-4 w-4" />
             </button>
           </div>
         )}

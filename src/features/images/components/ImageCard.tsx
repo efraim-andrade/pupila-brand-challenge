@@ -33,7 +33,7 @@ export function ImageCard({
   return (
     <Card>
       <div
-        className="relative aspect-video cursor-pointer overflow-hidden bg-gray-100"
+        className="relative aspect-video cursor-pointer overflow-hidden bg-surface-subtle"
         onClick={() => onExpandImage(image.id)}
         role="button"
         tabIndex={0}
@@ -58,7 +58,7 @@ export function ImageCard({
               event.stopPropagation();
               onCreatePalette(image);
             }}
-            className="rounded-lg bg-white/90 p-1.5 text-indigo-600 shadow-sm hover:bg-white"
+            className="rounded-md bg-white/90 p-1.5 text-text-primary shadow-sm hover:bg-white"
             aria-label="Create palette from image"
             title="Create palette from image"
           >
@@ -69,7 +69,7 @@ export function ImageCard({
               event.stopPropagation();
               onEditImage(image);
             }}
-            className="rounded-lg bg-white/90 p-1.5 text-gray-700 shadow-sm hover:bg-white"
+            className="rounded-md bg-white/90 p-1.5 text-text-primary shadow-sm hover:bg-white"
             aria-label="Edit image"
           >
             <Pencil className="h-3.5 w-3.5" />
@@ -79,7 +79,7 @@ export function ImageCard({
               event.stopPropagation();
               onDeleteImage(image.id);
             }}
-            className="rounded-lg bg-white/90 p-1.5 text-red-600 shadow-sm hover:bg-white"
+            className="rounded-md bg-white/90 p-1.5 text-red-600 shadow-sm hover:bg-white"
             aria-label="Delete image"
           >
             <Trash2 className="h-3.5 w-3.5" />

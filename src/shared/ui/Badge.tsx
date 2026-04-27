@@ -20,16 +20,17 @@ export function Badge({
 
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium ${
-        color ? '' : 'border-gray-200 bg-gray-100 text-gray-600'
+      className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[12px] font-medium ${
+        color ? '' : 'bg-badge-bg text-badge-text shadow-border'
       } ${className}`}
       style={style}
     >
       {children}
       {onRemove && (
         <button
+          type="button"
           onClick={onRemove}
-          className="ml-0.5 rounded-full hover:opacity-70"
+          className="ml-0.5 rounded-full hover:opacity-70 focus:outline-none focus:ring-2 focus:ring-focus"
           aria-label="Remove"
         >
           <X className="h-3 w-3" />

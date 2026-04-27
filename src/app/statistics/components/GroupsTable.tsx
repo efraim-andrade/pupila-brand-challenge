@@ -17,12 +17,12 @@ export function GroupsTable({
 
   return (
     <div className="mt-4">
-      <div className="flex items-center gap-4 text-xs text-gray-500">
+      <div className="flex items-center gap-4 text-[12px] text-text-tertiary">
         <span className="flex items-center gap-1">
-          <span className="h-2 w-2 rounded-full bg-indigo-400" /> Images
+          <span className="h-2 w-2 rounded-full bg-text-primary" /> Images
         </span>
         <span className="flex items-center gap-1">
-          <span className="h-2 w-2 rounded-full bg-indigo-200" /> Palettes
+          <span className="h-2 w-2 rounded-full bg-surface-muted" /> Palettes
         </span>
         {unusedCount > 0 && (
           <span className="ml-auto text-amber-600">{unusedCount} unused</span>
@@ -31,28 +31,28 @@ export function GroupsTable({
       <div className="mt-3 flex flex-col gap-2">
         {sorted.map((stat) => (
           <div key={stat.id} className="flex items-center gap-3">
-            <div className="w-24 truncate text-sm text-gray-700">
+            <div className="w-24 truncate text-[14px] text-text-primary">
               {stat.name}
             </div>
             <div className="flex flex-1 items-center gap-1">
-              <div className="h-2 flex-1 overflow-hidden rounded-full bg-gray-100">
+              <div className="h-2 flex-1 overflow-hidden rounded-full bg-surface-subtle">
                 <div
-                  className="h-full bg-indigo-400"
+                  className="h-full bg-text-primary"
                   style={{
                     width: `${(stat.images / Math.max(stat.total, 1)) * 100}%`,
                   }}
                 />
               </div>
-              <div className="h-2 flex-1 overflow-hidden rounded-full bg-gray-100">
+              <div className="h-2 flex-1 overflow-hidden rounded-full bg-surface-subtle">
                 <div
-                  className="h-full bg-indigo-200"
+                  className="h-full bg-surface-muted"
                   style={{
                     width: `${(stat.palettes / Math.max(stat.total, 1)) * 100}%`,
                   }}
                 />
               </div>
             </div>
-            <span className="w-12 text-right text-sm font-medium text-gray-900">
+            <span className="w-12 text-right text-[14px] font-medium text-text-primary">
               {stat.total}
             </span>
           </div>

@@ -59,27 +59,27 @@ export function Toolbar({
   );
   const countLabel = buildCountLabel(filteredCount, totalCount, entityType);
   const searchPlaceholder =
-    entityType === 'palettes' ? 'Search palettes…' : 'Search images…';
+    entityType === 'palettes' ? 'Search palettes\u2026' : 'Search images\u2026';
   const addButtonLabel =
     entityType === 'palettes' ? 'New palette' : 'Add image';
 
   return (
-    <div className="border-b border-gray-200 bg-white">
+    <div className="shadow-border bg-surface">
       {/* Top row: search + actions */}
       <div className="flex items-center gap-2 px-4 py-3 sm:px-6 sm:py-4">
         <div className="relative min-w-0 flex-1 sm:max-w-xs">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" />
           <input
             type="text"
             placeholder={searchPlaceholder}
             value={filter.search}
             onChange={(event) => onFilterChange({ search: event.target.value })}
-            className="w-full rounded-lg border border-gray-200 bg-gray-50 py-2 pl-9 pr-3 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            className="w-full rounded-md bg-surface-subtle py-2 pl-9 pr-3 text-[14px] text-text-primary placeholder-text-muted shadow-border focus:bg-surface focus:outline-none focus:ring-2 focus:ring-focus"
           />
         </div>
 
         <div className="flex shrink-0 items-center gap-1.5">
-          <span className="hidden text-xs text-gray-400 sm:inline">
+          <span className="hidden text-[12px] text-text-muted sm:inline">
             {countLabel}
           </span>
 
@@ -87,31 +87,33 @@ export function Toolbar({
             <Button
               variant="ghost"
               size="sm"
-              className="hidden text-xs sm:block"
+              className="hidden text-[12px] sm:block"
               onClick={onResetFilter}
             >
               Clear
             </Button>
           )}
 
-          <div className="flex overflow-hidden rounded-lg border border-gray-200">
+          <div className="flex overflow-hidden rounded-md shadow-border">
             <button
+              type="button"
               onClick={() => onViewModeChange('grid')}
               className={`p-1.5 ${
                 viewMode === 'grid'
-                  ? 'bg-indigo-50 text-indigo-700'
-                  : 'bg-white text-gray-500 hover:bg-gray-50'
+                  ? 'bg-surface-subtle text-text-primary'
+                  : 'bg-surface text-text-muted hover:bg-surface-subtle'
               }`}
               aria-label="Grid view"
             >
               <LayoutGrid className="h-4 w-4" />
             </button>
             <button
+              type="button"
               onClick={() => onViewModeChange('list')}
               className={`p-1.5 ${
                 viewMode === 'list'
-                  ? 'bg-indigo-50 text-indigo-700'
-                  : 'bg-white text-gray-500 hover:bg-gray-50'
+                  ? 'bg-surface-subtle text-text-primary'
+                  : 'bg-surface text-text-muted hover:bg-surface-subtle'
               }`}
               aria-label="List view"
             >
@@ -130,7 +132,7 @@ export function Toolbar({
       <div className="flex items-center gap-2 overflow-x-auto px-4 pb-3 sm:px-6 sm:pb-4">
         {groups.length > 0 && (
           <>
-            <label className="shrink-0 text-xs font-medium text-gray-500">
+            <label className="shrink-0 text-[12px] font-medium text-text-tertiary">
               Group:
             </label>
             <Select
@@ -139,14 +141,14 @@ export function Toolbar({
               onChange={(value) => onFilterChange({ groupId: value })}
               placeholder="All groups"
               showPlaceholder={false}
-              className="shrink-0 rounded-lg border border-gray-200 bg-gray-50 py-1.5 pl-3 pr-8 text-sm text-gray-700"
+              className="shrink-0 rounded-md bg-surface-subtle py-1.5 pl-3 pr-8 text-[14px] text-text-primary"
             />
           </>
         )}
 
         <div className="flex shrink-0 items-center gap-1.5">
           {tags.length > 0 && (
-            <span className="shrink-0 text-xs font-medium text-gray-500">
+            <span className="shrink-0 text-[12px] font-medium text-text-tertiary">
               Tags:
             </span>
           )}
@@ -155,16 +157,17 @@ export function Toolbar({
             return (
               <button
                 key={tag.id}
+                type="button"
                 onClick={() => {
                   const nextTagIds = isActive
                     ? filter.tagIds.filter((tagId) => tagId !== tag.id)
                     : [...filter.tagIds, tag.id];
                   onFilterChange({ tagIds: nextTagIds });
                 }}
-                className={`shrink-0 rounded-full border px-2.5 py-1 text-xs font-medium transition-colors ${
+                className={`shrink-0 rounded-full px-2.5 py-1 text-[12px] font-medium transition-colors ${
                   isActive
-                    ? 'border-transparent bg-indigo-100 text-indigo-700'
-                    : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
+                    ? 'bg-text-primary text-surface'
+                    : 'bg-surface text-text-tertiary shadow-border hover:bg-surface-subtle'
                 }`}
               >
                 {tag.name}
@@ -174,12 +177,12 @@ export function Toolbar({
         </div>
 
         <div className="ml-auto flex shrink-0 items-center gap-1.5 sm:hidden">
-          <span className="text-xs text-gray-400">{countLabel}</span>
+          <span className="text-[12px] text-text-muted">{countLabel}</span>
           {hasActiveFilter && (
             <Button
               variant="ghost"
               size="xs"
-              className="rounded-lg"
+              className="rounded-md"
               onClick={onResetFilter}
             >
               Clear

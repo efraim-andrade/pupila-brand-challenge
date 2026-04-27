@@ -188,8 +188,7 @@ describe('ColorEditor', () => {
 
       const hexInput = screen.getAllByPlaceholderText('#000000')[0];
       expect(hexInput).toHaveClass(
-        'border-red-300',
-        'focus:border-red-500',
+        'shadow-[0_0_0_1px_rgba(220,38,38,0.3)]',
         'focus:ring-red-500'
       );
     });

@@ -175,7 +175,7 @@ export function CreatePaletteFromImageModal({
         size="lg"
       >
         {image && (
-          <div className="mb-4 overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
+          <div className="mb-4 overflow-hidden rounded-md bg-surface-subtle shadow-border">
             <img
               src={image.url}
               alt={image.name}
@@ -191,7 +191,7 @@ export function CreatePaletteFromImageModal({
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor="palette-name-from-image"
-              className="text-sm font-medium text-gray-700"
+              className="text-[14px] font-medium text-text-primary"
             >
               Name
             </label>
@@ -204,13 +204,15 @@ export function CreatePaletteFromImageModal({
                 setName(event.target.value)
               }
               placeholder="My palette"
-              className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              className="w-full rounded-md px-3 py-2 text-[14px] text-text-primary placeholder-text-muted shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
             />
           </div>
 
           <div className="flex flex-col gap-1.5">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-700">Colors</span>
+              <span className="text-[14px] font-medium text-text-primary">
+                Colors
+              </span>
               <ExtractionStatus isExtracting={isExtracting} />
             </div>
             <ColorEditor items={colorItems} onChange={setColorItems} />

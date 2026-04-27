@@ -138,8 +138,8 @@ describe('Select', () => {
       const select = screen.getByRole('combobox');
       expect(select).toHaveClass(
         'disabled:cursor-not-allowed',
-        'disabled:bg-gray-50',
-        'disabled:text-gray-500'
+        'disabled:bg-surface-subtle',
+        'disabled:text-text-muted'
       );
     });
   });

@@ -79,14 +79,14 @@ function SortableColorRow({
         type="button"
         {...attributes}
         {...listeners}
-        className="cursor-grab rounded p-1 text-gray-400 hover:text-gray-600 active:cursor-grabbing"
+        className="cursor-grab rounded p-1 text-text-muted hover:text-text-primary active:cursor-grabbing"
         aria-label="Drag to reorder"
       >
         <GripVertical className="h-4 w-4" />
       </button>
 
       <div
-        className="relative h-8 w-8 flex-shrink-0 cursor-pointer overflow-hidden rounded-full border border-gray-200 shadow-sm"
+        className="relative h-8 w-8 flex-shrink-0 cursor-pointer overflow-hidden rounded-full shadow-border"
         style={{ backgroundColor: hexIsValid ? item.hex : '#e5e7eb' }}
         title="Pick color"
       >
@@ -107,10 +107,10 @@ function SortableColorRow({
         onChange={handleHexTextChange}
         placeholder="#000000"
         aria-label="Hex color code"
-        className={`w-24 rounded-lg border px-2 py-1.5 font-mono text-xs text-gray-900 focus:outline-none focus:ring-1 ${
+        className={`w-24 rounded-md px-2 py-1.5 font-mono text-[12px] text-text-primary shadow-border focus:outline-none focus:ring-2 ${
           hexIsValid
-            ? 'border-gray-200 focus:border-indigo-500 focus:ring-indigo-500'
-            : 'border-red-300 focus:border-red-500 focus:ring-red-500'
+            ? 'focus:ring-focus'
+            : 'shadow-[0_0_0_1px_rgba(220,38,38,0.3)] focus:ring-red-500'
         }`}
       />
 
@@ -122,13 +122,13 @@ function SortableColorRow({
         }
         placeholder="Color name (optional)"
         aria-label="Color name"
-        className="min-w-0 flex-1 rounded-lg border border-gray-200 px-2 py-1.5 text-xs text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+        className="min-w-0 flex-1 rounded-md px-2 py-1.5 text-[12px] text-text-primary placeholder-text-muted shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
       />
 
       <button
         type="button"
         onClick={() => onDelete(item.id)}
-        className="rounded-lg p-1 text-red-400 hover:bg-red-50 hover:text-red-600"
+        className="rounded-md p-1 text-red-400 hover:bg-red-50 hover:text-red-600"
         aria-label="Remove color"
       >
         <X className="h-4 w-4" />
@@ -148,7 +148,9 @@ export function ColorEditor({
 }: ColorEditorProps): JSX.Element {
   const sensors = useSensors(
     useSensor(PointerSensor),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
   );
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -195,13 +197,15 @@ export function ColorEditor({
       </DndContext>
 
       {items.length === 0 && (
-        <p className="text-xs text-gray-400">No colors yet. Add one below.</p>
+        <p className="text-[12px] text-text-muted">
+          No colors yet. Add one below.
+        </p>
       )}
 
       <button
         type="button"
         onClick={() => onChange([...items, createColorItem()])}
-        className="flex items-center gap-1.5 self-start rounded-lg border border-dashed border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-500 hover:border-indigo-400 hover:text-indigo-600"
+        className="flex items-center gap-1.5 self-start rounded-md px-3 py-1.5 text-[12px] font-medium text-text-tertiary shadow-border hover:bg-surface-subtle hover:text-text-primary"
       >
         <Plus className="h-3.5 w-3.5" />
         Add color

@@ -108,7 +108,7 @@ describe('Sidebar', () => {
       render(<Sidebar />);
 
       const imagesLink = screen.getByRole('link', { name: /images/i });
-      expect(imagesLink).toHaveClass('bg-indigo-50', 'text-indigo-700');
+      expect(imagesLink).toHaveClass('bg-surface-subtle', 'text-text-primary');
     });
 
     it('does not apply active styles to links that do not match the current pathname', () => {
@@ -118,7 +118,10 @@ describe('Sidebar', () => {
       render(<Sidebar />);
 
       const palettesLink = screen.getByRole('link', { name: /palettes/i });
-      expect(palettesLink).not.toHaveClass('bg-indigo-50', 'text-indigo-700');
+      expect(palettesLink).not.toHaveClass(
+        'bg-surface-subtle',
+        'text-text-primary'
+      );
     });
 
     it('applies active styles to a nav item when the pathname starts with its href', () => {
@@ -128,7 +131,10 @@ describe('Sidebar', () => {
       render(<Sidebar />);
 
       const palettesLink = screen.getByRole('link', { name: /palettes/i });
-      expect(palettesLink).toHaveClass('bg-indigo-50', 'text-indigo-700');
+      expect(palettesLink).toHaveClass(
+        'bg-surface-subtle',
+        'text-text-primary'
+      );
     });
   });
 

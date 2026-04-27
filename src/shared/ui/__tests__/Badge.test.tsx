@@ -44,15 +44,11 @@ describe('Badge', () => {
       expect(badgeElement).toHaveStyle({ color: PRIMARY_COLOR_HEX });
     });
 
-    it('applies default gray Tailwind classes when color is not provided', () => {
+    it('applies default Vercel-style classes when color is not provided', () => {
       render(<Badge>{BADGE_TEXT}</Badge>);
 
       const badgeElement = screen.getByText(BADGE_TEXT);
-      expect(badgeElement).toHaveClass(
-        'border-gray-200',
-        'bg-gray-100',
-        'text-gray-600'
-      );
+      expect(badgeElement).toHaveClass('bg-badge-bg', 'text-badge-text');
     });
   });
 

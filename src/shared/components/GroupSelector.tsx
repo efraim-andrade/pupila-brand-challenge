@@ -66,7 +66,10 @@ export function GroupSelector({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={inputId} className="text-sm font-medium text-gray-700">
+      <label
+        htmlFor={inputId}
+        className="text-[14px] font-medium text-text-primary"
+      >
         Group
       </label>
 
@@ -76,7 +79,7 @@ export function GroupSelector({
         onChange={(event: ChangeEvent<HTMLSelectElement>) =>
           onSelect(event.target.value || null)
         }
-        className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+        className="w-full rounded-md bg-surface px-3 py-2 text-[14px] text-text-primary shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
       >
         <option value="">No group</option>
         {groups.map((group) => (
@@ -87,14 +90,14 @@ export function GroupSelector({
       </select>
 
       {isCreatingGroup ? (
-        <div className="flex flex-col gap-2 rounded-lg border border-indigo-200 bg-indigo-50/50 p-2.5">
+        <div className="flex flex-col gap-2 rounded-md bg-surface-subtle p-2.5 shadow-border">
           <input
             type="text"
             value={newGroupName}
             onChange={(event) => setNewGroupName(event.target.value)}
             onKeyDown={handleGroupInputKeyDown}
             placeholder="Group name"
-            className="w-full rounded border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            className="w-full rounded-md bg-surface px-2.5 py-1.5 text-[14px] text-text-primary placeholder-text-muted shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
           />
           <div className="flex justify-end gap-1">
             <Button
@@ -119,7 +122,7 @@ export function GroupSelector({
         <button
           type="button"
           onClick={() => setIsCreatingGroup(true)}
-          className="self-start text-xs text-indigo-600 hover:text-indigo-800 hover:underline"
+          className="self-start text-[12px] text-badge-text hover:underline"
         >
           + New group
         </button>

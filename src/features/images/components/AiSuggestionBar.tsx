@@ -21,9 +21,9 @@ function SparkleIcon(): JSX.Element {
 
 function LoadingDots(): JSX.Element {
   return (
-    <span className="flex items-center gap-1 text-xs text-gray-400">
+    <span className="flex items-center gap-1 text-[12px] text-text-muted">
       <SparkleIcon />
-      Analyzing image…
+      Analyzing image\u2026
     </span>
   );
 }
@@ -38,24 +38,24 @@ export function AiSuggestionBar({
   if (!isLoading && !suggestions && !error) return null;
 
   return (
-    <div className="rounded-lg border border-indigo-100 bg-indigo-50 px-3 py-2.5">
+    <div className="rounded-md bg-surface-subtle px-3 py-2.5 shadow-border">
       {isLoading && <LoadingDots />}
 
       {!isLoading && error && (
-        <span className="text-xs text-red-500">{error}</span>
+        <span className="text-[12px] text-red-500">{error}</span>
       )}
 
       {!isLoading && suggestions && (
         <div className="flex flex-wrap items-center gap-2">
-          <span className="flex items-center gap-1 text-xs font-medium text-indigo-500">
+          <span className="flex items-center gap-1 text-[12px] font-medium text-text-primary">
             <SparkleIcon />
             AI suggested
           </span>
 
           <div className="flex flex-wrap items-center gap-1.5">
             {suggestions.group && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-medium text-indigo-700">
-                <span className="text-indigo-400">group:</span>
+              <span className="inline-flex items-center gap-1 rounded-full bg-badge-bg px-2 py-0.5 text-[12px] font-medium text-badge-text">
+                <span className="text-text-muted">group:</span>
                 {suggestions.group}
               </span>
             )}
@@ -63,7 +63,7 @@ export function AiSuggestionBar({
             {suggestions.tags.map((tag) => (
               <span
                 key={tag}
-                className="inline-flex items-center rounded-full bg-white px-2 py-0.5 text-xs text-gray-600 ring-1 ring-inset ring-gray-200"
+                className="inline-flex items-center rounded-full bg-white px-2 py-0.5 text-[12px] text-text-tertiary shadow-border"
               >
                 {tag}
               </span>
@@ -74,17 +74,17 @@ export function AiSuggestionBar({
             <button
               type="button"
               onClick={() => onApplyAll(suggestions.group, suggestions.tags)}
-              className="rounded px-2 py-1 text-xs font-medium text-indigo-600 hover:bg-indigo-100 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+              className="rounded px-2 py-1 text-[12px] font-medium text-text-primary hover:bg-surface-muted focus:outline-none focus:ring-2 focus:ring-focus"
             >
               Apply all
             </button>
             <button
               type="button"
               onClick={onDismiss}
-              className="rounded p-1 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-1 focus:ring-gray-300"
+              className="rounded p-1 text-text-muted hover:text-text-primary focus:outline-none focus:ring-2 focus:ring-focus"
               aria-label="Dismiss suggestions"
             >
-              <X className="w-3 h-3" />
+              <X className="h-3 w-3" />
             </button>
           </div>
         </div>

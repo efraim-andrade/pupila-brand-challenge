@@ -20,8 +20,8 @@ describe('Button', () => {
       render(<Button>Button</Button>);
 
       expect(screen.getByRole('button')).toHaveClass(
-        'bg-indigo-600',
-        'text-white'
+        'bg-text-primary',
+        'text-surface'
       );
     });
 
@@ -29,8 +29,8 @@ describe('Button', () => {
       render(<Button variant="primary">Button</Button>);
 
       expect(screen.getByRole('button')).toHaveClass(
-        'bg-indigo-600',
-        'text-white'
+        'bg-text-primary',
+        'text-surface'
       );
     });
 
@@ -38,25 +38,21 @@ describe('Button', () => {
       render(<Button variant="secondary">Button</Button>);
 
       expect(screen.getByRole('button')).toHaveClass(
-        'border',
-        'border-gray-200',
-        'text-gray-600'
+        'bg-surface',
+        'text-text-primary'
       );
     });
 
     it('applies ghost variant classes', () => {
       render(<Button variant="ghost">Button</Button>);
 
-      expect(screen.getByRole('button')).toHaveClass('text-gray-500');
+      expect(screen.getByRole('button')).toHaveClass('text-text-tertiary');
     });
 
     it('applies danger variant classes', () => {
       render(<Button variant="danger">Button</Button>);
 
-      expect(screen.getByRole('button')).toHaveClass(
-        'border-red-200',
-        'text-red-600'
-      );
+      expect(screen.getByRole('button')).toHaveClass('text-red-600');
     });
   });
 
@@ -65,10 +61,9 @@ describe('Button', () => {
       render(<Button>Button</Button>);
 
       expect(screen.getByRole('button')).toHaveClass(
-        'rounded-lg',
+        'rounded-md',
         'px-4',
-        'py-2',
-        'text-sm'
+        'py-2'
       );
     });
 
@@ -76,10 +71,9 @@ describe('Button', () => {
       render(<Button size="xs">Button</Button>);
 
       expect(screen.getByRole('button')).toHaveClass(
-        'rounded',
+        'rounded-md',
         'px-2',
-        'py-1',
-        'text-xs'
+        'py-1'
       );
     });
 
@@ -87,10 +81,9 @@ describe('Button', () => {
       render(<Button size="sm">Button</Button>);
 
       expect(screen.getByRole('button')).toHaveClass(
-        'rounded-lg',
+        'rounded-md',
         'px-2.5',
-        'py-1.5',
-        'text-sm'
+        'py-1.5'
       );
     });
 
@@ -98,10 +91,9 @@ describe('Button', () => {
       render(<Button size="md">Button</Button>);
 
       expect(screen.getByRole('button')).toHaveClass(
-        'rounded-lg',
+        'rounded-md',
         'px-4',
-        'py-2',
-        'text-sm'
+        'py-2'
       );
     });
   });

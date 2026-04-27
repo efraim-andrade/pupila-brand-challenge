@@ -1,30 +1,80 @@
 @import "tailwindcss";
 
+@theme inline {
+  /* ── Colors ───────────────────────────────────────────── */
+  --color-background: #ffffff;
+  --color-foreground: #171717;
+
+  --color-surface: #ffffff;
+  --color-surface-subtle: #fafafa;
+  --color-surface-muted: #ebebeb;
+
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-border-strong: #ebebeb;
+
+  --color-text-primary: #171717;
+  --color-text-secondary: #4d4d4d;
+  --color-text-tertiary: #666666;
+  --color-text-muted: #808080;
+
+  --color-focus: hsla(212, 100%, 48%, 1);
+  --color-selection: hsla(0, 0%, 95%, 1);
+
+  --color-badge-bg: #ebf5ff;
+  --color-badge-text: #0068d6;
+
+  --color-danger: #dc2626;
+  --color-danger-bg: #fef2f2;
+
+  /* ── Shadows ──────────────────────────────────────────── */
+  --shadow-border: 0 0 0 1px rgba(0, 0, 0, 0.08);
+  --shadow-border-strong: 0 0 0 1px #ebebeb;
+  --shadow-card:
+    0 0 0 1px rgba(0, 0, 0, 0.08), 0 2px 2px rgba(0, 0, 0, 0.04),
+    0 0 0 1px #fafafa;
+  --shadow-card-hover:
+    0 0 0 1px rgba(0, 0, 0, 0.08), 0 2px 2px rgba(0, 0, 0, 0.04),
+    0 8px 8px -8px rgba(0, 0, 0, 0.04), 0 0 0 1px #fafafa;
+  --shadow-elevated:
+    0 0 0 1px rgba(0, 0, 0, 0.08), 0 2px 2px rgba(0, 0, 0, 0.04),
+    0 8px 8px -8px rgba(0, 0, 0, 0.04), 0 0 0 1px #fafafa;
+
+  /* ── Typography ───────────────────────────────────────── */
+  --font-sans: var(--font-geist);
+  --font-mono: var(--font-geist-mono);
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:
+    var(--font-geist),
+    Arial,
+    Apple Color Emoji,
+    Segoe UI Emoji,
+    Segoe UI Symbol;
+  font-feature-settings:
+    "liga" 1,
+    "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 button {
   cursor: pointer;
+}
+
+::selection {
+  background-color: var(--color-selection);
+  color: var(--foreground);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-surface-muted) transparent;
 }

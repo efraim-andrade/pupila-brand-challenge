@@ -45,15 +45,15 @@ export function CommentInput({
             setCommentText(e.target.value)
           }
           onKeyDown={handleCommentInputKeyDown}
-          placeholder="Add a comment…"
+          placeholder="Add a comment\u2026"
           rows={2}
-          className="flex-1 resize-none rounded-lg border border-gray-200 px-2 py-1.5 text-xs text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+          className="flex-1 resize-none rounded-md px-2 py-1.5 text-[12px] text-text-primary placeholder-text-muted shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
         />
         <button
           type="button"
           onClick={handleCommentSubmit}
           disabled={!commentText.trim()}
-          className="self-end rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
+          className="self-end rounded-md bg-text-primary px-3 py-1.5 text-[12px] font-medium text-surface transition-colors hover:bg-black disabled:cursor-not-allowed disabled:opacity-50"
         >
           <Send className="h-3 w-3" />
         </button>
@@ -69,15 +69,15 @@ export function CommentInput({
           setCommentText(e.target.value)
         }
         onKeyDown={handleCommentInputKeyDown}
-        placeholder="Add a comment… (Enter to submit, Shift+Enter for new line)"
+        placeholder="Add a comment\u2026 (Enter to submit, Shift+Enter for new line)"
         rows={2}
-        className="w-full resize-none rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+        className="w-full resize-none rounded-md px-3 py-2 text-[14px] text-text-primary placeholder-text-muted shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
       />
       <div className="flex justify-end">
         <Button
           type="button"
           size="xs"
-          className="rounded-lg px-3 py-1.5"
+          className="rounded-md px-3 py-1.5"
           onClick={handleCommentSubmit}
           disabled={!commentText.trim()}
         >

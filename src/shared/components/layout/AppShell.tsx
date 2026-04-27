@@ -31,7 +31,7 @@ export function AppShell({ children }: AppShellProps): JSX.Element {
   const closeModal = useAppStore((store) => store.closeModal);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-50">
+    <div className="flex h-screen overflow-hidden bg-surface">
       {sidebarOpen && (
         <div
           className="fixed inset-0 z-30 bg-black/40 md:hidden"
@@ -43,16 +43,17 @@ export function AppShell({ children }: AppShellProps): JSX.Element {
       <Sidebar />
 
       <div className="flex flex-1 flex-col overflow-hidden">
-        <header className="flex h-14 items-center border-b border-gray-200 bg-white px-4 gap-3">
+        <header className="flex h-14 items-center gap-3 bg-surface px-4 shadow-border">
           <button
+            type="button"
             onClick={toggleSidebar}
-            className="rounded-lg p-1.5 text-gray-500 hover:bg-gray-100"
+            className="rounded-md p-1.5 text-text-tertiary hover:bg-surface-subtle hover:text-text-primary"
             aria-label="Toggle sidebar"
           >
             <Menu className="h-5 w-5" />
           </button>
-          <PageIcon className="h-4 w-4 text-gray-400" />
-          <span className="text-sm font-medium text-gray-500">
+          <PageIcon className="h-4 w-4 text-text-muted" />
+          <span className="text-[14px] font-medium text-text-tertiary">
             {currentPage.label}
           </span>
         </header>
@@ -62,7 +63,7 @@ export function AppShell({ children }: AppShellProps): JSX.Element {
             children
           ) : (
             <div className="flex h-full items-center justify-center">
-              <span className="h-6 w-6 animate-spin rounded-full border-2 border-indigo-600 border-t-transparent" />
+              <span className="h-6 w-6 animate-spin rounded-full border-2 border-text-primary border-t-transparent" />
             </div>
           )}
         </main>
