@@ -51,11 +51,11 @@ export function Sidebar(): JSX.Element {
     >
       <div className="flex h-14 items-center border-b border-surface-muted px-4">
         {sidebarOpen ? (
-          <span className="text-[16px] font-semibold tracking-[-0.32px] text-text-primary">
+          <span className="text-base font-semibold tracking-[-0.32px] text-text-primary">
             Pupila
           </span>
         ) : (
-          <span className="text-[16px] font-semibold text-text-primary">P</span>
+          <span className="text-base font-semibold text-text-primary">P</span>
         )}
       </div>
 
@@ -67,7 +67,7 @@ export function Sidebar(): JSX.Element {
               key={href}
               href={href}
               onClick={handleNavClick}
-              className={`flex items-center gap-3 rounded-md px-3 py-2 text-[14px] font-medium transition-colors ${
+              className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
                 active
                   ? 'bg-surface-subtle text-text-primary'
                   : 'text-text-tertiary hover:bg-surface-subtle hover:text-text-primary'
@@ -83,7 +83,7 @@ export function Sidebar(): JSX.Element {
         <button
           type="button"
           onClick={() => openModal({ type: 'configuration' })}
-          className="flex items-center gap-3 rounded-md px-3 py-2 text-[14px] font-medium text-text-tertiary transition-colors hover:bg-surface-subtle hover:text-text-primary"
+          className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-text-tertiary transition-colors hover:bg-surface-subtle hover:text-text-primary"
           title={!sidebarOpen ? 'Configuration' : undefined}
         >
           <Settings className="h-[18px] w-[18px] shrink-0" />

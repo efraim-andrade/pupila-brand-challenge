@@ -68,7 +68,7 @@ export function GroupSelector({
     <div className="flex flex-col gap-1.5">
       <label
         htmlFor={inputId}
-        className="text-[14px] font-medium text-text-primary"
+        className="text-sm font-medium text-text-primary"
       >
         Group
       </label>
@@ -79,7 +79,7 @@ export function GroupSelector({
         onChange={(event: ChangeEvent<HTMLSelectElement>) =>
           onSelect(event.target.value || null)
         }
-        className="w-full rounded-md bg-surface px-3 py-2 text-[14px] text-text-primary shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
+        className="w-full rounded-md bg-surface px-3 py-2 text-sm text-text-primary shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
       >
         <option value="">No group</option>
         {groups.map((group) => (
@@ -97,7 +97,7 @@ export function GroupSelector({
             onChange={(event) => setNewGroupName(event.target.value)}
             onKeyDown={handleGroupInputKeyDown}
             placeholder="Group name"
-            className="w-full rounded-md bg-surface px-2.5 py-1.5 text-[14px] text-text-primary placeholder-text-muted shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
+            className="w-full rounded-md bg-surface px-2.5 py-1.5 text-sm text-text-primary placeholder-text-muted shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
           />
           <div className="flex justify-end gap-1">
             <Button
@@ -122,7 +122,7 @@ export function GroupSelector({
         <button
           type="button"
           onClick={() => setIsCreatingGroup(true)}
-          className="self-start text-[12px] text-badge-text hover:underline"
+          className="self-start text-xs text-badge-text hover:underline"
         >
           + New group
         </button>

@@ -47,13 +47,13 @@ export function CommentInput({
           onKeyDown={handleCommentInputKeyDown}
           placeholder="Add a comment\u2026"
           rows={2}
-          className="flex-1 resize-none rounded-md px-2 py-1.5 text-[12px] text-text-primary placeholder-text-muted shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
+          className="flex-1 resize-none rounded-md px-2 py-1.5 text-xs text-text-primary placeholder-text-muted shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
         />
         <button
           type="button"
           onClick={handleCommentSubmit}
           disabled={!commentText.trim()}
-          className="self-end rounded-md bg-text-primary px-3 py-1.5 text-[12px] font-medium text-surface transition-colors hover:bg-black disabled:cursor-not-allowed disabled:opacity-50"
+          className="self-end rounded-md bg-text-primary px-3 py-1.5 text-xs font-medium text-surface transition-colors hover:bg-black disabled:cursor-not-allowed disabled:opacity-50"
         >
           <Send className="h-3 w-3" />
         </button>
@@ -71,7 +71,7 @@ export function CommentInput({
         onKeyDown={handleCommentInputKeyDown}
         placeholder="Add a comment\u2026 (Enter to submit, Shift+Enter for new line)"
         rows={2}
-        className="w-full resize-none rounded-md px-3 py-2 text-[14px] text-text-primary placeholder-text-muted shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
+        className="w-full resize-none rounded-md px-3 py-2 text-sm text-text-primary placeholder-text-muted shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
       />
       <div className="flex justify-end">
         <Button

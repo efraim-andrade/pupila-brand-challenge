@@ -120,7 +120,7 @@ export function AddPaletteModal({
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor="palette-name"
-              className="text-[14px] font-medium text-text-primary"
+              className="text-sm font-medium text-text-primary"
             >
               Name
             </label>
@@ -133,12 +133,12 @@ export function AddPaletteModal({
                 setName(event.target.value)
               }
               placeholder="My palette"
-              className="w-full rounded-md px-3 py-2 text-[14px] text-text-primary placeholder-text-muted shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
+              className="w-full rounded-md px-3 py-2 text-sm text-text-primary placeholder-text-muted shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
             />
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <span className="text-[14px] font-medium text-text-primary">
+            <span className="text-sm font-medium text-text-primary">
               Colors
             </span>
             <ColorEditor items={colorItems} onChange={setColorItems} />

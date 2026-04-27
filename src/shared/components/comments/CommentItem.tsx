@@ -34,9 +34,9 @@ export function CommentItem({
   const [isEditing, setIsEditing] = useState(false);
   const [editCommentText, setEditCommentText] = useState(comment.text);
 
-  const textSize = compact ? 'text-[12px]' : 'text-[14px]';
+  const textSize = compact ? 'text-xs' : 'text-sm';
   const padding = compact ? 'p-2' : 'p-3';
-  const dateSize = compact ? 'text-[10px]' : 'text-[12px]';
+  const dateSize = compact ? 'text-2xs' : 'text-xs';
   const iconSize = compact ? 'h-3 w-3' : 'h-3.5 w-3.5';
 
   const handleSaveCommentEdit = () => {

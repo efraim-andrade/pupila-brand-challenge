@@ -88,7 +88,7 @@ export function EditImageModal({
         <div className="flex flex-col gap-1.5">
           <label
             htmlFor="edit-image-url"
-            className="text-[14px] font-medium text-text-primary"
+            className="text-sm font-medium text-text-primary"
           >
             Image URL
           </label>
@@ -98,7 +98,7 @@ export function EditImageModal({
             value={url}
             onChange={handleUrlChange}
             placeholder="https://example.com/photo.jpg"
-            className={`w-full rounded-md px-3 py-2 text-[14px] text-text-primary placeholder-text-muted shadow-border focus:outline-none focus:ring-2 ${
+            className={`w-full rounded-md px-3 py-2 text-sm text-text-primary placeholder-text-muted shadow-border focus:outline-none focus:ring-2 ${
               urlError
                 ? 'shadow-[0_0_0_1px_rgba(220,38,38,0.4)] focus:ring-red-500'
                 : 'focus:ring-focus'
@@ -110,7 +110,7 @@ export function EditImageModal({
         <div className="flex flex-col gap-1.5">
           <label
             htmlFor="edit-image-name"
-            className="text-[14px] font-medium text-text-primary"
+            className="text-sm font-medium text-text-primary"
           >
             Name
           </label>
@@ -122,7 +122,7 @@ export function EditImageModal({
               setName(event.target.value)
             }
             placeholder="My image"
-            className="w-full rounded-md px-3 py-2 text-[14px] text-text-primary placeholder-text-muted shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
+            className="w-full rounded-md px-3 py-2 text-sm text-text-primary placeholder-text-muted shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
           />
         </div>
 

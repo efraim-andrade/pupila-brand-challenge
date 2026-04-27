@@ -107,7 +107,7 @@ function SortableColorRow({
         onChange={handleHexTextChange}
         placeholder="#000000"
         aria-label="Hex color code"
-        className={`w-24 rounded-md px-2 py-1.5 font-mono text-[12px] text-text-primary shadow-border focus:outline-none focus:ring-2 ${
+        className={`w-24 rounded-md px-2 py-1.5 font-mono text-xs text-text-primary shadow-border focus:outline-none focus:ring-2 ${
           hexIsValid
             ? 'focus:ring-focus'
             : 'shadow-[0_0_0_1px_rgba(220,38,38,0.3)] focus:ring-red-500'
@@ -122,7 +122,7 @@ function SortableColorRow({
         }
         placeholder="Color name (optional)"
         aria-label="Color name"
-        className="min-w-0 flex-1 rounded-md px-2 py-1.5 text-[12px] text-text-primary placeholder-text-muted shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
+        className="min-w-0 flex-1 rounded-md px-2 py-1.5 text-xs text-text-primary placeholder-text-muted shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
       />
 
       <button
@@ -197,15 +197,13 @@ export function ColorEditor({
       </DndContext>
 
       {items.length === 0 && (
-        <p className="text-[12px] text-text-muted">
-          No colors yet. Add one below.
-        </p>
+        <p className="text-xs text-text-muted">No colors yet. Add one below.</p>
       )}
 
       <button
         type="button"
         onClick={() => onChange([...items, createColorItem()])}
-        className="flex items-center gap-1.5 self-start rounded-md px-3 py-1.5 text-[12px] font-medium text-text-tertiary shadow-border hover:bg-surface-subtle hover:text-text-primary"
+        className="flex items-center gap-1.5 self-start rounded-md px-3 py-1.5 text-xs font-medium text-text-tertiary shadow-border hover:bg-surface-subtle hover:text-text-primary"
       >
         <Plus className="h-3.5 w-3.5" />
         Add color

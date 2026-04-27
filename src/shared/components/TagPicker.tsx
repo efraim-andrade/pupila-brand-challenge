@@ -49,7 +49,7 @@ export function TagPicker({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <span className="text-[14px] font-medium text-text-primary">Tags</span>
+      <span className="text-sm font-medium text-text-primary">Tags</span>
 
       <div className="flex flex-wrap items-center gap-1.5">
         {tags.map((tag) => {
@@ -59,7 +59,7 @@ export function TagPicker({
               key={tag.id}
               type="button"
               onClick={() => onToggle(tag.id)}
-              className={`rounded-full px-2.5 py-1 text-[12px] font-medium transition-colors ${
+              className={`rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${
                 isSelected
                   ? 'bg-text-primary text-surface'
                   : 'bg-surface text-text-tertiary shadow-border hover:bg-surface-subtle'
@@ -94,7 +94,7 @@ export function TagPicker({
               onChange={(event) => setNewTagName(event.target.value)}
               onKeyDown={handleTagInputKeyDown}
               placeholder="Tag name"
-              className="w-20 bg-transparent text-[12px] text-text-primary placeholder-text-muted focus:outline-none"
+              className="w-20 bg-transparent text-xs text-text-primary placeholder-text-muted focus:outline-none"
             />
             <button
               type="button"
@@ -121,7 +121,7 @@ export function TagPicker({
           <button
             type="button"
             onClick={() => setIsCreatingTag(true)}
-            className="rounded-full px-2.5 py-1 text-[12px] font-medium text-text-muted transition-colors shadow-border hover:bg-surface-subtle hover:text-text-primary"
+            className="rounded-full px-2.5 py-1 text-xs font-medium text-text-muted transition-colors shadow-border hover:bg-surface-subtle hover:text-text-primary"
           >
             + New tag
           </button>

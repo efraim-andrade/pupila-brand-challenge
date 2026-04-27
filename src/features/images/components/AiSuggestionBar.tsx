@@ -21,7 +21,7 @@ function SparkleIcon(): JSX.Element {
 
 function LoadingDots(): JSX.Element {
   return (
-    <span className="flex items-center gap-1 text-[12px] text-text-muted">
+    <span className="flex items-center gap-1 text-xs text-text-muted">
       <SparkleIcon />
       Analyzing image\u2026
     </span>
@@ -42,19 +42,19 @@ export function AiSuggestionBar({
       {isLoading && <LoadingDots />}
 
       {!isLoading && error && (
-        <span className="text-[12px] text-red-500">{error}</span>
+        <span className="text-xs text-red-500">{error}</span>
       )}
 
       {!isLoading && suggestions && (
         <div className="flex flex-wrap items-center gap-2">
-          <span className="flex items-center gap-1 text-[12px] font-medium text-text-primary">
+          <span className="flex items-center gap-1 text-xs font-medium text-text-primary">
             <SparkleIcon />
             AI suggested
           </span>
 
           <div className="flex flex-wrap items-center gap-1.5">
             {suggestions.group && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-badge-bg px-2 py-0.5 text-[12px] font-medium text-badge-text">
+              <span className="inline-flex items-center gap-1 rounded-full bg-badge-bg px-2 py-0.5 text-xs font-medium text-badge-text">
                 <span className="text-text-muted">group:</span>
                 {suggestions.group}
               </span>
@@ -63,7 +63,7 @@ export function AiSuggestionBar({
             {suggestions.tags.map((tag) => (
               <span
                 key={tag}
-                className="inline-flex items-center rounded-full bg-white px-2 py-0.5 text-[12px] text-text-tertiary shadow-border"
+                className="inline-flex items-center rounded-full bg-white px-2 py-0.5 text-xs text-text-tertiary shadow-border"
               >
                 {tag}
               </span>
@@ -74,7 +74,7 @@ export function AiSuggestionBar({
             <button
               type="button"
               onClick={() => onApplyAll(suggestions.group, suggestions.tags)}
-              className="rounded px-2 py-1 text-[12px] font-medium text-text-primary hover:bg-surface-muted focus:outline-none focus:ring-2 focus:ring-focus"
+              className="rounded px-2 py-1 text-xs font-medium text-text-primary hover:bg-surface-muted focus:outline-none focus:ring-2 focus:ring-focus"
             >
               Apply all
             </button>

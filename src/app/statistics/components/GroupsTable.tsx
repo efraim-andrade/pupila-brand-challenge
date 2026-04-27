@@ -17,7 +17,7 @@ export function GroupsTable({
 
   return (
     <div className="mt-4">
-      <div className="flex items-center gap-4 text-[12px] text-text-tertiary">
+      <div className="flex items-center gap-4 text-xs text-text-tertiary">
         <span className="flex items-center gap-1">
           <span className="h-2 w-2 rounded-full bg-text-primary" /> Images
         </span>
@@ -31,7 +31,7 @@ export function GroupsTable({
       <div className="mt-3 flex flex-col gap-2">
         {sorted.map((stat) => (
           <div key={stat.id} className="flex items-center gap-3">
-            <div className="w-24 truncate text-[14px] text-text-primary">
+            <div className="w-24 truncate text-sm text-text-primary">
               {stat.name}
             </div>
             <div className="flex flex-1 items-center gap-1">
@@ -52,7 +52,7 @@ export function GroupsTable({
                 />
               </div>
             </div>
-            <span className="w-12 text-right text-[14px] font-medium text-text-primary">
+            <span className="w-12 text-right text-sm font-medium text-text-primary">
               {stat.total}
             </span>
           </div>

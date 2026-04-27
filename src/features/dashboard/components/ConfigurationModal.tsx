@@ -165,7 +165,7 @@ export function ConfigurationModal({
               key={tab}
               type="button"
               onClick={() => handleTabChange(tab)}
-              className={`flex-1 rounded-md px-3 py-1.5 text-[14px] font-medium transition-colors capitalize ${
+              className={`flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition-colors capitalize ${
                 activeTab === tab
                   ? 'bg-text-primary text-white'
                   : 'text-text-tertiary hover:text-text-primary'
@@ -178,7 +178,7 @@ export function ConfigurationModal({
 
         <div className="flex flex-col gap-3">
           {currentTabItems.length === 0 && !creatingEntity ? (
-            <p className="py-6 text-center text-[14px] text-text-muted">
+            <p className="py-6 text-center text-sm text-text-muted">
               No {activeTab} yet. Create one below.
             </p>
           ) : (
@@ -228,7 +228,7 @@ export function ConfigurationModal({
                           )
                         }
                         onKeyDown={handleEditKeyDown}
-                        className="min-w-0 flex-1 rounded-md bg-white px-2 py-1 text-[14px] text-text-primary shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
+                        className="min-w-0 flex-1 rounded-md bg-white px-2 py-1 text-sm text-text-primary shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
                       />
                       <Button
                         type="button"
@@ -258,10 +258,10 @@ export function ConfigurationModal({
                       key={currentItem.id}
                       className="flex items-center gap-2 rounded-md bg-red-50 px-3 py-2.5 shadow-[0_0_0_1px_rgba(220,38,38,0.2)]"
                     >
-                      <span className="flex-1 text-[14px] text-red-700">
+                      <span className="flex-1 text-sm text-red-700">
                         Delete &ldquo;{currentItem.name}&rdquo;
                         {warning && (
-                          <span className="ml-1 text-[12px] text-red-500">
+                          <span className="ml-1 text-xs text-red-500">
                             ({warning})
                           </span>
                         )}
@@ -306,11 +306,11 @@ export function ConfigurationModal({
                     ) : (
                       <Folder className="h-3 w-3 shrink-0 text-text-muted" />
                     )}
-                    <span className="flex-1 text-[14px] text-text-primary">
+                    <span className="flex-1 text-sm text-text-primary">
                       {currentItem.name}
                     </span>
                     {count >= 0 && (
-                      <span className="text-[12px] text-text-muted">
+                      <span className="text-xs text-text-muted">
                         {count} item{count !== 1 ? 's' : ''}
                       </span>
                     )}
@@ -353,7 +353,7 @@ export function ConfigurationModal({
                   }
                   onKeyDown={handleCreateKeyDown}
                   placeholder={newItemPlaceholder}
-                  className="min-w-0 flex-1 rounded-md bg-white px-2.5 py-1.5 text-[14px] text-text-primary placeholder-text-muted shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
+                  className="min-w-0 flex-1 rounded-md bg-white px-2.5 py-1.5 text-sm text-text-primary placeholder-text-muted shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
                 />
                 <Button
                   type="button"
@@ -408,7 +408,7 @@ export function ConfigurationModal({
                   }
                   onKeyDown={handleCreateKeyDown}
                   placeholder={newItemPlaceholder}
-                  className="min-w-0 flex-1 rounded-md bg-white px-2.5 py-1.5 text-[14px] text-text-primary placeholder-text-muted shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
+                  className="min-w-0 flex-1 rounded-md bg-white px-2.5 py-1.5 text-sm text-text-primary placeholder-text-muted shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
                 />
                 <Button
                   type="button"
@@ -434,7 +434,7 @@ export function ConfigurationModal({
             <button
               type="button"
               onClick={() => setCreatingEntity({ name: '', color: undefined })}
-              className="flex items-center gap-1.5 self-start rounded-md px-3 py-2 text-[14px] text-text-tertiary transition-colors shadow-border hover:bg-surface-subtle hover:text-text-primary"
+              className="flex items-center gap-1.5 self-start rounded-md px-3 py-2 text-sm text-text-tertiary transition-colors shadow-border hover:bg-surface-subtle hover:text-text-primary"
             >
               <Plus className="h-4 w-4" />
               {newItemLabel}

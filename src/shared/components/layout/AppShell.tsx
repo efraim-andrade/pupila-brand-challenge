@@ -53,7 +53,7 @@ export function AppShell({ children }: AppShellProps): JSX.Element {
             <Menu className="h-5 w-5" />
           </button>
           <PageIcon className="h-4 w-4 text-text-muted" />
-          <span className="text-[14px] font-medium text-text-tertiary">
+          <span className="text-sm font-medium text-text-tertiary">
             {currentPage.label}
           </span>
         </header>
