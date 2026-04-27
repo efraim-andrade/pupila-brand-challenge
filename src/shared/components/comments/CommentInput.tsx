@@ -45,7 +45,7 @@ export function CommentInput({
             setCommentText(e.target.value)
           }
           onKeyDown={handleCommentInputKeyDown}
-          placeholder="Add a comment\u2026"
+          placeholder="Add a comment"
           rows={2}
           className="flex-1 resize-none rounded-md px-2 py-1.5 text-xs text-text-primary placeholder-text-muted shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
         />
@@ -69,7 +69,7 @@ export function CommentInput({
           setCommentText(e.target.value)
         }
         onKeyDown={handleCommentInputKeyDown}
-        placeholder="Add a comment\u2026 (Enter to submit, Shift+Enter for new line)"
+        placeholder="Add a comment (Enter to submit, Shift+Enter for new line)"
         rows={2}
         className="w-full resize-none rounded-md px-3 py-2 text-sm text-text-primary placeholder-text-muted shadow-border focus:outline-none focus:ring-2 focus:ring-focus"
       />
