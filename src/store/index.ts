@@ -1,5 +1,3 @@
-'use client';
-
 import { create } from 'zustand';
 import { createImagesSlice, type ImagesSlice } from './imagesSlice';
 import {

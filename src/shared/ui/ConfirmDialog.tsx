@@ -1,5 +1,3 @@
-'use client';
-
 import type { JSX } from 'react';
 import { Button } from './Button';
 import { Modal } from './Modal';

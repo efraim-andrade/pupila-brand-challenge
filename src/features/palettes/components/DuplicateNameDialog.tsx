@@ -1,5 +1,3 @@
-'use client';
-
 import { AlertTriangle } from 'lucide-react';
 import type { JSX } from 'react';
 import { Button } from '@/shared/ui/Button';

@@ -1,5 +1,3 @@
-'use client';
-
 import { useAppStore } from '@/store';
 
 export function useGroups() {

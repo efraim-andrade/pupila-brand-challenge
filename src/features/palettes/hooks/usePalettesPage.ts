@@ -1,5 +1,3 @@
-'use client';
-
 import { useMemo } from 'react';
 import { useAppStore } from '@/store';
 import { filterPalettes } from '../lib/filterPalettes';
